@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TGS — Cookie Banner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --charcoal: #313131;
+    --warm-white: #FDFCF9;
+    --warm-cream: #F7F5F1;
+    --gold: #C4A265;
+    --gold-dark: #7A644F;
+    --mist: #8B8B8B;
+    --light-rule: #E0D8CC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--warm-cream);
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* ——— FAKE PAGE BACKGROUND ——— */
+  .page-bg {
+    min-height: 100vh;
+    padding-top: 68px;
+    filter: blur(1.5px);
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .fake-nav {
+    height: 68px;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--light-rule);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1;
+  }
+
+  .fake-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--charcoal);
+  }
+
+  .fake-hero {
+    height: 520px;
+    background: linear-gradient(165deg, #2C2C2C 0%, #1a1a1a 60%, #252220 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .fake-hero-eyebrow {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .fake-hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px;
+    font-weight: 300;
+    color: var(--warm-white);
+    text-align: center;
+    line-height: 1.15;
+  }
+
+  .fake-hero-title em { font-style: italic; color: rgba(196,162,101,0.85); }
+
+  .fake-content {
+    padding: 64px 80px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .fake-card {
+    background: var(--warm-white);
+    border: 1px solid var(--light-rule);
+    height: 200px;
+    border-radius: 2px;
+  }
+
+  /* ——— COOKIE BANNER ——— */
+  .cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--warm-cream);
+    border-top: 2px solid var(--light-rule);
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    animation: slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  .cookie-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cookie-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .cookie-text {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--charcoal);
+    line-height: 1.7;
+  }
+
+  .cookie-text a {
+    color: var(--gold-dark);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(122,100,79,0.3);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .cookie-text a:hover {
+    color: var(--charcoal);
+    border-color: var(--charcoal);
+  }
+
+  .cookie-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .btn-accept {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--warm-white);
+    background: var(--charcoal);
+    border: 1px solid var(--charcoal);
+    padding: 12px 24px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-accept:hover { background: #1a1a1a; border-color: #1a1a1a; }
+
+  .btn-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--light-rule);
+    font-size: 20px;
+    line-height: 1;
+    padding: 4px;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .btn-close:hover { color: var(--mist); }
+
+  @media (max-width: 768px) {
+    .cookie-banner {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px 24px;
+      gap: 16px;
+    }
+    .cookie-actions { width: 100%; justify-content: space-between; }
+    .fake-content { padding: 32px 24px; grid-template-columns: 1fr; }
+    .fake-hero-title { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- FAKE PAGE BACKGROUND -->
+<div class="page-bg">
+  <div class="fake-nav">
+    <span class="fake-logo">The Global Sanctum</span>
+  </div>
+  <div class="fake-hero">
+    <span class="fake-hero-eyebrow">Wellness &amp; Retreat Venues</span>
+    <h1 class="fake-hero-title">Where transformation<br>finds its <em>sanctuary.</em></h1>
+  </div>
+  <div class="fake-content">
+    <div class="fake-card"></div>
+    <div class="fake-card"></div>
+    <div class="fake-card"></div>
+  </div>
+</div>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner">
+
+  <div class="cookie-left">
+    <div class="cookie-dot"></div>
+    <p class="cookie-text">
+      We use cookies to improve your experience on The Global Sanctum. By continuing to browse, you agree to our use of cookies as outlined in our <a href="/terms">Terms &amp; Conditions</a>.
+    </p>
+  </div>
+
+  <div class="cookie-actions">
+    <button class="btn-accept" onclick="accept()">Accept All</button>
+    <button class="btn-close" onclick="decline()" aria-label="Decline">×</button>
+  </div>
+
+</div>
+
+<script>
+  function accept() {
+    // Set consent cookie — 365 days
+    const expires = new Date(Date.now() + 365 * 864e5).toUTCString();
+    document.cookie = 'tgs_consent=accepted; expires=' + expires + '; path=/; SameSite=Lax';
+    dismiss();
+  }
+
+  function decline() {
+    // Essential cookies only — shorter expiry so banner returns sooner
+    const expires = new Date(Date.now() + 30 * 864e5).toUTCString();
+    document.cookie = 'tgs_consent=essential; expires=' + expires + '; path=/; SameSite=Lax';
+    dismiss();
+  }
+
+  function dismiss() {
+    const banner = document.getElementById('cookieBanner');
+    banner.style.transition = 'transform 0.35s cubic-bezier(0.4,0,1,1), opacity 0.3s';
+    banner.style.transform = 'translateY(100%)';
+    banner.style.opacity = '0';
+    setTimeout(() => banner.remove(), 400);
+  }
+
+  // On load: check if consent already given, hide banner if so
+  (function() {
+    if (document.cookie.split(';').some(c => c.trim().startsWith('tgs_consent='))) {
+      document.getElementById('cookieBanner').style.display = 'none';
+    }
+  })();
+</script>
+
+</body>
+</html>

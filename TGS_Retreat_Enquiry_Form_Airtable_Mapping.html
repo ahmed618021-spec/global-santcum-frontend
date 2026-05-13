@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retreat Enquiry Form â€” Airtable â†’ Website Mapping | TGS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --warm-white: #FDFCF9; --warm-cream: #F7F5F1; --charcoal: #313131; --charcoal-light: rgba(49, 49, 49, 0.7); --charcoal-lighter: rgba(49, 49, 49, 0.5); --charcoal-subtle: rgba(49, 49, 49, 0.1); --charcoal-border: rgba(49, 49, 49, 0.15); --gold: #C4A265; --gold-dark: #7A644F; --t12: #8B4513; --font-serif: 'Cormorant Garamond', Georgia, serif; --font-sans: 'Montserrat', sans-serif; --page-max: 1280px; --pad-h: 60px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-serif); color: var(--charcoal); background: var(--warm-white); line-height: 1.6; -webkit-font-smoothing: antialiased; font-size: 14px; }
+        .nav { background: var(--warm-white); border-bottom: 1px solid var(--charcoal-subtle); position: sticky; top: 0; z-index: 100; }
+        .nav-inner { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--pad-h); height: 70px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+        .nav-logo-area { display: flex; align-items: center; justify-content: center; gap: 16px; }
+        .nav-logo-box { width: 36px; height: 36px; border: 1.5px dashed var(--gold); border-radius: 6px; display: flex; align-items: center; justify-content: center; background: var(--charcoal); flex-shrink: 0; }
+        .nav-logo-box span { font-family: var(--font-sans); font-size: 6px; font-weight: 500; text-transform: uppercase; color: var(--gold); text-align: center; line-height: 1.2; }
+        .nav-brand { font-family: var(--font-serif); font-size: 14px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--charcoal); }
+        .nav-right { display: flex; align-items: center; justify-content: flex-end; }
+        .nav-doc-tag { font-family: var(--font-sans); font-size: 8px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--charcoal-lighter); }
+        .doc-hero { background: var(--warm-cream); border-bottom: 1px solid var(--charcoal-subtle); padding: 48px var(--pad-h) 40px; }
+        .doc-hero-inner { max-width: var(--page-max); margin: 0 auto; }
+        .doc-hero-eyebrow { font-family: var(--font-sans); font-size: 9px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 16px; }
+        .doc-hero-eyebrow span { color: var(--gold-dark); }
+        .doc-hero h1 { font-family: var(--font-serif); font-size: 42px; font-weight: 400; line-height: 1.1; margin-bottom: 16px; }
+        .doc-hero h1 em { font-style: italic; font-weight: 300; }
+        .doc-hero-desc { font-family: var(--font-serif); font-size: 15px; font-weight: 300; font-style: italic; color: var(--charcoal-light); max-width: 720px; line-height: 1.85; margin-bottom: 32px; }
+        .doc-meta-row { display: flex; gap: 32px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid var(--charcoal-subtle); }
+        .doc-meta-label { font-family: var(--font-sans); font-size: 8px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 4px; }
+        .doc-meta-value { font-family: var(--font-sans); font-size: 11px; font-weight: 400; color: var(--charcoal); }
+        .page-info-bar { background: var(--warm-white); border-bottom: 1px solid var(--charcoal-subtle); padding: 0 var(--pad-h); }
+        .page-info-left { display: flex; align-items: center; gap: 16px; padding: 12px 0; flex-wrap: wrap; }
+        .url-tag { font-family: var(--font-sans); font-size: 11px; font-weight: 400; letter-spacing: 0.04em; color: var(--gold-dark); background: rgba(196,162,101,0.08); border: 1px solid rgba(196,162,101,0.3); padding: 4px 12px; }
+        .info-stat { font-family: var(--font-sans); font-size: 10px; font-weight: 300; color: var(--charcoal-lighter); }
+        .info-stat strong { color: var(--charcoal); font-weight: 500; }
+        .content { max-width: var(--page-max); margin: 0 auto; padding: 48px var(--pad-h); }
+        .page-intro-callout { font-family: var(--font-serif); font-size: 14px; font-weight: 300; line-height: 1.8; color: var(--charcoal-light); padding: 20px 24px; background: var(--warm-cream); border-left: 2px solid var(--gold); margin-bottom: 48px; }
+        .page-intro-callout strong { color: var(--charcoal); font-weight: 500; }
+        .map-section { margin-bottom: 48px; }
+        .map-section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 6px; padding-bottom: 16px; border-bottom: 1px solid var(--charcoal-subtle); }
+        .section-num { font-family: var(--font-sans); font-size: 9px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: var(--charcoal-lighter); flex-shrink: 0; }
+        .section-title { font-family: var(--font-serif); font-size: 24px; font-weight: 400; color: var(--charcoal); }
+        .section-title em { font-style: italic; font-weight: 300; }
+        .section-subtitle { font-family: var(--font-serif); font-size: 13px; font-weight: 300; font-style: italic; color: var(--charcoal-lighter); margin-bottom: 16px; line-height: 1.6; }
+        .section-divider { height: 1px; background: var(--charcoal-subtle); margin: 40px 0; }
+        .map-table { width: 100%; border-collapse: collapse; background: var(--warm-white); border: 1px solid var(--charcoal-border); font-size: 12px; }
+        .map-table thead tr { background: var(--warm-cream); border-bottom: 1px solid var(--charcoal-subtle); }
+        .map-table thead th { font-family: var(--font-sans); font-size: 8px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--charcoal-lighter); padding: 10px 14px; text-align: left; }
+        .map-table tbody tr { border-bottom: 1px solid var(--charcoal-subtle); transition: background 0.15s; }
+        .map-table tbody tr:last-child { border-bottom: none; }
+        .map-table tbody tr:hover { background: rgba(196,162,101,0.04); }
+        .map-table td { padding: 12px 14px; vertical-align: top; }
+        .col-el { width: 32%; font-family: var(--font-serif); font-size: 14px; font-weight: 400; color: var(--charcoal); }
+        .col-type { width: 15%; font-family: var(--font-sans); font-size: 10px; font-weight: 400; color: var(--charcoal-light); }
+        .col-notes { width: 53%; font-family: var(--font-serif); font-size: 12px; font-weight: 300; font-style: italic; color: var(--charcoal-light); line-height: 1.5; }
+        .tbadge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px 2px 3px; border-radius: 16px; font-family: var(--font-sans); font-size: 9px; font-weight: 500; color: white; white-space: nowrap; line-height: 1; margin-bottom: 3px; background: var(--t12); }
+        .tbadge .td { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,0.22); display: flex; align-items: center; justify-content: center; font-size: 7px; flex-shrink: 0; }
+        .footer { background: var(--charcoal); color: rgba(255,255,255,0.7); padding: 48px var(--pad-h) 32px; }
+        .footer-inner { max-width: var(--page-max); margin: 0 auto; display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .footer-brand { display: flex; flex-direction: column; gap: 12px; }
+        .footer-logo-placeholder { width: 56px; height: 56px; border: 2px dashed var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(196,162,101,0.08); }
+        .footer-logo-placeholder span { font-family: var(--font-sans); font-size: 7px; font-weight: 500; text-transform: uppercase; color: var(--gold); text-align: center; line-height: 1.3; }
+        .footer-brand-name { font-family: var(--font-serif); font-size: 15px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.9); }
+        .footer-brand-text { font-family: var(--font-serif); font-size: 12px; font-weight: 300; line-height: 1.7; color: rgba(255,255,255,0.45); font-style: italic; }
+        .footer-cols { display: grid; grid-template-columns: repeat(3, 160px); gap: 32px; }
+        .footer-col-title { font-family: var(--font-sans); font-size: 9px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+        .footer-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .footer-list li { font-family: var(--font-serif); font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.55); }
+        .footer-bottom { max-width: var(--page-max); margin: 0 auto; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+        .footer-copyright { font-family: var(--font-sans); font-size: 10px; font-weight: 300; letter-spacing: 0.05em; color: rgba(255,255,255,0.28); }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div></div>
+            <a href="tgs_home_v7.html" class="nav-logo-area" style="text-decoration:none;">
+                <div class="nav-logo-box"><span>Logo</span></div>
+                <div class="nav-brand">The Global Sanctum</div>
+            </a>
+            <div class="nav-right"><span class="nav-doc-tag">Developer Handoff Â· Internal</span></div>
+        </div>
+    </nav>
+
+    <div class="doc-hero">
+        <div class="doc-hero-inner">
+            <p class="doc-hero-eyebrow">Master Console Â· <span>Airtable â†’ Website Mapping</span></p>
+            <h1>Retreat Enquiry Form</h1>
+            <p class="doc-hero-desc">Two-column layout: venue context panel (left) + comprehensive enquiry form (right). Form has 5 sections with 20+ fields. Writes to T12 (Venue Booking Records) or dedicated Enquiries table.</p>
+            <div class="doc-meta-row">
+                <div class="doc-meta-item"><div class="doc-meta-label">Page Type</div><div class="doc-meta-value">Form / Enquiry</div></div>
+                <div class="doc-meta-item"><div class="doc-meta-label">URL Pattern</div><div class="doc-meta-value">/retreat-venues/{slug}/enquire</div></div>
+                <div class="doc-meta-item"><div class="doc-meta-label">Version</div><div class="doc-meta-value">1.0</div></div>
+                <div class="doc-meta-item"><div class="doc-meta-label">Date</div><div class="doc-meta-value">19 February 2026</div></div>
+                <div class="doc-meta-item"><div class="doc-meta-label">Writes To</div><div class="doc-meta-value">T12 or Enquiries</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-info-bar">
+        <div class="page-info-left">
+            <span class="url-tag">/retreat-venues/{slug}/enquire</span>
+            <span class="info-stat"><strong>Form submission</strong> â†’ Airtable</span>
+            <span class="info-stat">5 sections, 20+ fields</span>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <div class="page-intro-callout">
+            Comprehensive retreat enquiry form with <strong>two-column layout</strong>. Left: venue context card + "What Happens Next" steps. Right: multi-section form capturing retreat details. Form submission writes to <strong>T12 (Venue Booking Records)</strong> or dedicated Enquiries table. Concierge MVP model: manual follow-up within 24 hours.
+        </div>
+
+        <div class="map-section">
+            <div class="map-section-header"><span class="section-num">Form Fields</span><h2 class="section-title">All Input <em>Fields</em></h2></div>
+            <p class="section-subtitle">20+ fields across 5 sections, writing to T12 or Enquiries table.</p>
+            <table class="map-table">
+                <thead><tr><th>Field</th><th>Type</th><th>Notes / Options</th></tr></thead>
+                <tbody>
+                    <tr><td colspan="3" style="background:var(--warm-cream); font-weight:500; padding:8px 14px;">Section 1: Your Details</td></tr>
+                    <tr><td class="col-el">First Name</td><td class="col-type">Text (required)</td><td class="col-notes">Single line text input</td></tr>
+                    <tr><td class="col-el">Last Name</td><td class="col-type">Text (required)</td><td class="col-notes">Single line text input</td></tr>
+                    <tr><td class="col-el">Email Address</td><td class="col-type">Email (required)</td><td class="col-notes">Validated email format</td></tr>
+                    <tr><td class="col-el">Phone</td><td class="col-type">Tel (optional)</td><td class="col-notes">Phone number with country code</td></tr>
+                    <tr><td class="col-el">I am a...</td><td class="col-type">Select (required)</td><td class="col-notes">Role: Facilitator/Host, Yoga/Meditation Teacher, Wellness Practitioner, Corporate Planner, Travel Agent, Individual, Other</td></tr>
+                    
+                    <tr><td colspan="3" style="background:var(--warm-cream); font-weight:500; padding:8px 14px;">Section 2: Retreat Details</td></tr>
+                    <tr><td class="col-el">Retreat Name</td><td class="col-type">Text (optional)</td><td class="col-notes">Working title/name of retreat</td></tr>
+                    <tr><td class="col-el">Retreat Type</td><td class="col-type">Select (required)</td><td class="col-notes">Options: Yoga, Meditation, Breathwork, Sound Healing, Wellness/Detox, Silent, Women's, Men's, Corporate/Leadership, Teacher Training, Creative/Arts, Fitness/Adventure, Couples, Other</td></tr>
+                    <tr><td class="col-el">Number of Participants</td><td class="col-type">Select (required)</td><td class="col-notes">Ranges: 1-5, 6-10, 11-15, 16-20, 21-30, 31-50, 50+</td></tr>
+                    
+                    <tr><td colspan="3" style="background:var(--warm-cream); font-weight:500; padding:8px 14px;">Section 3: Preferred Dates</td></tr>
+                    <tr><td class="col-el">Preferred Start Date</td><td class="col-type">Date (required)</td><td class="col-notes">Date picker</td></tr>
+                    <tr><td class="col-el">Number of Nights</td><td class="col-type">Select (required)</td><td class="col-notes">Options: 2, 3, 4, 5, 6, 7 (1 week), 10, 14 (2 weeks), 21+ nights</td></tr>
+                    <tr><td class="col-el">Date Flexibility</td><td class="col-type">Select (required)</td><td class="col-notes">Fixed dates, Flexible Â±1 week, Flexible Â±1 month, Anytime within season, Still exploring</td></tr>
+                    
+                    <tr><td colspan="3" style="background:var(--warm-cream); font-weight:500; padding:8px 14px;">Section 4: Requirements</td></tr>
+                    <tr><td class="col-el">Booking Type</td><td class="col-type">Select (required)</td><td class="col-notes">Exclusive use (full buyout), Shared use, No preference</td></tr>
+                    <tr><td class="col-el">Key Spaces Needed</td><td class="col-type">Checkbox (optional)</td><td class="col-notes">Multi-select: Yoga Shala, Meditation Hall, Workshop/Meeting Room, Ceremony Space, Outdoor Practice, Pool, On-site Catering, Treatment Rooms</td></tr>
+                    <tr><td class="col-el">Estimated Budget</td><td class="col-type">Select (optional)</td><td class="col-notes">Per person per night: Under $100, $100-200, $200-350, $350-500, $500+, Prefer to discuss</td></tr>
+                    
+                    <tr><td colspan="3" style="background:var(--warm-cream); font-weight:500; padding:8px 14px;">Section 5: Additional</td></tr>
+                    <tr><td class="col-el">Additional Notes</td><td class="col-type">Textarea (optional)</td><td class="col-notes">Vision, requirements, questions (dietary, accessibility, equipment, ceremonies, etc.)</td></tr>
+                    <tr><td class="col-el">Referral Source</td><td class="col-type">Select (optional)</td><td class="col-notes">Google, Instagram, Facebook, Referral (friend/colleague), Referral (venue), Industry event, Wellness Edit blog, Other</td></tr>
+                    
+                    <tr><td colspan="3" style="background:var(--warm-cream); font-weight:500; padding:8px 14px;">Hidden/Auto Fields</td></tr>
+                    <tr><td class="col-el">Venue ID</td><td class="col-type">Hidden</td><td class="col-notes">Auto-populated from URL slug â†’ links to T1 Venue record</td></tr>
+                    <tr><td class="col-el">Submission Timestamp</td><td class="col-type">Auto</td><td class="col-notes">Datetime when form submitted</td></tr>
+                    <tr><td class="col-el">Enquiry Status</td><td class="col-type">Auto</td><td class="col-notes">Set to 'New' on submission</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="map-section">
+            <div class="map-section-header"><span class="section-num">Implementation</span><h2 class="section-title">Technical <em>Notes</em></h2></div>
+            <table class="map-table">
+                <thead><tr><th>Aspect</th><th>Implementation</th></tr></thead>
+                <tbody>
+                    <tr><td class="col-el">Form Submission</td><td class="col-notes">POST to Airtable API â†’ creates record in T12 (Venue Booking Records) or dedicated Enquiries table</td></tr>
+                    <tr><td class="col-el">Validation</td><td class="col-notes">Client-side validation for required fields + email format before submission</td></tr>
+                    <tr><td class="col-el">Success Flow</td><td class="col-notes">Redirect to thank-you page with confirmation message + next steps</td></tr>
+                    <tr><td class="col-el">Venue Context</td><td class="col-notes">Left panel shows venue card pre-filled from listing they clicked from (T1 data)</td></tr>
+                    <tr><td class="col-el">Auto-notifications</td><td class="col-notes">Email notification to TGS team on submission (Make.com automation)</td></tr>
+                    <tr><td class="col-el">Concierge Follow-up</td><td class="col-notes">Manual process: team reviews enquiry within 24h, contacts enquirer via email/phone</td></tr>
+                    <tr><td class="col-el">Mobile Responsive</td><td class="col-notes">Two-column layout stacks on mobile (venue context on top, form below)</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo-placeholder"><span>Logo</span></div>
+                <div class="footer-brand-name">The Global Sanctum</div>
+                <div class="footer-brand-text">Retreat Enquiry Form<br>Airtable â†’ Website Mapping</div>
+            </div>
+            <div class="footer-cols">
+                <div><div class="footer-col-title">Page Type</div><ul class="footer-list"><li>Form / Enquiry</li><li>Concierge Model</li><li>19 Feb 2026</li></ul></div>
+                <div><div class="footer-col-title">Sections</div><ul class="footer-list"><li>Your Details</li><li>Retreat Details</li><li>Dates</li><li>Requirements</li><li>Additional</li></ul></div>
+                <div><div class="footer-col-title">Data</div><ul class="footer-list"><li>Writes to T12</li><li>or Enquiries table</li><li>Manual follow-up</li></ul></div>
+            </div>
+        </div>
+        <div class="footer-bottom"><span class="footer-copyright">Â© 2026 The Global Sanctum. Internal documentation.</span></div>
+    </footer>
+
+</body>
+</html>
+

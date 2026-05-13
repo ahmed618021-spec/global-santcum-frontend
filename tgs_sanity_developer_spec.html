@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TGS — Sanity + Next.js Developer Specification</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --charcoal: #313131; --gold: #C4A265; --gold-dark: #7A644F;
+    --cream: #F7F5F1; --white: #FDFCF9; --mist: #8B8B8B;
+    --rule: #E0D8CC; --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Montserrat', Arial, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-sans); background: var(--cream); color: var(--charcoal); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  /* HEADER */
+  .doc-header { background: var(--charcoal); padding: 64px 80px 56px; }
+  .doc-eyebrow { font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+  .doc-title { font-family: var(--font-serif); font-size: 42px; font-weight: 300; color: #fff; line-height: 1.15; margin-bottom: 8px; }
+  .doc-subtitle { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.45); margin-bottom: 32px; line-height: 1.8; max-width: 640px; }
+  .doc-meta { display: flex; gap: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .doc-meta-item { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+  .doc-meta-item span { color: var(--gold); display: block; margin-bottom: 4px; }
+
+  /* TOC */
+  .toc { background: var(--white); border-bottom: 1px solid var(--rule); padding: 40px 80px; }
+  .toc-title { font-size: 9px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--mist); margin-bottom: 20px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 40px; }
+  .toc-item { font-size: 11px; font-weight: 400; color: var(--gold-dark); text-decoration: none; display: flex; align-items: baseline; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--rule); transition: color 0.15s; }
+  .toc-item:hover { color: var(--charcoal); }
+  .toc-num { font-size: 8px; font-weight: 600; color: var(--mist); min-width: 18px; }
+
+  /* MAIN */
+  .main { max-width: 900px; margin: 0 auto; padding: 0 80px 80px; }
+
+  /* SECTION */
+  .section { margin-top: 60px; padding-top: 32px; border-top: 2px solid var(--gold-dark); }
+  .section-num { font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .section-title { font-family: var(--font-serif); font-size: 30px; font-weight: 300; color: var(--charcoal); margin-bottom: 16px; }
+  .section-intro { font-size: 12px; font-weight: 300; color: var(--mist); line-height: 1.85; margin-bottom: 28px; max-width: 620px; }
+
+  h3 { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--charcoal); margin: 28px 0 12px; }
+  h4 { font-size: 12px; font-weight: 600; color: var(--gold-dark); margin: 20px 0 8px; }
+  p { font-size: 12px; font-weight: 300; color: #3A3A3A; line-height: 1.85; margin-bottom: 10px; }
+
+  /* CODE BLOCKS */
+  .code-block { background: var(--charcoal); color: #C4E4C4; font-family: 'Courier New', monospace; font-size: 11px; line-height: 1.65; padding: 20px 24px; border-radius: 2px; margin: 12px 0 20px; overflow-x: auto; white-space: pre; }
+  .code-block .comment { color: rgba(255,255,255,0.3); }
+  .code-block .key { color: #C4A265; }
+  .code-block .val { color: #A8D8A8; }
+  .code-label { font-size: 8.5px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--mist); margin-bottom: 4px; margin-top: 16px; }
+
+  /* TABLES */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 24px; font-size: 11px; }
+  th { background: var(--charcoal); color: #fff; font-size: 8.5px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 9px 12px; text-align: left; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.6; }
+  tr:nth-child(even) td { background: var(--white); }
+  tr:nth-child(odd) td { background: #fff; }
+  td:first-child { font-weight: 500; color: var(--charcoal); }
+  td code { font-family: 'Courier New', monospace; font-size: 10px; background: rgba(196,162,101,0.12); color: var(--gold-dark); padding: 1px 5px; border-radius: 2px; }
+
+  /* CALLOUT BOXES */
+  .callout { border-left: 3px solid var(--gold); background: var(--white); padding: 14px 18px; margin: 16px 0; }
+  .callout-label { font-size: 8.5px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 6px; }
+  .callout p { margin-bottom: 0; font-size: 11.5px; }
+  .callout.warn { border-left-color: #C47A65; }
+  .callout.warn .callout-label { color: #C47A65; }
+
+  /* LAYOUT CARDS */
+  .layout-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .layout-card { background: var(--white); border: 1px solid var(--rule); padding: 18px 20px; border-radius: 2px; }
+  .layout-card-num { font-size: 8px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .layout-card-name { font-family: var(--font-serif); font-size: 18px; font-weight: 400; color: var(--charcoal); margin-bottom: 6px; }
+  .layout-card-cats { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .cat-pill { font-size: 8px; font-weight: 500; letter-spacing: 0.5px; color: var(--gold-dark); background: rgba(196,162,101,0.1); border: 1px solid rgba(196,162,101,0.25); padding: 2px 7px; border-radius: 2px; }
+  .layout-card-desc { font-size: 11px; font-weight: 300; color: var(--mist); line-height: 1.7; }
+
+  /* FIELD LIST */
+  .field-list { margin: 12px 0; }
+  .field-item { display: grid; grid-template-columns: 180px 120px 1fr; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--rule); font-size: 11px; align-items: start; }
+  .field-item:nth-child(odd) { background: var(--white); }
+  .field-item:nth-child(even) { background: #fff; }
+  .field-item:first-child { background: var(--charcoal); font-size: 8.5px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; }
+  .field-name { font-weight: 500; color: var(--charcoal); font-family: 'Courier New', monospace; font-size: 10px; }
+  .field-type { color: var(--gold-dark); font-weight: 500; }
+  .field-note { color: #3A3A3A; font-weight: 300; line-height: 1.6; }
+
+  /* STEP LIST */
+  .steps { margin: 16px 0; }
+  .step { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .step-num { width: 28px; height: 28px; background: var(--charcoal); color: var(--gold); font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 1px; margin-top: 2px; }
+  .step-content h4 { margin: 0 0 4px; font-size: 12px; font-weight: 600; color: var(--charcoal); text-transform: none; letter-spacing: 0; }
+  .step-content p { margin: 0; font-size: 11px; color: var(--mist); }
+
+  /* DIVIDER */
+  .rule { border: none; border-top: 1px solid var(--rule); margin: 40px 0; }
+
+  /* FOOTER */
+  .doc-footer { background: var(--charcoal); padding: 40px 80px; text-align: center; margin-top: 60px; }
+  .doc-footer-logo { font-family: var(--font-serif); font-size: 16px; letter-spacing: 3px; color: #fff; margin-bottom: 8px; }
+  .doc-footer-text { font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 1px; text-transform: uppercase; }
+
+  @media (max-width: 800px) {
+    .doc-header, .toc, .main { padding-left: 24px; padding-right: 24px; }
+    .toc-grid { grid-template-columns: 1fr 1fr; }
+    .layout-cards { grid-template-columns: 1fr; }
+    .field-item { grid-template-columns: 1fr 1fr; }
+    .field-item .field-note { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="doc-header">
+  <p class="doc-eyebrow">Developer Specification — Confidential</p>
+  <h1 class="doc-title">The Wellness Edit<br>Sanity + Next.js Integration</h1>
+  <p class="doc-subtitle">Complete technical specification for connecting Sanity.io to the existing Next.js/Vercel platform, building the Article schema, and implementing all five editorial layout templates.</p>
+  <div class="doc-meta">
+    <div class="doc-meta-item"><span>Project</span>The Global Sanctum</div>
+    <div class="doc-meta-item"><span>Version</span>1.0 — March 2026</div>
+    <div class="doc-meta-item"><span>Stack</span>Next.js · Sanity · Vercel</div>
+    <div class="doc-meta-item"><span>Route</span>/the-wellness-edit</div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <p class="toc-title">Contents</p>
+  <div class="toc-grid">
+    <a href="#s1" class="toc-item"><span class="toc-num">01</span> Project Setup</a>
+    <a href="#s2" class="toc-item"><span class="toc-num">02</span> Article Schema</a>
+    <a href="#s3" class="toc-item"><span class="toc-num">03</span> Category System</a>
+    <a href="#s4" class="toc-item"><span class="toc-num">04</span> Next.js Integration</a>
+    <a href="#s5" class="toc-item"><span class="toc-num">05</span> GROQ Queries</a>
+    <a href="#s6" class="toc-item"><span class="toc-num">06</span> Vercel Webhook</a>
+    <a href="#s7" class="toc-item"><span class="toc-num">07</span> Layout Templates</a>
+    <a href="#s8" class="toc-item"><span class="toc-num">08</span> SEO Implementation</a>
+    <a href="#s9" class="toc-item"><span class="toc-num">09</span> Design Tokens</a>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 1: PROJECT SETUP -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="s1">
+    <p class="section-num">Section 01</p>
+    <h2 class="section-title">Project Setup</h2>
+    <p class="section-intro">Sanity has not been configured yet. A Sanctum account exists but no project has been initialised. Complete these steps before any schema or integration work.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Initialise Sanity project inside the Next.js repo</h4>
+          <p>Run <code>npm create sanity@latest</code> from the project root. Choose "Add to existing project". This creates a <code>/studio</code> directory inside the existing codebase. Do not create a separate repo.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Deploy Studio at /studio</h4>
+          <p>Configure Sanity Studio to be served from <code>theglobalsanctum.com/studio</code> using Next.js routing. This keeps everything under one domain and one deployment. Add CORS origin for the production URL in the Sanity project settings.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Install Sanity client in Next.js</h4>
+          <p>Run <code>npm install @sanity/client @sanity/image-url next-sanity</code>. Create a <code>/lib/sanity.js</code> client file — see Section 04.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Set environment variables</h4>
+          <p>Add to <code>.env.local</code> and Vercel environment settings: <code>NEXT_PUBLIC_SANITY_PROJECT_ID</code>, <code>NEXT_PUBLIC_SANITY_DATASET</code> (use "production"), <code>SANITY_API_TOKEN</code> (read-only token from Sanity project settings).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Grant Kate access to Studio</h4>
+          <p>Invite hello@theglobalsanctum.com as Editor role in the Sanity project dashboard. She should be able to log in at <code>/studio</code> with her Sanity account and create/edit/publish articles independently.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 2: ARTICLE SCHEMA -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="s2">
+    <p class="section-num">Section 02</p>
+    <h2 class="section-title">Article Schema</h2>
+    <p class="section-intro">The Article document type defines every field Kate uses when creating content in Studio. Build all fields below — even those used only by some layouts. Fields left empty simply don't render on the frontend.</p>
+
+    <h3>Complete Field Reference</h3>
+    <div class="field-list">
+      <div class="field-item">
+        <div class="field-name">Field Name</div>
+        <div class="field-type">Type</div>
+        <div class="field-note">Notes</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">title</div>
+        <div class="field-type">string</div>
+        <div class="field-note">Required. Renders as H1. Also used as default SEO title if seoTitle is empty.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">slug</div>
+        <div class="field-type">slug</div>
+        <div class="field-note">Required. Auto-generated from title. URL becomes <code>/the-wellness-edit/[slug]</code>. Kate can edit before publishing.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">category</div>
+        <div class="field-type">string (select)</div>
+        <div class="field-note">Required. Single select. Options: philosophy, portraits, horizons, practices, pathways, the-craft, destinations, the-compass, pulse, the-sanctum, form. See Section 03 for display names.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">layout</div>
+        <div class="field-type">string (select)</div>
+        <div class="field-note">Required. Options: editorial, profile, guide, data, short-form. Controls which template the frontend renders. See Section 07.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">heroImage</div>
+        <div class="field-type">image</div>
+        <div class="field-note">Optional on Layouts 4 and 5, required on Layouts 1–3. Include alt text field. Min 1200px wide. Sanity Image Pipeline handles resizing automatically.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">excerpt</div>
+        <div class="field-type">text</div>
+        <div class="field-note">Required. 1–3 sentences. Renders as italic intro paragraph below the title. Also used as SEO meta description if seoDescription is empty.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">author</div>
+        <div class="field-type">string</div>
+        <div class="field-note">Default "The Global Sanctum". Can be overridden for guest contributors.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">publishedAt</div>
+        <div class="field-type">datetime</div>
+        <div class="field-note">Required. Displays as formatted date. Also used for sorting.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">readTime</div>
+        <div class="field-type">number</div>
+        <div class="field-note">Minutes. Can be auto-calculated on the frontend from body word count (approx 200 words/min) or entered manually.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">body</div>
+        <div class="field-type">array (block)</div>
+        <div class="field-note">Required. Portable Text rich text editor. See custom blocks below.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">tags</div>
+        <div class="field-type">array (string)</div>
+        <div class="field-note">Optional. Free-text tags. Rendered at bottom of article.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">relatedArticles</div>
+        <div class="field-type">array (reference)</div>
+        <div class="field-note">Optional. Reference to other Article documents. Max 3. Rendered as cards at bottom of article.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">gallery</div>
+        <div class="field-type">array (image)</div>
+        <div class="field-note">Layout 2 (Profile) only. Multiple images rendered as 2×2 grid. Include alt text per image.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">keyFacts</div>
+        <div class="field-type">object</div>
+        <div class="field-note">Layout 2 (Profile) only. Fields: location (string), venueType (string), capacity (string), modalities (array string), bestFor (string), priceRange (string). Renders as structured card.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">venueLink</div>
+        <div class="field-type">url</div>
+        <div class="field-note">Layout 2 (Profile) only. Links to the venue's TGS listing page.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">ctaText</div>
+        <div class="field-type">string</div>
+        <div class="field-note">Layouts 3 and 5. Button label text. e.g. "Download the checklist".</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">ctaLink</div>
+        <div class="field-type">url</div>
+        <div class="field-note">Layouts 3 and 5. Button href. Can be internal path or external URL.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">badge</div>
+        <div class="field-type">string (select)</div>
+        <div class="field-note">Layout 5 only. Options: Platform Update, Milestone, New Feature, Community News. Renders as gold badge above title.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">seoTitle</div>
+        <div class="field-type">string</div>
+        <div class="field-note">Optional. If empty, falls back to title. Max 60 characters. Renders in &lt;title&gt; tag.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">seoDescription</div>
+        <div class="field-type">text</div>
+        <div class="field-note">Optional. If empty, falls back to excerpt. Max 160 characters. Renders in meta description.</div>
+      </div>
+      <div class="field-item">
+        <div class="field-name">ogImage</div>
+        <div class="field-type">image</div>
+        <div class="field-note">Optional. If empty, falls back to heroImage. 1200×630px ideal. Renders as og:image for social sharing.</div>
+      </div>
+    </div>
+
+    <h3>Portable Text Custom Blocks</h3>
+    <p>Add these custom block types to the body Portable Text editor. They extend the default paragraph/heading/blockquote functionality.</p>
+    <table>
+      <tr><th>Block Name</th><th>Studio Label</th><th>Renders As</th></tr>
+      <tr><td><code>pullQuote</code></td><td>Pull Quote</td><td>Large italic quote with optional citation. Gold left border treatment.</td></tr>
+      <tr><td><code>callout</code></td><td>Tip / Callout</td><td>Highlighted box for tips or warnings. Warm cream background, gold left border.</td></tr>
+      <tr><td><code>divider</code></td><td>Section Break</td><td>Horizontal rule. Styled as thin charcoal line, not gold (per brand standards).</td></tr>
+      <tr><td><code>inlineImage</code></td><td>Image</td><td>Full-width image with optional caption below. Uses Sanity Image Pipeline.</td></tr>
+    </table>
+
+    <div class="callout warn">
+      <p class="callout-label">Note on Tables</p>
+      <p>Portable Text does not natively support tables. Install the <code>sanity-plugin-table</code> package if comparison tables are needed in body content (primarily Layout 3). Otherwise, Kate can export table graphics from Canva and insert as images.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 3: CATEGORY SYSTEM -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="s3">
+    <p class="section-num">Section 03</p>
+    <h2 class="section-title">Category System</h2>
+    <p class="section-intro">TGS uses a paired naming system. Every category has two names: a clear descriptive label shown on filter tabs, and an editorial name shown inside the article as the category eyebrow. The Sanity schema stores the slug value; the frontend maps it to both display names.</p>
+
+    <table>
+      <tr><th>Schema Value (slug)</th><th>Tab Label (filter UI)</th><th>Editorial Name (article eyebrow)</th><th>Launch</th></tr>
+      <tr><td><code>philosophy</code></td><td>Essays &amp; Culture</td><td>Philosophy</td><td>✓ Yes</td></tr>
+      <tr><td><code>portraits</code></td><td>People &amp; Places</td><td>Portraits</td><td>✓ Yes</td></tr>
+      <tr><td><code>horizons</code></td><td>Emerging Trends</td><td>Horizons</td><td>✓ Yes</td></tr>
+      <tr><td><code>practices</code></td><td>Modalities &amp; Healing</td><td>The Practice</td><td>✓ Yes</td></tr>
+      <tr><td><code>pathways</code></td><td>The Retreat Journey</td><td>Pathways</td><td>✓ Yes</td></tr>
+      <tr><td><code>the-craft</code></td><td>Industry Education</td><td>The Craft</td><td>Post-launch</td></tr>
+      <tr><td><code>destinations</code></td><td>Destinations</td><td>Destinations</td><td>Post-launch</td></tr>
+      <tr><td><code>the-compass</code></td><td>Practical Guides</td><td>The Compass</td><td>Post-launch</td></tr>
+      <tr><td><code>pulse</code></td><td>Data &amp; Trends</td><td>Pulse</td><td>Post-launch</td></tr>
+      <tr><td><code>the-sanctum</code></td><td>TGS Platform</td><td>The Sanctum</td><td>Post-launch</td></tr>
+      <tr><td><code>form</code></td><td>Design &amp; Architecture</td><td>Form</td><td>Post-launch</td></tr>
+    </table>
+
+    <div class="callout">
+      <p class="callout-label">Implementation Note</p>
+      <p>Store the full category map as a constant in <code>/lib/categories.js</code>. Import it in both the filter tab component and the article eyebrow component. Do not hardcode display names in multiple places — one source of truth.</p>
+    </div>
+
+    <p class="code-label">Example — /lib/categories.js</p>
+    <div class="code-block"><span class="key">export const</span> <span class="val">CATEGORIES</span> = {
+  philosophy:   { tab: <span class="val">'Essays & Culture'</span>,      eyebrow: <span class="val">'Philosophy'</span> },
+  portraits:    { tab: <span class="val">'People & Places'</span>,       eyebrow: <span class="val">'Portraits'</span> },
+  horizons:     { tab: <span class="val">'Emerging Trends'</span>,       eyebrow: <span class="val">'Horizons'</span> },
+  practices:    { tab: <span class="val">'Modalities & Healing'</span>,  eyebrow: <span class="val">'The Practice'</span> },
+  pathways:     { tab: <span class="val">'The Retreat Journey'</span>,   eyebrow: <span class="val">'Pathways'</span> },
+  <span class="comment">// Post-launch categories below — include in schema now, hide in UI until ready</span>
+  'the-craft':  { tab: <span class="val">'Industry Education'</span>,    eyebrow: <span class="val">'The Craft'</span> },
+  destinations: { tab: <span class="val">'Destinations'</span>,          eyebrow: <span class="val">'Destinations'</span> },
+}</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 4: NEXT.JS INTEGRATION -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="s4">
+    <p class="section-num">Section 04</p>
+    <h2 class="section-title">Next.js Integration</h2>
+    <p class="section-intro">Two files need to be created: the Sanity client configuration, and the two page routes for the blog index and individual articles.</p>
+
+    <h3>Sanity Client</h3>
+    <p class="code-label">/lib/sanity.js</p>
+    <div class="code-block"><span class="key">import</span> { createClient } <span class="key">from</span> <span class="val">'@sanity/client'</span>
+<span class="key">import</span> imageUrlBuilder <span class="key">from</span> <span class="val">'@sanity/image-url'</span>
+
+<span class="key">export const</span> <span class="val">client</span> = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET,
+  apiVersion: <span class="val">'2024-01-01'</span>,
+  useCdn:     process.env.NODE_ENV === <span class="val">'production'</span>,
+})
+
+<span class="key">const</span> builder = imageUrlBuilder(client)
+<span class="key">export const</span> <span class="val">urlFor</span> = (source) => builder.image(source)</div>
+
+    <h3>File Structure</h3>
+    <table>
+      <tr><th>File</th><th>Route</th><th>Purpose</th></tr>
+      <tr><td><code>pages/the-wellness-edit/index.js</code></td><td>/the-wellness-edit</td><td>Blog index. Fetches all articles, renders filter tabs and article grid.</td></tr>
+      <tr><td><code>pages/the-wellness-edit/[slug].js</code></td><td>/the-wellness-edit/[slug]</td><td>Individual article. Fetches single article by slug. Renders the correct layout template based on the layout field.</td></tr>
+    </table>
+
+    <h3>Static Generation</h3>
+    <p>Use <code>getStaticProps</code> and <code>getStaticPaths</code> on article pages — not <code>getServerSideProps</code>. This pre-renders articles as static HTML at build time, which is essential for SEO. The Vercel webhook (Section 06) triggers a rebuild when new articles are published.</p>
+
+    <p class="code-label">pages/the-wellness-edit/[slug].js — skeleton</p>
+    <div class="code-block"><span class="key">export async function</span> <span class="val">getStaticPaths</span>() {
+  <span class="key">const</span> slugs = <span class="key">await</span> client.fetch(<span class="val">`*[_type == "article"]{ "slug": slug.current }`</span>)
+  <span class="key">return</span> {
+    paths: slugs.map(s => ({ params: { slug: s.slug } })),
+    fallback: <span class="val">'blocking'</span> <span class="comment">// ISR: new articles appear without full rebuild</span>
+  }
+}
+
+<span class="key">export async function</span> <span class="val">getStaticProps</span>({ params }) {
+  <span class="key">const</span> article = <span class="key">await</span> client.fetch(ARTICLE_QUERY, { slug: params.slug })
+  <span class="key">if</span> (!article) <span class="key">return</span> { notFound: <span class="key">true</span> }
+  <span class="key">return</span> { props: { article }, revalidate: 60 }
+}</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 5: GROQ QUERIES -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="s5">
+    <p class="section-num">Section 05</p>
+    <h2 class="section-title">GROQ Queries</h2>
+    <p class="section-intro">Store all queries in <code>/lib/queries.js</code>. Import into page files — do not write inline queries inside components.</p>
+
+    <p class="code-label">All articles (blog index)</p>
+    <div class="code-block"><span class="key">export const</span> <span class="val">ALL_ARTICLES_QUERY</span> = <span class="val">`
+*[_type == "article"] | order(publishedAt desc) {
+  title,
+  "slug": slug.current,
+  category,
+  layout,
+  excerpt,
+  publishedAt,
+  readTime,
+  heroImage,
+  author
+}`</span></div>
+
+    <p class="code-label">Articles by category (tab filter)</p>
+    <div class="code-block"><span class="key">export const</span> <span class="val">ARTICLES_BY_CATEGORY_QUERY</span> = <span class="val">`
+*[_type == "article" && category == $category] | order(publishedAt desc) {
+  title,
+  "slug": slug.current,
+  category,
+  layout,
+  excerpt,
+  publishedAt,
+  readTime,
+  heroImage,
+  author
+}`</span>
+<span class="comment">// Pass category slug as parameter: client.fetch(ARTICLES_BY_CATEGORY_QUERY, { category: 'philosophy' })</span></div>
+
+    <p class="code-label">Single article (article page)</p>
+    <div class="code-block"><span class="key">export const</span> <span class="val">ARTICLE_QUERY</span> = <span class="val">`
+*[_type == "article" && slug.current == $slug][0] {
+  title,
+  "slug": slug.current,
+  category,
+  layout,
+  heroImage,
+  excerpt,
+  author,
+  publishedAt,
+  readTime,
+  body,
+  tags,
+  gallery,
+  keyFacts,
+  venueLink,
+  ctaText,
+  ctaLink,
+  badge,
+  seoTitle,
+  seoDescription,
+  ogImage,
+  "relatedArticles": relatedArticles[]-> {
+    title,
+    "slug": slug.current,
+    category,
+    excerpt,
+    heroImage,
+    publishedAt
+  }
+}`</span></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 6: VERCEL WEBHOOK -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="s6">
+    <p class="section-num">Section 06</p>
+    <h2 class="section-title">Vercel Webhook</h2>
+    <p class="section-intro">Without a webhook, publishing a new article in Sanity will not trigger a site rebuild and the article will not appear live. This takes approximately 15 minutes to configure.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Get the Vercel Deploy Hook URL</h4>
+          <p>In Vercel project settings → Git → Deploy Hooks. Create a new hook named "Sanity Publish". Copy the generated URL.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Add webhook in Sanity</h4>
+          <p>In Sanity project settings → API → Webhooks. Create new webhook. Paste the Vercel URL. Set Filter to <code>_type == "article"</code>. Enable on events: Create, Update, Publish, Unpublish.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Test end-to-end</h4>
+          <p>Publish a draft article in Studio. Verify a new deployment is triggered in Vercel. Confirm the article URL resolves within 60 seconds.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p class="callout-label">ISR Note</p>
+      <p>With <code>fallback: 'blocking'</code> and <code>revalidate: 60</code> set in <code>getStaticProps</code>, new articles will also appear without a full rebuild via Incremental Static Regeneration. The webhook is still recommended for immediate propagation.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 7: LAYOUT TEMPLATES -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="s7">
+    <p class="section-num">Section 07</p>
+    <h2 class="section-title">Layout Templates</h2>
+    <p class="section-intro">Five layout templates share a common base structure. Build one ArticleLayout component that conditionally renders layout-specific sections based on the article's layout field value. All five share: nav, breadcrumb, category eyebrow, title, author/date/read time line, excerpt, body (Portable Text), tags, related articles, and footer.</p>
+
+    <div class="layout-cards">
+      <div class="layout-card">
+        <p class="layout-card-num">Layout 1 — editorial</p>
+        <p class="layout-card-name">Long-Form Editorial</p>
+        <div class="layout-card-cats">
+          <span class="cat-pill">Philosophy</span><span class="cat-pill">Horizons</span>
+          <span class="cat-pill">Practices</span><span class="cat-pill">Pathways</span>
+        </div>
+        <p class="layout-card-desc">The default template. Full-width hero image (1200×600), large title, excerpt, rich body with headings, pull quotes, inline images. The base all other layouts extend.</p>
+      </div>
+      <div class="layout-card">
+        <p class="layout-card-num">Layout 2 — profile</p>
+        <p class="layout-card-name">Profile &amp; Spotlight</p>
+        <div class="layout-card-cats">
+          <span class="cat-pill">Portraits</span>
+        </div>
+        <p class="layout-card-desc">Same as Layout 1 plus: Key Facts card (structured sidebar block), photo gallery grid (2×2), and Venue Link CTA button. Used for venue features and facilitator interviews.</p>
+      </div>
+      <div class="layout-card">
+        <p class="layout-card-num">Layout 3 — guide</p>
+        <p class="layout-card-name">Practical Guide</p>
+        <div class="layout-card-cats">
+          <span class="cat-pill">The Compass</span><span class="cat-pill">The Craft</span>
+        </div>
+        <p class="layout-card-desc">Shorter hero (1200×400). Body structured as numbered steps via H3 headings. Tip/Callout boxes. Optional comparison table. CTA button at end.</p>
+      </div>
+      <div class="layout-card">
+        <p class="layout-card-num">Layout 4 — data</p>
+        <p class="layout-card-name">Data &amp; Insights</p>
+        <div class="layout-card-cats">
+          <span class="cat-pill">Pulse</span>
+        </div>
+        <p class="layout-card-desc">No hero image. Opens with a 3-up stat card row (built from Canva-exported images or a custom stats block). Charts/visualisations as image blocks. Source citations in small italic text at foot.</p>
+      </div>
+      <div class="layout-card">
+        <p class="layout-card-num">Layout 5 — short-form</p>
+        <p class="layout-card-name">Short-Form / Announcement</p>
+        <div class="layout-card-cats">
+          <span class="cat-pill">The Sanctum</span>
+        </div>
+        <p class="layout-card-desc">No hero. Optional badge above title (Platform Update, Milestone, etc). Short body — paragraphs only, no H2 sections. Optional single CTA button. 300–600 words.</p>
+      </div>
+    </div>
+
+    <h3>Shared Article Page Structure</h3>
+    <p>The following elements appear on every article regardless of layout. Build these once in the base template.</p>
+    <table>
+      <tr><th>Element</th><th>Source Field</th><th>Styling Notes</th></tr>
+      <tr><td>Breadcrumb</td><td>—</td><td>Home › The Wellness Edit › [Article Title]. Montserrat 9px, mist grey.</td></tr>
+      <tr><td>Category eyebrow</td><td><code>category</code> → editorial name</td><td>Montserrat 9px, uppercase, letter-spacing 2px, gold #C4A265. Above title.</td></tr>
+      <tr><td>Title (H1)</td><td><code>title</code></td><td>Cormorant Garamond 42px weight 300. The word or phrase most deserving emphasis rendered in italic gold-dark #7A644F — Kate marks this in the title field using em tags or a secondary italic title field.</td></tr>
+      <tr><td>Author / date / read time</td><td><code>author</code>, <code>publishedAt</code>, <code>readTime</code></td><td>Montserrat 10px, mist grey. Format: "The Global Sanctum · 10 February 2026 · 12 min read"</td></tr>
+      <tr><td>Excerpt</td><td><code>excerpt</code></td><td>Cormorant Garamond 18px, italic, weight 300. Renders directly below the author line.</td></tr>
+      <tr><td>Body</td><td><code>body</code></td><td>Portable Text. See typography spec in Section 09.</td></tr>
+      <tr><td>Tags</td><td><code>tags</code></td><td>Cream pills, Montserrat 8.5px. Below body.</td></tr>
+      <tr><td>Related articles</td><td><code>relatedArticles</code></td><td>3-column card row. Hero image + category + title + excerpt. Same card component as blog index.</td></tr>
+    </table>
+
+    <h3>Layout Switching Logic</h3>
+    <p class="code-label">pages/the-wellness-edit/[slug].js — layout switch</p>
+    <div class="code-block"><span class="key">import</span> EditorialLayout  <span class="key">from</span> <span class="val">'@/components/article/EditorialLayout'</span>
+<span class="key">import</span> ProfileLayout    <span class="key">from</span> <span class="val">'@/components/article/ProfileLayout'</span>
+<span class="key">import</span> GuideLayout      <span class="key">from</span> <span class="val">'@/components/article/GuideLayout'</span>
+<span class="key">import</span> DataLayout       <span class="key">from</span> <span class="val">'@/components/article/DataLayout'</span>
+<span class="key">import</span> ShortFormLayout  <span class="key">from</span> <span class="val">'@/components/article/ShortFormLayout'</span>
+
+<span class="key">const</span> LAYOUTS = {
+  editorial:  EditorialLayout,
+  profile:    ProfileLayout,
+  guide:      GuideLayout,
+  data:       DataLayout,
+  'short-form': ShortFormLayout,
+}
+
+<span class="key">export default function</span> <span class="val">ArticlePage</span>({ article }) {
+  <span class="key">const</span> Layout = LAYOUTS[article.layout] || EditorialLayout
+  <span class="key">return</span> &lt;Layout article={article} /&gt;
+}</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 8: SEO IMPLEMENTATION -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="s8">
+    <p class="section-num">Section 08</p>
+    <h2 class="section-title">SEO Implementation</h2>
+    <p class="section-intro">SEO is handled entirely through Next.js Head tags on each article page. No third-party SEO plugin required.</p>
+
+    <p class="code-label">Article page — Head component</p>
+    <div class="code-block"><span class="key">import</span> Head <span class="key">from</span> <span class="val">'next/head'</span>
+
+<span class="comment">// Inside ArticlePage component:</span>
+&lt;Head&gt;
+  &lt;title&gt;{article.seoTitle || article.title} | The Wellness Edit&lt;/title&gt;
+  &lt;meta name=<span class="val">"description"</span>  content={article.seoDescription || article.excerpt} /&gt;
+  &lt;meta property=<span class="val">"og:title"</span>   content={article.seoTitle || article.title} /&gt;
+  &lt;meta property=<span class="val">"og:description"</span> content={article.seoDescription || article.excerpt} /&gt;
+  &lt;meta property=<span class="val">"og:image"</span>   content={urlFor(article.ogImage || article.heroImage).width(1200).url()} /&gt;
+  &lt;meta property=<span class="val">"og:type"</span>    content=<span class="val">"article"</span> /&gt;
+  &lt;meta property=<span class="val">"og:url"</span>     content={`https://theglobalsanctum.com/the-wellness-edit/${article.slug}`} /&gt;
+  &lt;meta name=<span class="val">"twitter:card"</span> content=<span class="val">"summary_large_image"</span> /&gt;
+  &lt;link rel=<span class="val">"canonical"</span> href={`https://theglobalsanctum.com/the-wellness-edit/${article.slug}`} /&gt;
+  &lt;script type=<span class="val">"application/ld+json"</span>&gt;
+    {JSON.stringify({
+      "@context": <span class="val">"https://schema.org"</span>,
+      "@type": <span class="val">"Article"</span>,
+      "headline": article.title,
+      "datePublished": article.publishedAt,
+      "author": { "@type": <span class="val">"Organization"</span>, "name": article.author },
+      "publisher": { "@type": <span class="val">"Organization"</span>, "name": <span class="val">"The Global Sanctum"</span> },
+      "image": urlFor(article.heroImage).width(1200).url()
+    })}
+  &lt;/script&gt;
+&lt;/Head&gt;</div>
+
+    <table>
+      <tr><th>SEO Element</th><th>Field Used</th><th>Fallback</th></tr>
+      <tr><td>&lt;title&gt; tag</td><td><code>seoTitle</code></td><td><code>title</code></td></tr>
+      <tr><td>Meta description</td><td><code>seoDescription</code></td><td><code>excerpt</code></td></tr>
+      <tr><td>og:image</td><td><code>ogImage</code></td><td><code>heroImage</code></td></tr>
+      <tr><td>Canonical URL</td><td><code>slug</code></td><td>—</td></tr>
+      <tr><td>JSON-LD Article schema</td><td>Multiple fields</td><td>—</td></tr>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 9: DESIGN TOKENS -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="s9">
+    <p class="section-num">Section 09</p>
+    <h2 class="section-title">Design Tokens</h2>
+    <p class="section-intro">Apply these typography and colour values consistently across all article layout components. Do not deviate.</p>
+
+    <h3>Colours</h3>
+    <table>
+      <tr><th>Token</th><th>Hex</th><th>Usage</th></tr>
+      <tr><td>Charcoal</td><td><code>#313131</code></td><td>All body text, nav, footer background</td></tr>
+      <tr><td>Warm White</td><td><code>#FDFCF9</code></td><td>Page background</td></tr>
+      <tr><td>Warm Cream</td><td><code>#F7F5F1</code></td><td>Article body column background, tag pills</td></tr>
+      <tr><td>Gold Accent</td><td><code>#C4A265</code></td><td>Category eyebrow, decorative marks, pull quote accents</td></tr>
+      <tr><td>Gold Dark</td><td><code>#7A644F</code></td><td>Italic title emphasis, links, callout borders</td></tr>
+      <tr><td>Mist Grey</td><td><code>#8B8B8B</code></td><td>Author/date line, secondary text, breadcrumbs</td></tr>
+      <tr><td>Light Rule</td><td><code>#E0D8CC</code></td><td>Dividers, card borders, section rules</td></tr>
+    </table>
+
+    <h3>Article Body Typography</h3>
+    <table>
+      <tr><th>Element</th><th>Font</th><th>Size</th><th>Weight</th><th>Notes</th></tr>
+      <tr><td>Body paragraph</td><td>Cormorant Garamond</td><td>19px</td><td>300</td><td>Line height 1.85. Max width 680px.</td></tr>
+      <tr><td>H2 section heading</td><td>Cormorant Garamond</td><td>28px</td><td>400</td><td>Margin top 48px, bottom 16px.</td></tr>
+      <tr><td>H3 step heading</td><td>Montserrat</td><td>11px</td><td>600</td><td>Letter spacing 1.5px, uppercase. Gold-dark colour.</td></tr>
+      <tr><td>Pull quote</td><td>Cormorant Garamond</td><td>24px</td><td>300</td><td>Italic. Gold-dark left border 3px. Padding left 24px.</td></tr>
+      <tr><td>Image caption</td><td>Montserrat</td><td>10px</td><td>300</td><td>Mist grey. Italic. Centre aligned.</td></tr>
+      <tr><td>Callout box text</td><td>Montserrat</td><td>12px</td><td>300</td><td>Cream background. Gold left border 3px.</td></tr>
+      <tr><td>Source citation</td><td>Montserrat</td><td>10px</td><td>300</td><td>Mist grey. Italic. Layout 4 only.</td></tr>
+    </table>
+
+    <div class="callout">
+      <p class="callout-label">Font Loading</p>
+      <p>Cormorant Garamond and Montserrat are already loaded in the project via Google Fonts. No additional font setup required. Confirm both weights (300, 400 for Cormorant; 300, 400, 500, 600 for Montserrat) are included in the existing import.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <div class="doc-footer-logo">THE GLOBAL SANCTUM</div>
+  <div class="doc-footer-text">Sanity + Next.js Developer Specification · Version 1.0 · March 2026 · Confidential</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TGS Internal Portal - Wellness Guests</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary-bg: #FDFCF9;
+      --secondary-bg: #F7F5F1;
+      --accent: #B8B8B8;
+      --text: #313131;
+      --white: #FFFFFF;
+      --success: #4A7C59;
+      --warning: #D4A853;
+      --error: #C45C5C;
+      --info: #6B8EC9;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--primary-bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+    }
+
+    .app-container { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background-color: var(--text);
+      color: var(--white);
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 32px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .sidebar-subtitle {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .sidebar-nav { padding: 24px 0; }
+
+    .nav-section-title {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 8px 24px;
+      margin-bottom: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-item:hover { background-color: rgba(255,255,255,0.05); color: var(--white); }
+    .nav-item.active { background-color: rgba(255,255,255,0.1); color: var(--white); border-right: 3px solid var(--white); }
+
+    .icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      padding: 32px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .page-title { font-size: 32px; }
+
+    .header-actions { display: flex; gap: 12px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: 'Montserrat', sans-serif;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary { background-color: var(--text); color: var(--white); }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-secondary { background-color: var(--secondary-bg); color: var(--text); border: 1px solid rgba(184,184,184,0.3); }
+    .btn-secondary:hover { background-color: rgba(184,184,184,0.2); }
+    .btn-small { padding: 6px 12px; font-size: 12px; }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background-color: var(--white);
+      border: 1px solid rgba(184,184,184,0.2);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .stat-value.success { color: var(--success); }
+    .stat-value.warning { color: var(--warning); }
+    .stat-value.info { color: var(--info); }
+
+    .stat-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* Search & Filter */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 12px;
+    }
+
+    .search-input {
+      flex: 1;
+      max-width: 320px;
+      padding: 10px 16px 10px 40px;
+      border: 1px solid rgba(184,184,184,0.3);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--white);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23B8B8B8' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 12px center;
+    }
+
+    .search-input:focus { outline: none; border-color: var(--text); }
+
+    .filter-group { display: flex; gap: 8px; }
+
+    .filter-select {
+      padding: 10px 14px;
+      border: 1px solid rgba(184,184,184,0.3);
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--white);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(184,184,184,0.2);
+    }
+
+    .data-table th {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      padding: 14px 16px;
+      text-align: left;
+      background-color: var(--secondary-bg);
+      border-bottom: 1px solid rgba(184,184,184,0.2);
+    }
+
+    .data-table td {
+      padding: 14px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(184,184,184,0.1);
+      vertical-align: middle;
+    }
+
+    .data-table tr:hover { background-color: var(--secondary-bg); cursor: pointer; }
+    .data-table tr:last-child td { border-bottom: none; }
+
+    .guest-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .guest-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--secondary-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    .guest-name { font-weight: 500; }
+    .guest-email { font-size: 11px; color: var(--accent); }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .status-badge.active { background-color: #E8F4EA; color: var(--success); }
+    .status-badge.inactive { background-color: var(--secondary-bg); color: var(--accent); }
+    .status-badge.vip { background-color: #FEF9E7; color: var(--warning); }
+    .status-badge.new { background-color: #E8EFF9; color: var(--info); }
+
+    .preference-tags { display: flex; flex-wrap: wrap; gap: 4px; max-width: 220px; }
+
+    .preference-tag {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    .preference-tag.massage { background-color: #F3E8F9; color: #8B5A8B; }
+    .preference-tag.yoga { background-color: #E8F4EA; color: var(--success); }
+    .preference-tag.meditation { background-color: #E8EFF9; color: var(--info); }
+    .preference-tag.thermal { background-color: #FCE8EC; color: #C45C5C; }
+    .preference-tag.nutrition { background-color: #FEF9E7; color: var(--warning); }
+    .preference-tag.fitness { background-color: #E8F0E8; color: #5A7C5A; }
+    .preference-tag.detox { background-color: #F0E8F9; color: #7C5A8B; }
+    .preference-tag.spa { background-color: #FFF0E8; color: #C47A4A; }
+
+    .table-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      font-size: 12px;
+      color: var(--accent);
+      background-color: var(--secondary-bg);
+      border-top: 1px solid rgba(184,184,184,0.2);
+    }
+
+    .pagination { display: flex; gap: 4px; }
+
+    .page-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(184,184,184,0.3);
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: 'Montserrat', sans-serif;
+      background: var(--white);
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .page-btn.active { background-color: var(--text); color: var(--white); border-color: var(--text); }
+
+    /* ═══════════════════════════════════════════════════
+       MODAL - Individual Guest Profile
+       ═══════════════════════════════════════════════════ */
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background-color: var(--white);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 1100px;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(184,184,184,0.2);
+      background-color: var(--secondary-bg);
+    }
+
+    .modal-header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .guest-avatar-large {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .modal-guest-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .modal-guest-meta {
+      font-size: 12px;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    .modal-header-actions { display: flex; gap: 8px; }
+
+    .modal-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .modal-sidebar {
+      width: 320px;
+      padding: 24px;
+      border-right: 1px solid rgba(184,184,184,0.2);
+      overflow-y: auto;
+      background-color: var(--primary-bg);
+    }
+
+    .sidebar-section { margin-bottom: 28px; }
+
+    .sidebar-section-title {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(184,184,184,0.2);
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 6px 0;
+    }
+
+    .info-label {
+      font-size: 11px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 110px;
+    }
+
+    .info-value {
+      font-size: 12px;
+      font-weight: 500;
+      text-align: right;
+      flex: 1;
+    }
+
+    .info-value a {
+      color: var(--info);
+      text-decoration: none;
+    }
+
+    .modal-main {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .content-section { margin-bottom: 28px; }
+
+    .content-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(184,184,184,0.15);
+    }
+
+    /* Wellness Preferences Grid */
+    .preferences-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .preference-card {
+      background-color: var(--secondary-bg);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .preference-card-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .preference-card-value {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .preference-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+
+    /* Booking History Table */
+    .modal-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .modal-table th {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      padding: 10px 12px;
+      text-align: left;
+      background-color: var(--secondary-bg);
+      border-bottom: 1px solid rgba(184,184,184,0.2);
+    }
+
+    .modal-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(184,184,184,0.1);
+    }
+
+    .modal-table tr.completed-row { background-color: var(--secondary-bg); }
+
+    /* Communication Log */
+    .comm-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(184,184,184,0.1);
+    }
+
+    .comm-item:last-child { border-bottom: none; }
+
+    .comm-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .comm-dot.email { background-color: var(--info); }
+    .comm-dot.booking { background-color: var(--success); }
+    .comm-dot.note { background-color: var(--warning); }
+
+    .comm-content { flex: 1; }
+    .comm-title { font-size: 12px; font-weight: 500; }
+    .comm-date { font-size: 11px; color: var(--accent); }
+    .comm-preview { font-size: 11px; color: var(--accent); margin-top: 2px; }
+
+    /* Notes */
+    .notes-textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 12px;
+      border: 1px solid rgba(184,184,184,0.3);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      resize: vertical;
+      margin-top: 8px;
+    }
+
+    .notes-textarea:focus { outline: none; border-color: var(--text); }
+
+    .note-card {
+      background-color: var(--secondary-bg);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 8px;
+    }
+
+    .note-meta { font-size: 11px; color: var(--accent); margin-bottom: 4px; }
+    .note-text { font-size: 12px; }
+
+    /* Close button */
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(184,184,184,0.3);
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .close-btn:hover { background-color: var(--secondary-bg); }
+
+    /* Guest Stats in Modal */
+    .guest-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .guest-stat {
+      text-align: center;
+      padding: 16px;
+      background-color: var(--secondary-bg);
+      border-radius: 8px;
+    }
+
+    .guest-stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .guest-stat-label {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">The Global Sanctum</div>
+        <div class="sidebar-subtitle">Internal Portal</div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="nav-section-title">Overview</div>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </a>
+        <div class="nav-section-title">Venues</div>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          Venues
+        </a>
+        <div class="nav-section-title">People</div>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Venue Owners
+        </a>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Retreat Hosts
+        </a>
+        <a class="nav-item active" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Wellness Guests
+        </a>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+          Users
+        </a>
+        <div class="nav-section-title">Manage</div>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Bookings
+        </a>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          Payments
+        </a>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Enquiries
+        </a>
+        <div class="nav-section-title">Finance</div>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+          Subscriptions
+        </a>
+        <div class="nav-section-title">Content</div>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Wellness Edit
+        </a>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Sanctum Journal
+        </a>
+        <div class="nav-section-title">Insights</div>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Analytics
+        </a>
+        <a class="nav-item" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          Settings
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <div class="page-header">
+        <h1 class="page-title">Wellness Guests</h1>
+        <div class="header-actions">
+          <button class="btn btn-secondary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+          <button class="btn btn-primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Guest
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">755</div>
+          <div class="stat-label">Total Guests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value success">612</div>
+          <div class="stat-label">Active</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value info">87</div>
+          <div class="stat-label">New This Month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value warning">143</div>
+          <div class="stat-label">Repeat Guests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">$42,850</div>
+          <div class="stat-label">Total Spend</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">2.4</div>
+          <div class="stat-label">Avg Bookings</div>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <input type="text" class="search-input" placeholder="Search by name, email, location...">
+        <div class="filter-group">
+          <select class="filter-select">
+            <option>All Statuses</option>
+            <option>Active</option>
+            <option>Inactive</option>
+            <option>VIP</option>
+            <option>New</option>
+          </select>
+          <select class="filter-select">
+            <option>All Preferences</option>
+            <option>Massage</option>
+            <option>Yoga</option>
+            <option>Meditation</option>
+            <option>Thermal</option>
+            <option>Nutrition</option>
+            <option>Detox</option>
+            <option>Spa</option>
+          </select>
+          <select class="filter-select">
+            <option>All Countries</option>
+            <option>Australia</option>
+            <option>United States</option>
+            <option>United Kingdom</option>
+            <option>Japan</option>
+            <option>New Zealand</option>
+          </select>
+          <select class="filter-select">
+            <option>All Budget Ranges</option>
+            <option>Under $100/day</option>
+            <option>$100-$250/day</option>
+            <option>$250-$500/day</option>
+            <option>$500+/day</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Guest</th>
+            <th>Location</th>
+            <th>Preferences</th>
+            <th>Bookings</th>
+            <th>Total Spend</th>
+            <th>Last Active</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr onclick="document.getElementById('guestModal').classList.add('active')">
+            <td>
+              <div class="guest-info">
+                <div class="guest-avatar">EW</div>
+                <div>
+                  <div class="guest-name">Emily Watson</div>
+                  <div class="guest-email">emily.watson@email.com</div>
+                </div>
+              </div>
+            </td>
+            <td>Sydney, Australia</td>
+            <td>
+              <div class="preference-tags">
+                <span class="preference-tag massage">Massage</span>
+                <span class="preference-tag thermal">Thermal</span>
+                <span class="preference-tag yoga">Yoga</span>
+              </div>
+            </td>
+            <td>7</td>
+            <td>$1,840</td>
+            <td>Feb 10, 2026</td>
+            <td><span class="status-badge vip">VIP</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="guest-info">
+                <div class="guest-avatar">JK</div>
+                <div>
+                  <div class="guest-name">James Kim</div>
+                  <div class="guest-email">james.kim@email.com</div>
+                </div>
+              </div>
+            </td>
+            <td>Melbourne, Australia</td>
+            <td>
+              <div class="preference-tags">
+                <span class="preference-tag spa">Spa</span>
+                <span class="preference-tag fitness">Fitness</span>
+              </div>
+            </td>
+            <td>3</td>
+            <td>$720</td>
+            <td>Feb 8, 2026</td>
+            <td><span class="status-badge active">Active</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="guest-info">
+                <div class="guest-avatar">SP</div>
+                <div>
+                  <div class="guest-name">Sophie Patel</div>
+                  <div class="guest-email">sophie.patel@email.com</div>
+                </div>
+              </div>
+            </td>
+            <td>London, UK</td>
+            <td>
+              <div class="preference-tags">
+                <span class="preference-tag meditation">Meditation</span>
+                <span class="preference-tag nutrition">Nutrition</span>
+                <span class="preference-tag detox">Detox</span>
+              </div>
+            </td>
+            <td>1</td>
+            <td>$195</td>
+            <td>Feb 12, 2026</td>
+            <td><span class="status-badge new">New</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="guest-info">
+                <div class="guest-avatar">MT</div>
+                <div>
+                  <div class="guest-name">Maria Torres</div>
+                  <div class="guest-email">maria.torres@email.com</div>
+                </div>
+              </div>
+            </td>
+            <td>Brisbane, Australia</td>
+            <td>
+              <div class="preference-tags">
+                <span class="preference-tag yoga">Yoga</span>
+                <span class="preference-tag massage">Massage</span>
+              </div>
+            </td>
+            <td>5</td>
+            <td>$1,245</td>
+            <td>Feb 6, 2026</td>
+            <td><span class="status-badge active">Active</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="guest-info">
+                <div class="guest-avatar">AN</div>
+                <div>
+                  <div class="guest-name">Akiko Nakamura</div>
+                  <div class="guest-email">akiko.n@email.com</div>
+                </div>
+              </div>
+            </td>
+            <td>Tokyo, Japan</td>
+            <td>
+              <div class="preference-tags">
+                <span class="preference-tag thermal">Onsen</span>
+                <span class="preference-tag spa">Spa</span>
+                <span class="preference-tag meditation">Meditation</span>
+              </div>
+            </td>
+            <td>4</td>
+            <td>$2,180</td>
+            <td>Feb 11, 2026</td>
+            <td><span class="status-badge vip">VIP</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="guest-info">
+                <div class="guest-avatar">DH</div>
+                <div>
+                  <div class="guest-name">David Henderson</div>
+                  <div class="guest-email">d.henderson@email.com</div>
+                </div>
+              </div>
+            </td>
+            <td>Auckland, NZ</td>
+            <td>
+              <div class="preference-tags">
+                <span class="preference-tag fitness">Fitness</span>
+                <span class="preference-tag nutrition">Nutrition</span>
+              </div>
+            </td>
+            <td>2</td>
+            <td>$380</td>
+            <td>Jan 28, 2026</td>
+            <td><span class="status-badge inactive">Inactive</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-footer">
+        <span>Showing 1-6 of 755 guests</span>
+        <div class="pagination">
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">...</button>
+          <button class="page-btn">126</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       INDIVIDUAL GUEST PROFILE MODAL
+       ═══════════════════════════════════════════════════ -->
+
+  <div class="modal-overlay" id="guestModal">
+    <div class="modal">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <div class="guest-avatar-large">EW</div>
+          <div>
+            <div class="modal-guest-name">Emily Watson</div>
+            <div class="modal-guest-meta">Guest since August 2025 · Sydney, Australia · VIP</div>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button class="btn btn-secondary btn-small">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email
+          </button>
+          <button class="btn btn-primary btn-small">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edit
+          </button>
+          <button class="close-btn" onclick="document.getElementById('guestModal').classList.remove('active')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+
+        <!-- Sidebar -->
+        <div class="modal-sidebar">
+
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Contact Information</div>
+            <div class="info-row"><span class="info-label">Email</span><span class="info-value"><a href="#">emily.watson@email.com</a></span></div>
+            <div class="info-row"><span class="info-label">Phone</span><span class="info-value">+61 412 789 456</span></div>
+            <div class="info-row"><span class="info-label">Location</span><span class="info-value">Sydney, Australia</span></div>
+            <div class="info-row"><span class="info-label">Timezone</span><span class="info-value">AEST (UTC+10)</span></div>
+            <div class="info-row"><span class="info-label">Preferred</span><span class="info-value">Email</span></div>
+            <div class="info-row"><span class="info-label">Language</span><span class="info-value">English</span></div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Demographics</div>
+            <div class="info-row"><span class="info-label">Traveler Type</span><span class="info-value">Solo / Couples</span></div>
+            <div class="info-row"><span class="info-label">Age Range</span><span class="info-value">35-44</span></div>
+            <div class="info-row"><span class="info-label">Gender</span><span class="info-value">Female</span></div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Requirements</div>
+            <div class="info-row"><span class="info-label">Dietary</span><span class="info-value">Vegetarian, GF</span></div>
+            <div class="info-row"><span class="info-label">Accessibility</span><span class="info-value">None</span></div>
+            <div class="info-row"><span class="info-label">Health Concerns</span><span class="info-value">Lower back</span></div>
+            <div class="info-row"><span class="info-label">Special Requests</span><span class="info-value">Firm pressure preferred</span></div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Acquisition</div>
+            <div class="info-row"><span class="info-label">Source</span><span class="info-value">Website</span></div>
+            <div class="info-row"><span class="info-label">Referred By</span><span class="info-value">—</span></div>
+            <div class="info-row"><span class="info-label">Account Created</span><span class="info-value">Aug 14, 2025</span></div>
+            <div class="info-row"><span class="info-label">Last Active</span><span class="info-value">Feb 10, 2026</span></div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">TGS Membership</div>
+            <div class="info-row"><span class="info-label">Sanctum Society</span><span class="info-value" style="color: var(--success);">Opted In</span></div>
+            <div class="info-row"><span class="info-label">Journal</span><span class="info-value" style="color: var(--success);">Subscribed</span></div>
+            <div class="info-row"><span class="info-label">Magazine</span><span class="info-value" style="color: var(--success);">Subscribed</span></div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Tags</div>
+            <div class="preference-tags" style="margin-top: 4px;">
+              <span class="preference-tag massage">VIP</span>
+              <span class="preference-tag yoga">Repeat Guest</span>
+              <span class="preference-tag thermal">High Spender</span>
+              <span class="preference-tag meditation">Wellness Enthusiast</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Main Content -->
+        <div class="modal-main">
+
+          <!-- Stats -->
+          <div class="guest-stats">
+            <div class="guest-stat">
+              <div class="guest-stat-value">7</div>
+              <div class="guest-stat-label">Bookings</div>
+            </div>
+            <div class="guest-stat">
+              <div class="guest-stat-value">$1,840</div>
+              <div class="guest-stat-label">Total Spend</div>
+            </div>
+            <div class="guest-stat">
+              <div class="guest-stat-value">$263</div>
+              <div class="guest-stat-label">Avg per Visit</div>
+            </div>
+            <div class="guest-stat">
+              <div class="guest-stat-value">4</div>
+              <div class="guest-stat-label">Venues Visited</div>
+            </div>
+          </div>
+
+          <!-- Wellness Preferences -->
+          <div class="content-section">
+            <h3 class="content-section-title">Wellness Preferences</h3>
+            <div class="preferences-grid">
+              <div class="preference-card">
+                <div class="preference-card-label">Experience Types</div>
+                <div class="preference-card-tags">
+                  <span class="preference-tag massage">Massage</span>
+                  <span class="preference-tag thermal">Thermal Bathing</span>
+                  <span class="preference-tag yoga">Yoga</span>
+                  <span class="preference-tag spa">Day Spa</span>
+                </div>
+              </div>
+              <div class="preference-card">
+                <div class="preference-card-label">Treatment Preferences</div>
+                <div class="preference-card-tags">
+                  <span class="preference-tag massage">Deep Tissue</span>
+                  <span class="preference-tag spa">Hot Stone</span>
+                  <span class="preference-tag thermal">Infrared Sauna</span>
+                </div>
+              </div>
+              <div class="preference-card">
+                <div class="preference-card-label">Experience Level</div>
+                <div class="preference-card-value">Experienced</div>
+              </div>
+              <div class="preference-card">
+                <div class="preference-card-label">Budget Range</div>
+                <div class="preference-card-value">$250-$500 per visit</div>
+              </div>
+              <div class="preference-card">
+                <div class="preference-card-label">Preferred Visit Length</div>
+                <div class="preference-card-value">Half Day / Full Day</div>
+              </div>
+              <div class="preference-card">
+                <div class="preference-card-label">Preferred Setting</div>
+                <div class="preference-card-value">Coastal, Rural</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Booking History -->
+          <div class="content-section">
+            <h3 class="content-section-title">Booking History</h3>
+            <table class="modal-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Venue</th>
+                  <th>Service</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Feb 20, 2026</td>
+                  <td>Peninsula Hot Springs</td>
+                  <td>Day Pass + Massage</td>
+                  <td>$295</td>
+                  <td><span class="status-badge active">Upcoming</span></td>
+                </tr>
+                <tr class="completed-row">
+                  <td>Jan 15, 2026</td>
+                  <td>Gwinganna Lifestyle Retreat</td>
+                  <td>Full Day Spa Package</td>
+                  <td>$450</td>
+                  <td><span class="status-badge active">Completed</span></td>
+                </tr>
+                <tr class="completed-row">
+                  <td>Dec 3, 2025</td>
+                  <td>Endota Spa Bondi</td>
+                  <td>Deep Tissue 90min</td>
+                  <td>$195</td>
+                  <td><span class="status-badge active">Completed</span></td>
+                </tr>
+                <tr class="completed-row">
+                  <td>Nov 18, 2025</td>
+                  <td>Peninsula Hot Springs</td>
+                  <td>Thermal Bathing + Lunch</td>
+                  <td>$180</td>
+                  <td><span class="status-badge active">Completed</span></td>
+                </tr>
+                <tr class="completed-row">
+                  <td>Oct 22, 2025</td>
+                  <td>Soak Bathhouse</td>
+                  <td>Couples Soak + Massage</td>
+                  <td>$320</td>
+                  <td><span class="status-badge active">Completed</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Preferred Venues -->
+          <div class="content-section">
+            <h3 class="content-section-title">Preferred Venues</h3>
+            <table class="modal-table">
+              <thead>
+                <tr>
+                  <th>Venue</th>
+                  <th>Location</th>
+                  <th>Visits</th>
+                  <th>Total Spend</th>
+                  <th>Last Visit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Peninsula Hot Springs</td>
+                  <td>Mornington Peninsula, VIC</td>
+                  <td>3</td>
+                  <td>$720</td>
+                  <td>Jan 15, 2026</td>
+                </tr>
+                <tr>
+                  <td>Gwinganna Lifestyle Retreat</td>
+                  <td>Gold Coast, QLD</td>
+                  <td>2</td>
+                  <td>$680</td>
+                  <td>Jan 15, 2026</td>
+                </tr>
+                <tr>
+                  <td>Endota Spa Bondi</td>
+                  <td>Sydney, NSW</td>
+                  <td>1</td>
+                  <td>$195</td>
+                  <td>Dec 3, 2025</td>
+                </tr>
+                <tr>
+                  <td>Soak Bathhouse</td>
+                  <td>Sydney, NSW</td>
+                  <td>1</td>
+                  <td>$320</td>
+                  <td>Oct 22, 2025</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Communication History -->
+          <div class="content-section">
+            <h3 class="content-section-title">Communication History</h3>
+            <div class="comm-item">
+              <span class="comm-dot booking"></span>
+              <div class="comm-content">
+                <div class="comm-title">Booking Confirmed — Peninsula Hot Springs</div>
+                <div class="comm-date">Feb 10, 2026</div>
+                <div class="comm-preview">Day Pass + Massage for Feb 20, 2026</div>
+              </div>
+            </div>
+            <div class="comm-item">
+              <span class="comm-dot email"></span>
+              <div class="comm-content">
+                <div class="comm-title">Sanctum Journal #23 — Sacred Spaces</div>
+                <div class="comm-date">Feb 6, 2026</div>
+                <div class="comm-preview">Opened · Clicked 2 links</div>
+              </div>
+            </div>
+            <div class="comm-item">
+              <span class="comm-dot booking"></span>
+              <div class="comm-content">
+                <div class="comm-title">Booking Completed — Gwinganna</div>
+                <div class="comm-date">Jan 15, 2026</div>
+                <div class="comm-preview">Full Day Spa Package · $450</div>
+              </div>
+            </div>
+            <div class="comm-item">
+              <span class="comm-dot email"></span>
+              <div class="comm-content">
+                <div class="comm-title">Post-Visit Follow Up</div>
+                <div class="comm-date">Jan 17, 2026</div>
+                <div class="comm-preview">Thank you for visiting Gwinganna. We'd love your feedback...</div>
+              </div>
+            </div>
+            <div class="comm-item">
+              <span class="comm-dot note"></span>
+              <div class="comm-content">
+                <div class="comm-title">Internal Note — Kate</div>
+                <div class="comm-date">Jan 18, 2026</div>
+                <div class="comm-preview">Emily mentioned interest in multi-day retreats. Follow up re: Gwinganna 3-day package.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Internal Notes -->
+          <div class="content-section">
+            <h3 class="content-section-title">Internal Notes</h3>
+            <textarea class="notes-textarea" placeholder="Add a note about this guest..."></textarea>
+            <button class="btn btn-primary btn-small" style="margin-top: 8px;">Save Note</button>
+
+            <div class="note-card">
+              <div class="note-meta">Kate · Jan 18, 2026</div>
+              <div class="note-text">Emily mentioned interest in multi-day retreats. Follow up re: Gwinganna 3-day package. She's also interested in Japanese onsen experiences — could be a candidate for Japan onsen guide campaign.</div>
+            </div>
+            <div class="note-card">
+              <div class="note-meta">Kate · Nov 20, 2025</div>
+              <div class="note-text">VIP guest — always books premium services. Prefers firm pressure massage. Lower back sensitivity — flag with venues before appointments. Vegetarian + GF dietary requirements.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

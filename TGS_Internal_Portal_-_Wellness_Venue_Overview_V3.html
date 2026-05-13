@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TGS Internal Portal - Bodhi Day Spa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-bg: #FDFCF9;
+      --secondary-bg: #F7F5F1;
+      --accent: #B8B8B8;
+      --text: #313131;
+      --white: #FFFFFF;
+      --success: #4A7C59;
+      --warning: #D4A853;
+      --error: #C45C5C;
+      --info: #6B8EC9;
+      --wellness: #7B6B8D;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--primary-bg);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background-color: var(--text);
+      color: var(--white);
+      padding: 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 32px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .sidebar-subtitle {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .sidebar-nav {
+      padding: 24px 0;
+    }
+
+    .nav-section {
+      margin-bottom: 8px;
+    }
+
+    .nav-section-title {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 8px 24px;
+      margin-bottom: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background-color: rgba(255,255,255,0.05);
+      color: var(--white);
+    }
+
+    .nav-item.active {
+      background-color: rgba(255,255,255,0.1);
+      color: var(--white);
+      border-left: 3px solid var(--white);
+      padding-left: 21px;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 12px;
+      opacity: 0.7;
+    }
+
+    .nav-item.active .nav-icon {
+      opacity: 1;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background-color: var(--warning);
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .nav-badge.wellness {
+      background-color: var(--wellness);
+      color: var(--white);
+    }
+
+    /* Sub-nav for Venues */
+    .nav-subitems {
+      padding-left: 30px;
+      padding-top: 4px;
+    }
+
+    .nav-subitem {
+      display: flex;
+      align-items: center;
+      padding: 8px 24px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 400;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-subitem:hover {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .nav-subitem.active {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .nav-subitem-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: currentColor;
+      margin-right: 12px;
+      opacity: 0.5;
+    }
+
+    .nav-subitem.active .nav-subitem-dot {
+      opacity: 1;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      padding: 0;
+      background-color: var(--primary-bg);
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      padding: 16px 48px;
+      background-color: var(--secondary-bg);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--text);
+    }
+
+    .breadcrumb span {
+      color: var(--accent);
+    }
+
+    .breadcrumb .current {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Venue Header */
+    .venue-header {
+      padding: 32px 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .venue-header-left {
+      display: flex;
+      gap: 24px;
+    }
+
+    .venue-thumbnail {
+      width: 120px;
+      height: 90px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>');
+      background-size: 40px;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
+    .venue-header-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .venue-title-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .venue-title {
+      font-size: 28px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .venue-type-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      background-color: rgba(123, 107, 141, 0.1);
+      color: var(--wellness);
+    }
+
+    .venue-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .venue-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .venue-meta-item svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .venue-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-indicator.active {
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+
+    .venue-header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--text);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background-color: #4a4a4a;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text);
+      border: 1px solid var(--accent);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--secondary-bg);
+    }
+
+    .btn-icon {
+      padding: 10px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon:hover {
+      background-color: #E8E5E0;
+    }
+
+    /* Venue Tabs */
+    .venue-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      overflow-x: auto;
+    }
+
+    .venue-tab {
+      padding: 16px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .venue-tab:hover {
+      color: var(--text);
+    }
+
+    .venue-tab.active {
+      color: var(--text);
+      border-bottom-color: var(--wellness);
+    }
+
+    /* Content Area */
+    .content-area {
+      padding: 32px 48px;
+    }
+
+    /* Form Sections */
+    .form-section {
+      background-color: var(--white);
+      border-radius: 12px;
+      border: 1px solid rgba(184, 184, 184, 0.2);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .form-section-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-section-title {
+      font-size: 18px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .form-section-body {
+      padding: 24px;
+    }
+
+    /* Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .form-grid.three-col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-group.full-width-3 {
+      grid-column: span 3;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-label .required {
+      color: var(--error);
+    }
+
+    .form-input {
+      padding: 12px 16px;
+      border: 1px solid rgba(184, 184, 184, 0.3);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background-color: var(--white);
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--wellness);
+    }
+
+    .form-textarea {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    /* Toggle Switch */
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      background-color: var(--accent);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .toggle.active {
+      background-color: var(--wellness);
+    }
+
+    .toggle-knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--white);
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+    }
+
+    .toggle.active .toggle-knob {
+      transform: translateX(22px);
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* Tags */
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+      border: 1px solid rgba(184, 184, 184, 0.3);
+      border-radius: 8px;
+      min-height: 48px;
+      background-color: var(--white);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background-color: rgba(123, 107, 141, 0.1);
+      color: var(--wellness);
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .tag-remove {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+
+    .tag-remove:hover {
+      opacity: 1;
+    }
+
+    /* Image Gallery */
+    .image-gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .image-item {
+      aspect-ratio: 4/3;
+      background-color: var(--secondary-bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .image-item:hover {
+      background-color: #E8E5E0;
+    }
+
+    .image-item.add-new {
+      border: 2px dashed var(--accent);
+      background-color: transparent;
+    }
+
+    .image-item.add-new:hover {
+      border-color: var(--wellness);
+      background-color: rgba(123, 107, 141, 0.05);
+    }
+
+    .image-placeholder {
+      color: var(--accent);
+    }
+
+    /* User Menu */
+    .user-menu {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    /* Icons */
+    .icon {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    /* Operating Hours */
+    .hours-grid {
+      display: grid;
+      grid-template-columns: 100px 1fr 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .hours-row {
+      display: contents;
+    }
+
+    .hours-day {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .hours-input {
+      padding: 10px 12px;
+      border: 1px solid rgba(184, 184, 184, 0.3);
+      border-radius: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      text-align: center;
+      width: 100%;
+    }
+
+    .hours-closed {
+      font-size: 12px;
+      color: var(--accent);
+      padding: 10px;
+      text-align: center;
+    }
+
+    .hours-toggle {
+      width: 36px;
+      height: 20px;
+      background-color: var(--accent);
+      border-radius: 10px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .hours-toggle.open {
+      background-color: var(--wellness);
+    }
+
+    .hours-toggle-knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background-color: var(--white);
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+    }
+
+    .hours-toggle.open .hours-toggle-knob {
+      transform: translateX(16px);
+    }
+
+    /* Capacity Cards */
+    .capacity-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .capacity-card {
+      background-color: var(--secondary-bg);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .capacity-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--wellness);
+    }
+
+    .capacity-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .form-grid.three-col {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .form-group.full-width-3 {
+        grid-column: span 2;
+      }
+      .capacity-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-group.full-width,
+      .form-group.full-width-3 {
+        grid-column: span 1;
+      }
+      .image-gallery {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">The Global Sanctum</div>
+        <div class="sidebar-subtitle">Internal Portal</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            Dashboard
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Manage</div>
+          <a class="nav-item active">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+              <polyline points="9,22 9,12 15,12 15,22"/>
+            </svg>
+            Venues
+          </a>
+          <div class="nav-subitems">
+            <a class="nav-subitem">
+              <span class="nav-subitem-dot"></span>
+              Retreat Venues
+              <span class="nav-badge" style="margin-left: auto; font-size: 10px; padding: 2px 6px;">47</span>
+            </a>
+            <a class="nav-subitem active">
+              <span class="nav-subitem-dot"></span>
+              Wellness Venues
+              <span class="nav-badge wellness" style="margin-left: auto; font-size: 10px; padding: 2px 6px;">156</span>
+            </a>
+          </div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            Bookings
+            <span class="nav-badge">12</span>
+          </a>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+              <path d="M16 3.13a4 4 0 010 7.75"/>
+            </svg>
+            Users
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Finance</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2z"/>
+              <line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+            Subscriptions
+          </a>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="12" y1="1" x2="12" y2="23"/>
+              <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+            </svg>
+            Payments
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Content</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+              <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+              <path d="M2 2l7.586 7.586"/>
+              <circle cx="11" cy="11" r="2"/>
+            </svg>
+            Wellness Edit
+          </a>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+            </svg>
+            Sanctum Journal
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Insights</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            Analytics
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+            </svg>
+            Settings
+          </a>
+        </div>
+      </nav>
+
+      <div class="user-menu">
+        <div class="user-avatar">K</div>
+        <div class="user-info">
+          <div class="user-name">Kate</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="#">Dashboard</a>
+        <span>/</span>
+        <a href="#">Wellness Venues</a>
+        <span>/</span>
+        <span class="current">Bodhi Day Spa</span>
+      </nav>
+
+      <!-- Venue Header -->
+      <header class="venue-header">
+        <div class="venue-header-left">
+          <div class="venue-thumbnail"></div>
+          <div class="venue-header-info">
+            <div class="venue-title-row">
+              <h1 class="venue-title">Bodhi Day Spa</h1>
+              <span class="venue-type-badge">Day Spa</span>
+            </div>
+            <div class="venue-meta">
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                Surry Hills, Sydney NSW
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12,6 12,12 16,14"/>
+                </svg>
+                Open 9am - 8pm
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Added Jan 15, 2026
+              </div>
+            </div>
+            <div class="venue-status">
+              <span class="status-indicator active">
+                <span class="status-dot"></span>
+                Active
+              </span>
+              <span style="color: var(--accent); font-size: 12px;">• Featured Plan</span>
+            </div>
+          </div>
+        </div>
+        <div class="venue-header-actions">
+          <button class="btn-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+          <button class="btn btn-secondary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="3,6 5,6 21,6"/>
+              <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+            </svg>
+            Delete
+          </button>
+          <button class="btn btn-primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+              <polyline points="17,21 17,13 7,13 7,21"/>
+              <polyline points="7,3 7,8 15,8"/>
+            </svg>
+            Save Changes
+          </button>
+        </div>
+      </header>
+
+      <!-- Venue Tabs -->
+      <nav class="venue-tabs">
+        <div class="venue-tab active">Overview</div>
+        <div class="venue-tab">Accommodation</div>
+        <div class="venue-tab">Amenities</div>
+        <div class="venue-tab">Wellness Services</div>
+        <div class="venue-tab">Wellness Facilities</div>
+        <div class="venue-tab">Pricing & Booking</div>
+        <div class="venue-tab">Media</div>
+        <div class="venue-tab">Internal</div>
+        <div class="venue-tab">Owner/Manager</div>
+        <div class="venue-tab">Bookings</div>
+      </nav>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Basic Information -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Basic Information</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Venue Name <span class="required">*</span></label>
+                <input type="text" class="form-input" value="Bodhi Day Spa">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Primary Venue Type <span class="required">*</span></label>
+                <select class="form-input form-select">
+                  <option>Retreat Venue</option>
+                  <option selected>Wellness Venue</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Wellness Venue Type</label>
+                <div class="tag-container">
+                  <span class="tag">Day Spa <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Urban Sanctuary <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Wellness Categories</label>
+                <div class="tag-container">
+                  <span class="tag">Massage <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Facials <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Body Treatments <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Thermal Circuit <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                </div>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Venue Description <span class="required">*</span></label>
+                <textarea class="form-input form-textarea">Bodhi Day Spa is an urban sanctuary in the heart of Surry Hills, offering a complete escape from city life. Our expert therapists deliver bespoke treatments using organic, Australian-made products. From signature massages and rejuvenating facials to indulgent body rituals, each experience is tailored to restore balance and wellbeing. Our tranquil treatment rooms, infrared sauna, and relaxation lounge create the perfect environment for deep relaxation and renewal.</textarea>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Short Description</label>
+                <input type="text" class="form-input" value="Award-winning urban day spa specializing in massage, facials, and holistic body treatments.">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Editorial Content -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Editorial Content</h3>
+              <p class="form-section-subtitle">Storytelling content for the Overview tab - this is the editorial voice of the listing</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label class="form-label">Hero Quote</label>
+                <input type="text" class="form-input" value="Surrender to stillness and emerge renewed" placeholder="A compelling one-line quote that captures the essence of this venue...">
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Displayed as an overlay on the Overview hero image. Keep it evocative and concise.</p>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Introduction Text</label>
+                <textarea class="form-input form-textarea" rows="5" placeholder="Editorial storytelling introduction (2-3 paragraphs)...">Bodhi Day Spa is Brisbane's premier urban wellness destination, offering a tranquil escape from the demands of daily life. Nestled in the heart of the city, our award-winning spa combines ancient healing traditions with modern therapeutic techniques.
+
+Every visit is designed to restore balance to body, mind, and spirit. From our signature thermal circuit to our expert massage therapists, we invite you to surrender to stillness and emerge renewed.</textarea>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">This is the editorial introduction on the Overview tab. Write in an evocative, magazine-style voice.</p>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Editor Note</label>
+                <textarea class="form-input form-textarea" rows="3" maxlength="600" placeholder="A 60-80 word TGS-written editorial note that appears in gold italic on the Premium-tier card...">A masterpiece of thermal architecture by Peter Zumthor. The stone, water, and silence work in concert — restoration becomes inevitable.</textarea>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Powers the Premium-tier card editor note (gold italic). Aim for 60–80 words, written in TGS editorial voice. Empty for Standard/Featured/Essentials tiers — only displays on Premium cards.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Editorial Curation (NEW v3 — drives the Editor's Pick / Trending / etc badge on cards) -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Editorial Curation</h3>
+              <p class="form-section-subtitle">Editorial badge controls — overrides standard tier display when active</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Editorial Feature</label>
+                <div class="toggle-container">
+                  <div class="toggle">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Show editorial badge on card</span>
+                </div>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">When on, displays the curated badge below — auto-removes after the date set in "Until".</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Editorial Feature Reason</label>
+                <select class="form-input form-select">
+                  <option>—</option>
+                  <option selected>Curator's Pick</option>
+                  <option>Seasonal</option>
+                  <option>Trend</option>
+                  <option>New</option>
+                  <option>Popular</option>
+                  <option>Press</option>
+                </select>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Internal categorisation for sorting and reporting on featured selections.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Editorial Feature Title</label>
+                <input type="text" class="form-input" maxlength="30" value="Editor's Pick" placeholder="Editor's Pick, Trending Now, Just Listed...">
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">The actual badge text shown on the card. Keep under 30 characters.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Editorial Feature Until</label>
+                <input type="date" class="form-input" value="2026-08-31">
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Auto-removes the badge after this date. Leave empty to show indefinitely (not recommended).</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Venue Details -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Venue Details</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid three-col">
+              <div class="form-group">
+                <label class="form-label">Treatment Rooms</label>
+                <input type="number" class="form-input" value="5">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Couples Suites</label>
+                <input type="number" class="form-input" value="1">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Total Practitioners</label>
+                <input type="number" class="form-input" value="8">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Floor Area (sqm)</label>
+                <input type="number" class="form-input" value="280">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Year Established</label>
+                <input type="number" class="form-input" value="2018" placeholder="e.g. 2018">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Max Concurrent Clients</label>
+                <input type="number" class="form-input" value="12">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- The Experience -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">The Experience</h3>
+              <p class="form-section-subtitle">Featured content block on the Overview tab</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Experience Title</label>
+                <input type="text" class="form-input" value="A Ritual of Restoration" placeholder="e.g. A Ritual of Restoration">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Experience Subtitle</label>
+                <input type="text" class="form-input" value="The Experience" placeholder="e.g. The Experience">
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Experience Description</label>
+                <textarea class="form-input form-textarea" rows="4" placeholder="Describe what makes this venue's experience unique...">Every element of Bodhi Day Spa has been designed for deep relaxation. The soft lighting that calms the mind. The organic aromatherapy that lifts the spirit. The skilled hands that release tension held in the body.
+
+We believe true wellness begins when you step through our doors—and continues long after you leave.</textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Service Specialties -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Service Specialties</h3>
+              <p class="form-section-subtitle">What types of experiences is this venue best known for?</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label class="form-label">Signature Treatments</label>
+                <div class="tag-container">
+                  <span class="tag">Deep Tissue Massage <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Thermal Circuit <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Organic Facials <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Couples Rituals <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                </div>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">These tags appear on the Overview tab and are used for search filtering.</p>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Best For</label>
+                <div class="tag-container">
+                  <span class="tag">Couples <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Solo Relaxation <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Girls' Day Out <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Gift Experiences <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Location Section -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Location</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid three-col">
+              <div class="form-group">
+                <label class="form-label">Street Address <span class="required">*</span></label>
+                <input type="text" class="form-input" value="42 Crown Street">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Suite/Level</label>
+                <input type="text" class="form-input" value="Level 1">
+              </div>
+              <div class="form-group">
+                <label class="form-label">City/Suburb <span class="required">*</span></label>
+                <input type="text" class="form-input" value="Surry Hills">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Postcode <span class="required">*</span></label>
+                <input type="text" class="form-input" value="2010">
+              </div>
+              <div class="form-group">
+                <label class="form-label">State <span class="required">*</span></label>
+                <select class="form-input form-select">
+                  <option selected>New South Wales</option>
+                  <option>Queensland</option>
+                  <option>Victoria</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Country <span class="required">*</span></label>
+                <select class="form-input form-select">
+                  <option selected>Australia</option>
+                  <option>New Zealand</option>
+                  <option>Japan</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Location Type</label>
+                <div class="tag-container">
+                  <span class="tag">Urban <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">City Center <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">GPS Coordinates</label>
+                <input type="text" class="form-input" value="-33.8830, 151.2115">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nearest Transport</label>
+                <input type="text" class="form-input" value="Central Station - 5 min walk">
+              </div>
+              <div class="form-group full-width-3">
+                <label class="form-label">Parking & Access</label>
+                <div class="tag-container">
+                  <span class="tag">Street Parking <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Public Transport <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Wheelchair Accessible <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Operating Hours -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Operating Hours</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="hours-grid">
+              <div class="hours-row">
+                <span class="hours-day">Monday</span>
+                <input type="text" class="hours-input" value="9:00 AM">
+                <input type="text" class="hours-input" value="8:00 PM">
+                <div class="hours-toggle open"><div class="hours-toggle-knob"></div></div>
+              </div>
+              <div class="hours-row">
+                <span class="hours-day">Tuesday</span>
+                <input type="text" class="hours-input" value="9:00 AM">
+                <input type="text" class="hours-input" value="8:00 PM">
+                <div class="hours-toggle open"><div class="hours-toggle-knob"></div></div>
+              </div>
+              <div class="hours-row">
+                <span class="hours-day">Wednesday</span>
+                <input type="text" class="hours-input" value="9:00 AM">
+                <input type="text" class="hours-input" value="8:00 PM">
+                <div class="hours-toggle open"><div class="hours-toggle-knob"></div></div>
+              </div>
+              <div class="hours-row">
+                <span class="hours-day">Thursday</span>
+                <input type="text" class="hours-input" value="9:00 AM">
+                <input type="text" class="hours-input" value="9:00 PM">
+                <div class="hours-toggle open"><div class="hours-toggle-knob"></div></div>
+              </div>
+              <div class="hours-row">
+                <span class="hours-day">Friday</span>
+                <input type="text" class="hours-input" value="9:00 AM">
+                <input type="text" class="hours-input" value="9:00 PM">
+                <div class="hours-toggle open"><div class="hours-toggle-knob"></div></div>
+              </div>
+              <div class="hours-row">
+                <span class="hours-day">Saturday</span>
+                <input type="text" class="hours-input" value="9:00 AM">
+                <input type="text" class="hours-input" value="6:00 PM">
+                <div class="hours-toggle open"><div class="hours-toggle-knob"></div></div>
+              </div>
+              <div class="hours-row">
+                <span class="hours-day">Sunday</span>
+                <input type="text" class="hours-input" value="10:00 AM">
+                <input type="text" class="hours-input" value="5:00 PM">
+                <div class="hours-toggle open"><div class="hours-toggle-knob"></div></div>
+              </div>
+            </div>
+            <div class="form-grid" style="margin-top: 24px;">
+              <div class="form-group">
+                <label class="form-label">Holiday Hours Note</label>
+                <input type="text" class="form-input" value="Closed public holidays. Extended hours available by appointment.">
+              </div>
+              <div class="form-group">
+                <label class="form-label">After Hours Available</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes - By appointment</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Status & Listing -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Status & Listing</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Listing Status <span class="required">*</span></label>
+                <select class="form-input form-select">
+                  <option selected>Active</option>
+                  <option>Draft</option>
+                  <option>Inactive</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Business Status</label>
+                <select class="form-input form-select">
+                  <option selected>Operational</option>
+                  <option>Temporarily Closed</option>
+                  <option>Under Renovation</option>
+                  <option>Seasonal</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subscription Level</label>
+                <select class="form-input form-select">
+                  <option>Essentials</option>
+                  <option>Professional</option>
+                  <option selected>Featured</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Sanctum Vetted</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes - Verified by TGS</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Featured Listing</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Show in featured section</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Online Booking Enabled</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes - Book via TGS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card Display Settings (NEW v3 — controls how the listing renders on /venues cards) -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Card Display Settings</h3>
+              <p class="form-section-subtitle">How this listing presents on public venue cards across the site</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Tier Override</label>
+                <select class="form-input form-select">
+                  <option selected>None</option>
+                  <option>Force Featured</option>
+                  <option>Force Premium</option>
+                </select>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Editorial override of the auto-tier from Subscription Level. Use sparingly — for major press moments, seasonal campaigns, or Founding Partner exclusives.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Highlight Amenities <span style="font-size: 11px; font-weight: 400; color: var(--accent); margin-left: 4px;">(top 5 only)</span></label>
+                <select class="form-input form-select" multiple style="height: 110px;">
+                  <option selected>Thermal Bathing</option>
+                  <option selected>Hydrotherapy</option>
+                  <option selected>Steam &amp; Sauna</option>
+                  <option selected>Treatment Rooms</option>
+                  <option selected>Overnight Stays</option>
+                  <option>Cold Plunge</option>
+                  <option>Hot Tub / Outdoor Bath</option>
+                  <option>Wellness Spa</option>
+                  <option>Massage Therapy</option>
+                  <option>Day Spa</option>
+                  <option>Float Tank</option>
+                  <option>Infrared Sauna</option>
+                  <option>Salt Room</option>
+                  <option>IV Therapy</option>
+                  <option>Cryotherapy</option>
+                  <option>Acupuncture</option>
+                  <option>Yoga Studio</option>
+                  <option>Meditation Room</option>
+                  <option>Café On-Site</option>
+                  <option>Retail / Apothecary</option>
+                </select>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Powers the chip tags on Premium-tier cards. Choose exactly 5 — the most distinctive offerings for this venue.</p>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Featured Highlights</label>
+                <textarea class="form-input form-textarea" rows="3" maxlength="200" placeholder="Two or three short lines summarising what makes this venue distinctive...">Thermal circuit · Award-winning treatments · CBD location</textarea>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Powers the Featured-tier card. 2–3 short lines, separated by " · ". Distinct from Editor Note (which is Premium-only).</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reviews & Performance (NEW v3 — read-only aggregates from Reviews table) -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Reviews &amp; Performance</h3>
+              <p class="form-section-subtitle">Computed from approved, published reviews — auto-updates as new reviews come in</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Review Count <span style="font-size: 10px; font-weight: 400; color: var(--accent); margin-left: 4px;">(auto)</span></label>
+                <input type="text" class="form-input" value="89" readonly style="background: #FAF8F4; color: #7A644F; cursor: default; font-weight: 600;">
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Counts Reviews where Is Published = TRUE AND Approval Status = Approved.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Average Rating <span style="font-size: 10px; font-weight: 400; color: var(--accent); margin-left: 4px;">(auto)</span></label>
+                <div class="form-input" style="background: #FAF8F4; color: #7A644F; cursor: default; display: flex; align-items: center; gap: 8px;">
+                  <span style="color: #C4A265; font-size: 16px;">★ ★ ★ ★ ★</span>
+                  <strong style="font-size: 16px;">4.7</strong>
+                  <span style="font-size: 12px; color: var(--accent);">/ 5.0</span>
+                </div>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">AVERAGE of Reviews #8 Overall Rating with the same conditions. Blank if no reviews yet.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Venue Images Preview -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Venue Images</h3>
+            <span style="font-size: 13px; color: var(--accent);">Go to Media tab to manage all images</span>
+          </div>
+          <div class="form-section-body">
+            <div class="image-gallery">
+              <div class="image-item">
+                <svg class="image-placeholder" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <path d="M21 15l-5-5L5 21"/>
+                </svg>
+              </div>
+              <div class="image-item">
+                <svg class="image-placeholder" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <path d="M21 15l-5-5L5 21"/>
+                </svg>
+              </div>
+              <div class="image-item">
+                <svg class="image-placeholder" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <path d="M21 15l-5-5L5 21"/>
+                </svg>
+              </div>
+              <div class="image-item add-new">
+                <svg class="image-placeholder" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TGS Internal Portal - Bodhi Day Spa - Internal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-bg: #FDFCF9;
+      --secondary-bg: #F7F5F1;
+      --accent: #B8B8B8;
+      --text: #313131;
+      --white: #FFFFFF;
+      --success: #4A7C59;
+      --warning: #D4A853;
+      --error: #C45C5C;
+      --info: #6B8EC9;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--primary-bg);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background-color: var(--text);
+      color: var(--white);
+      padding: 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 32px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .sidebar-subtitle {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .sidebar-nav {
+      padding: 24px 0;
+    }
+
+    .nav-section {
+      margin-bottom: 8px;
+    }
+
+    .nav-section-title {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 8px 24px;
+      margin-bottom: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background-color: rgba(255,255,255,0.05);
+      color: var(--white);
+    }
+
+    .nav-item.active {
+      background-color: rgba(255,255,255,0.1);
+      color: var(--white);
+      border-left: 3px solid var(--white);
+      padding-left: 21px;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 12px;
+      opacity: 0.7;
+    }
+
+    .nav-item.active .nav-icon {
+      opacity: 1;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background-color: var(--warning);
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      padding: 0;
+      background-color: var(--primary-bg);
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      padding: 16px 48px;
+      background-color: var(--secondary-bg);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--text);
+    }
+
+    .breadcrumb span {
+      color: var(--accent);
+    }
+
+    .breadcrumb .current {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Venue Header */
+    .venue-header {
+      padding: 32px 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .venue-header-left {
+      display: flex;
+      gap: 24px;
+    }
+
+    .venue-thumbnail {
+      width: 120px;
+      height: 90px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>');
+      background-size: 40px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .venue-header-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .venue-title-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .venue-title {
+      font-size: 28px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .venue-type-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .venue-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .venue-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .venue-meta-item svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .venue-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-indicator.active {
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+
+    .venue-header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--text);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background-color: #4a4a4a;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text);
+      border: 1px solid var(--accent);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--secondary-bg);
+    }
+
+    .btn-icon {
+      padding: 10px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon:hover {
+      background-color: #E8E5E0;
+    }
+
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 12px;
+      border-radius: 16px;
+    }
+
+    /* Venue Tabs */
+    .venue-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      overflow-x: auto;
+    }
+
+    .venue-tab {
+      padding: 16px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .venue-tab:hover {
+      color: var(--text);
+    }
+
+    .venue-tab.active {
+      color: var(--text);
+      border-bottom-color: var(--text);
+    }
+
+    /* Content Area */
+    .content-area {
+      padding: 32px 48px;
+    }
+
+    /* Admin Banner */
+    .admin-banner {
+      background-color: rgba(196, 92, 92, 0.08);
+      border: 1px solid rgba(196, 92, 92, 0.2);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-banner-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--error);
+      flex-shrink: 0;
+    }
+
+    .admin-banner-text {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .admin-banner-text strong {
+      color: var(--error);
+    }
+
+    /* Form Sections */
+    .form-section {
+      background-color: var(--white);
+      border-radius: 12px;
+      border: 1px solid rgba(184, 184, 184, 0.2);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .form-section-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-section-title {
+      font-size: 18px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .form-section-subtitle {
+      font-size: 12px;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .form-section-body {
+      padding: 24px;
+    }
+
+    /* Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .form-grid.three-col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .form-grid.four-col {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input {
+      padding: 12px 16px;
+      border: 1px solid rgba(184, 184, 184, 0.3);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background-color: var(--white);
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--text);
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    /* Toggle Switch */
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      background-color: var(--accent);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .toggle.active {
+      background-color: var(--success);
+    }
+
+    .toggle-knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--white);
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+    }
+
+    .toggle.active .toggle-knob {
+      transform: translateX(22px);
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* Score Cards */
+    .score-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .score-card {
+      background-color: var(--secondary-bg);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .score-card-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .score-card-value.excellent {
+      color: var(--success);
+    }
+
+    .score-card-value.good {
+      color: var(--info);
+    }
+
+    .score-card-value.average {
+      color: var(--warning);
+    }
+
+    .score-card-value.poor {
+      color: var(--error);
+    }
+
+    .score-card-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .score-bar {
+      height: 4px;
+      background-color: rgba(184, 184, 184, 0.3);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+    }
+
+    .score-bar-fill.excellent {
+      background-color: var(--success);
+    }
+
+    .score-bar-fill.good {
+      background-color: var(--info);
+    }
+
+    .score-bar-fill.average {
+      background-color: var(--warning);
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-badge.verified {
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .status-badge.pending {
+      background-color: rgba(212, 168, 83, 0.1);
+      color: var(--warning);
+    }
+
+    .status-badge.unverified {
+      background-color: rgba(184, 184, 184, 0.2);
+      color: var(--accent);
+    }
+
+    .status-badge.rejected {
+      background-color: rgba(196, 92, 92, 0.1);
+      color: var(--error);
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background-color: rgba(184, 184, 184, 0.3);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -20px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: var(--white);
+      border: 2px solid var(--accent);
+    }
+
+    .timeline-dot.active {
+      border-color: var(--success);
+      background-color: var(--success);
+    }
+
+    .timeline-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .timeline-title {
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .timeline-desc {
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    .timeline-date {
+      font-size: 12px;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    /* Activity Log */
+    .activity-log {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.1);
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--secondary-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    .activity-content {
+      flex: 1;
+    }
+
+    .activity-text {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .activity-text strong {
+      font-weight: 600;
+    }
+
+    .activity-time {
+      font-size: 11px;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    /* Checklist */
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background-color: var(--secondary-bg);
+      border-radius: 8px;
+    }
+
+    .checklist-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .checklist-icon.complete {
+      background-color: var(--success);
+      color: var(--white);
+    }
+
+    .checklist-icon.incomplete {
+      background-color: var(--white);
+      border: 2px solid var(--accent);
+    }
+
+    .checklist-label {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .checklist-label.complete {
+      text-decoration: line-through;
+      color: var(--accent);
+    }
+
+    /* User Menu */
+    .user-menu {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    /* Icons */
+    .icon {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .icon-small {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Data Row */
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.1);
+    }
+
+    .data-row:last-child {
+      border-bottom: none;
+    }
+
+    .data-label {
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .data-value {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* Tags */
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      background-color: var(--secondary-bg);
+      border-radius: 12px;
+      font-size: 11px;
+      color: var(--text);
+    }
+
+    .tag.priority {
+      background-color: rgba(196, 92, 92, 0.1);
+      color: var(--error);
+    }
+
+    .tag.feature {
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .score-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .form-grid.three-col,
+      .form-grid.four-col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">The Global Sanctum</div>
+        <div class="sidebar-subtitle">Internal Portal</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            Dashboard
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Manage</div>
+          <a class="nav-item active">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+              <polyline points="9,22 9,12 15,12 15,22"/>
+            </svg>
+            Venues
+            <span class="nav-badge">47</span>
+          </a>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            Bookings
+            <span class="nav-badge">3</span>
+          </a>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+            Enquiries
+            <span class="nav-badge">5</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Contacts</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Venue Owners
+          </a>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 16v-4"/>
+              <path d="M12 8h.01"/>
+            </svg>
+            Retreat Hosts
+          </a>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+              <path d="M16 3.13a4 4 0 010 7.75"/>
+            </svg>
+            Wellness Guests
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Finance</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2z"/>
+              <line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+            Subscriptions
+          </a>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="12" y1="1" x2="12" y2="23"/>
+              <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+            </svg>
+            Payments
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Content</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+              <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+              <path d="M2 2l7.586 7.586"/>
+              <circle cx="11" cy="11" r="2"/>
+            </svg>
+            Wellness Edit
+          </a>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+            </svg>
+            Sanctum Journal
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Insights</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            Analytics
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Team</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            Users
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+            </svg>
+            Settings
+          </a>
+        </div>
+      </nav>
+
+      <div class="user-menu">
+        <div class="user-avatar">K</div>
+        <div class="user-info">
+          <div class="user-name">Kate</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="#">Dashboard</a>
+        <span>/</span>
+        <a href="#">Wellness Venues</a>
+        <span>/</span>
+        <span class="current">Bodhi Day Spa</span>
+      </nav>
+
+      <!-- Venue Header -->
+      <header class="venue-header">
+        <div class="venue-header-left">
+          <div class="venue-thumbnail"></div>
+          <div class="venue-header-info">
+            <div class="venue-title-row">
+              <h1 class="venue-title">Bodhi Day Spa</h1>
+              <span class="venue-type-badge">Wellness Venue</span>
+            </div>
+            <div class="venue-meta">
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                Surry Hills, Sydney NSW
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                </svg>
+                Max 12 day guests
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Added Jan 15, 2026
+              </div>
+            </div>
+            <div class="venue-status">
+              <span class="status-indicator active">
+                <span class="status-dot"></span>
+                Active
+              </span>
+              <span style="color: var(--accent); font-size: 12px;">• Featured Plan</span>
+            </div>
+          </div>
+        </div>
+        <div class="venue-header-actions">
+          <button class="btn-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+          <button class="btn btn-secondary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="3,6 5,6 21,6"/>
+              <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+            </svg>
+            Delete
+          </button>
+          <button class="btn btn-primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+              <polyline points="17,21 17,13 7,13 7,21"/>
+              <polyline points="7,3 7,8 15,8"/>
+            </svg>
+            Save Changes
+          </button>
+        </div>
+      </header>
+
+      <!-- Venue Tabs -->
+      <nav class="venue-tabs">
+        <div class="venue-tab">Overview</div>
+        <div class="venue-tab">Accommodation</div>
+        <div class="venue-tab">Amenities</div>
+        <div class="venue-tab">Wellness Services</div>
+        <div class="venue-tab">Wellness Facilities</div>
+        <div class="venue-tab">Pricing & Booking</div>
+        <div class="venue-tab">Media</div>
+        <div class="venue-tab active">Internal</div>
+        <div class="venue-tab">Owner/Manager</div>
+        <div class="venue-tab">Bookings</div>
+      </nav>
+
+      <!-- Content Area -->
+      <div class="content-area">
+
+        <!-- Admin Banner -->
+        <div class="admin-banner">
+          <svg class="admin-banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <div class="admin-banner-text">
+            <strong>Internal Data</strong> — This information is only visible to TGS administrators and is not displayed to venue owners or public users.
+          </div>
+        </div>
+
+        <!-- Quality Scores -->
+        <div class="score-cards">
+          <div class="score-card">
+            <div class="score-card-label">Listing Quality</div>
+            <div class="score-card-value excellent">92</div>
+            <div class="score-bar">
+              <div class="score-bar-fill excellent" style="width: 92%;"></div>
+            </div>
+          </div>
+          <div class="score-card">
+            <div class="score-card-label">Photo Quality</div>
+            <div class="score-card-value good">85</div>
+            <div class="score-bar">
+              <div class="score-bar-fill good" style="width: 85%;"></div>
+            </div>
+          </div>
+          <div class="score-card">
+            <div class="score-card-label">Response Rate</div>
+            <div class="score-card-value excellent">98%</div>
+            <div class="score-bar">
+              <div class="score-bar-fill excellent" style="width: 98%;"></div>
+            </div>
+          </div>
+          <div class="score-card">
+            <div class="score-card-label">Completeness</div>
+            <div class="score-card-value good">88%</div>
+            <div class="score-bar">
+              <div class="score-bar-fill good" style="width: 88%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verification Status -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Verification Status</h3>
+              <p class="form-section-subtitle">Identity, ownership, and compliance verification</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="checklist">
+              <div class="checklist-item">
+                <div class="checklist-icon complete">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checklist-label complete">Identity Verified — Owner ID confirmed Feb 5, 2026</span>
+                <span class="status-badge verified">Verified</span>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon complete">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checklist-label complete">Property Ownership — Title documents verified</span>
+                <span class="status-badge verified">Verified</span>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon complete">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checklist-label complete">Public Liability Insurance — $20M coverage confirmed</span>
+                <span class="status-badge verified">Verified</span>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon complete">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checklist-label complete">Business Registration — ABN verified</span>
+                <span class="status-badge verified">Verified</span>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon incomplete"></div>
+                <span class="checklist-label">Site Visit — Pending scheduling</span>
+                <span class="status-badge pending">Pending</span>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon incomplete"></div>
+                <span class="checklist-label">Photo Verification — Professional shoot not yet completed</span>
+                <span class="status-badge pending">Pending</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pipeline & Sales -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Pipeline & Sales</h3>
+              <p class="form-section-subtitle">Lead source and acquisition details</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid three-col">
+              <div class="form-group">
+                <label class="form-label">Lead Source</label>
+                <select class="form-input form-select">
+                  <option>Direct Enquiry</option>
+                  <option>Referral</option>
+                  <option selected>Outbound - Cold Email</option>
+                  <option>Inbound - Website Form</option>
+                  <option>Social Media</option>
+                  <option>Industry Event</option>
+                  <option>Partner Network</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Lead Owner</label>
+                <select class="form-input form-select">
+                  <option selected>Kate</option>
+                  <option>Tom (Partner)</option>
+                  <option>VA - Sarah</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Acquisition Date</label>
+                <input type="date" class="form-input" value="2026-01-28">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Pipeline Stage</label>
+                <select class="form-input form-select">
+                  <option>New Lead</option>
+                  <option>Contacted</option>
+                  <option>Call Scheduled</option>
+                  <option>Call Completed</option>
+                  <option>Proposal Sent</option>
+                  <option selected>Signed Up</option>
+                  <option>Onboarding</option>
+                  <option>Live</option>
+                  <option>Churned</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">First Contact Date</label>
+                <input type="date" class="form-input" value="2026-01-28">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Days to Close</label>
+                <input type="text" class="form-input" value="11 days" readonly style="background-color: var(--secondary-bg);">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Subscription & Financials -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Subscription & Financials</h3>
+              <p class="form-section-subtitle">Billing, commission, and revenue tracking</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid three-col">
+              <div class="form-group">
+                <label class="form-label">Subscription Tier</label>
+                <select class="form-input form-select">
+                  <option>Essentials ($79/mo)</option>
+                  <option>Professional ($199/mo)</option>
+                  <option selected>Featured ($399/mo)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Founder Discount</label>
+                <select class="form-input form-select">
+                  <option>None</option>
+                  <option selected>Super Founder (60% off)</option>
+                  <option>Founder (40% off)</option>
+                  <option>Early Bird (25% off)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Effective Monthly Rate</label>
+                <input type="text" class="form-input" value="$159.60/mo" readonly style="background-color: var(--secondary-bg); color: var(--success); font-weight: 600;">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Billing Cycle</label>
+                <select class="form-input form-select">
+                  <option selected>Annual (paid upfront)</option>
+                  <option>Annual (paid monthly)</option>
+                  <option>Monthly</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subscription Start Date</label>
+                <input type="date" class="form-input" value="2026-02-08">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Next Billing Date</label>
+                <input type="date" class="form-input" value="2027-02-08">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Booking Commission Rate</label>
+                <select class="form-input form-select">
+                  <option>3%</option>
+                  <option selected>5%</option>
+                  <option>7%</option>
+                  <option>10%</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Experience Commission Rate</label>
+                <select class="form-input form-select">
+                  <option>10%</option>
+                  <option selected>15%</option>
+                  <option>20%</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Stripe Connect Status</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Connected</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(184, 184, 184, 0.15);">
+              <label class="form-label" style="margin-bottom: 12px; display: block;">Revenue Summary (Lifetime)</label>
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+                <div class="data-row" style="flex-direction: column; align-items: flex-start; background: var(--secondary-bg); padding: 16px; border-radius: 8px; border: none;">
+                  <span class="data-label">Subscription Revenue</span>
+                  <span class="data-value" style="font-size: 20px; font-family: 'Cormorant Garamond', serif;">$1,915.20</span>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start; background: var(--secondary-bg); padding: 16px; border-radius: 8px; border: none;">
+                  <span class="data-label">Booking Commissions</span>
+                  <span class="data-value" style="font-size: 20px; font-family: 'Cormorant Garamond', serif;">$0.00</span>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start; background: var(--secondary-bg); padding: 16px; border-radius: 8px; border: none;">
+                  <span class="data-label">Experience Commissions</span>
+                  <span class="data-value" style="font-size: 20px; font-family: 'Cormorant Garamond', serif;">$0.00</span>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start; background: rgba(75, 124, 89, 0.1); padding: 16px; border-radius: 8px; border: none;">
+                  <span class="data-label">Total Lifetime Value</span>
+                  <span class="data-value" style="font-size: 20px; font-family: 'Cormorant Garamond', serif; color: var(--success);">$1,915.20</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Internal Tags & Categories -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Internal Tags & Categories</h3>
+              <p class="form-section-subtitle">Classification for filtering and marketing</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Internal Tags</label>
+                <div class="tag-list">
+                  <span class="tag feature">Featured Homepage</span>
+                  <span class="tag feature">Staff Pick</span>
+                  <span class="tag">High Converting</span>
+                  <span class="tag">Photo Ready</span>
+                  <span class="tag">Quick Responder</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Priority Flags</label>
+                <div class="tag-list">
+                  <span class="tag priority">Needs Site Visit</span>
+                  <span class="tag priority">Follow Up Required</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Market Segment</label>
+                <select class="form-input form-select">
+                  <option>Budget</option>
+                  <option>Mid-range</option>
+                  <option selected>Premium</option>
+                  <option>Ultra Luxury</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Venue Tier (Internal)</label>
+                <select class="form-input form-select">
+                  <option>Bronze</option>
+                  <option>Silver</option>
+                  <option selected>Gold</option>
+                  <option>Platinum</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Activity Timeline -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Activity Timeline</h3>
+              <p class="form-section-subtitle">Key milestones and status changes</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot active"></div>
+                <div class="timeline-content">
+                  <div>
+                    <div class="timeline-title">Listing Published</div>
+                    <div class="timeline-desc">Venue went live on TGS platform</div>
+                  </div>
+                  <div class="timeline-date">Jan 15, 2026</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot active"></div>
+                <div class="timeline-content">
+                  <div>
+                    <div class="timeline-title">Subscription Activated</div>
+                    <div class="timeline-desc">Featured Plan with Super Founder discount</div>
+                  </div>
+                  <div class="timeline-date">Jan 15, 2026</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot active"></div>
+                <div class="timeline-content">
+                  <div>
+                    <div class="timeline-title">Onboarding Call Completed</div>
+                    <div class="timeline-desc">30 min call with Kate — owner very engaged</div>
+                  </div>
+                  <div class="timeline-date">Jan 14, 2026</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot active"></div>
+                <div class="timeline-content">
+                  <div>
+                    <div class="timeline-title">Contract Signed</div>
+                    <div class="timeline-desc">Venue agreement executed via DocuSign</div>
+                  </div>
+                  <div class="timeline-date">Jan 13, 2026</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot active"></div>
+                <div class="timeline-content">
+                  <div>
+                    <div class="timeline-title">Discovery Call</div>
+                    <div class="timeline-desc">Initial 20 min call to discuss TGS partnership</div>
+                  </div>
+                  <div class="timeline-date">Jan 12, 2026</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot active"></div>
+                <div class="timeline-content">
+                  <div>
+                    <div class="timeline-title">Initial Outreach</div>
+                    <div class="timeline-desc">Inbound enquiry via List Your Venue form</div>
+                  </div>
+                  <div class="timeline-date">Jan 10, 2026</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Activity Log -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Recent Activity Log</h3>
+              <p class="form-section-subtitle">System and user activity</p>
+            </div>
+            <button class="btn btn-secondary btn-small">View All</button>
+          </div>
+          <div class="form-section-body">
+            <div class="activity-log">
+              <div class="activity-item">
+                <div class="activity-avatar">K</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>Kate</strong> updated services — Added 3 new treatment options</div>
+                  <div class="activity-time">2 hours ago</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-avatar">S</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>System</strong> marked identity verification as complete</div>
+                  <div class="activity-time">Yesterday at 3:42 PM</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-avatar">K</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>Kate</strong> added 12 new photos to gallery</div>
+                  <div class="activity-time">Yesterday at 11:15 AM</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-avatar">K</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>Kate</strong> completed venue overview and wellness services sections</div>
+                  <div class="activity-time">Jan 15, 2026</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-avatar">S</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>System</strong> created venue record from onboarding form submission</div>
+                  <div class="activity-time">Jan 15, 2026</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Internal Notes -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Internal Notes</h3>
+              <p class="form-section-subtitle">Private notes visible only to TGS team</p>
+            </div>
+            <button class="btn btn-secondary btn-small">
+              <svg class="icon icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add Note
+            </button>
+          </div>
+          <div class="form-section-body">
+            <div style="background: var(--secondary-bg); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <strong style="font-size: 13px;">Kate</strong>
+                <span style="font-size: 11px; color: var(--accent);">Jan 20, 2026</span>
+              </div>
+              <p style="font-size: 13px; color: var(--text); margin: 0;">
+                Excellent boutique day spa — owner is Maya Chen, highly experienced massage therapist who built this business from scratch 5 years ago. Very particular about quality and brand alignment. Has a loyal local clientele but wants to attract wellness tourists. Interested in being featured in Wellness Edit content. Mentioned she knows other spa owners in Sydney who might be interested in TGS.
+              </p>
+            </div>
+            <div style="background: var(--secondary-bg); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <strong style="font-size: 13px;">Kate</strong>
+                <span style="font-size: 11px; color: var(--accent);">Jan 12, 2026</span>
+              </div>
+              <p style="font-size: 13px; color: var(--text); margin: 0;">
+                Discovery call went really well. Facility is beautiful — they've invested heavily in thermal circuit and treatment rooms. Currently using Mindbody for bookings but open to TGS integration. Pricing is mid-premium for Sydney market. Main value prop for them is exposure to wellness travelers, especially international visitors planning Sydney trips.
+              </p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Add New Note</label>
+              <textarea class="form-input form-textarea" placeholder="Add internal notes about this venue..."></textarea>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>

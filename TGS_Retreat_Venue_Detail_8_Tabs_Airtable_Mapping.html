@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retreat Venue Detail Page (8 Tabs) â€” Airtable â†’ Website Mapping | TGS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --warm-white: #FDFCF9; --warm-cream: #F7F5F1; --charcoal: #313131;
+            --charcoal-light: rgba(49, 49, 49, 0.7); --charcoal-lighter: rgba(49, 49, 49, 0.5);
+            --charcoal-subtle: rgba(49, 49, 49, 0.1); --charcoal-border: rgba(49, 49, 49, 0.15);
+            --gold: #C4A265; --gold-dark: #7A644F;
+            --t1: #3B5C7A; --t2: #8B4513; --t3: #2F4F4F; --t4: #556B2F; --t5: #8B0000; --t6: #4B0082;
+            --font-serif: 'Cormorant Garamond', Georgia, serif; --font-sans: 'Montserrat', sans-serif;
+            --page-max: 1280px; --pad-h: 60px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-serif); color: var(--charcoal); background: var(--warm-white); line-height: 1.6; -webkit-font-smoothing: antialiased; font-size: 14px; }
+        .nav { background: var(--warm-white); border-bottom: 1px solid var(--charcoal-subtle); position: sticky; top: 0; z-index: 100; }
+        .nav-inner { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--pad-h); height: 70px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+        .nav-logo-area { display: flex; align-items: center; justify-content: center; gap: 16px; }
+        .nav-logo-box { width: 36px; height: 36px; border: 1.5px dashed var(--gold); border-radius: 6px; display: flex; align-items: center; justify-content: center; background: var(--charcoal); flex-shrink: 0; }
+        .nav-logo-box span { font-family: var(--font-sans); font-size: 6px; font-weight: 500; text-transform: uppercase; color: var(--gold); text-align: center; line-height: 1.2; }
+        .nav-brand { font-family: var(--font-serif); font-size: 14px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--charcoal); }
+        .nav-right { display: flex; align-items: center; justify-content: flex-end; }
+        .nav-doc-tag { font-family: var(--font-sans); font-size: 8px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--charcoal-lighter); }
+        .doc-hero { background: var(--warm-cream); border-bottom: 1px solid var(--charcoal-subtle); padding: 48px var(--pad-h) 40px; }
+        .doc-hero-inner { max-width: var(--page-max); margin: 0 auto; }
+        .doc-hero-eyebrow { font-family: var(--font-sans); font-size: 9px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 16px; }
+        .doc-hero-eyebrow span { color: var(--gold-dark); }
+        .doc-hero h1 { font-family: var(--font-serif); font-size: 42px; font-weight: 400; line-height: 1.1; margin-bottom: 16px; }
+        .doc-hero h1 em { font-style: italic; font-weight: 300; }
+        .doc-hero-desc { font-family: var(--font-serif); font-size: 15px; font-weight: 300; font-style: italic; color: var(--charcoal-light); max-width: 720px; line-height: 1.85; margin-bottom: 32px; }
+        .doc-meta-row { display: flex; gap: 32px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid var(--charcoal-subtle); }
+        .doc-meta-label { font-family: var(--font-sans); font-size: 8px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 4px; }
+        .doc-meta-value { font-family: var(--font-sans); font-size: 11px; font-weight: 400; color: var(--charcoal); }
+        .page-info-bar { background: var(--warm-white); border-bottom: 1px solid var(--charcoal-subtle); padding: 0 var(--pad-h); }
+        .page-info-left { display: flex; align-items: center; gap: 16px; padding: 12px 0; flex-wrap: wrap; }
+        .url-tag { font-family: var(--font-sans); font-size: 11px; font-weight: 400; letter-spacing: 0.04em; color: var(--gold-dark); background: rgba(196,162,101,0.08); border: 1px solid rgba(196,162,101,0.3); padding: 4px 12px; }
+        .info-stat { font-family: var(--font-sans); font-size: 10px; font-weight: 300; color: var(--charcoal-lighter); }
+        .info-stat strong { color: var(--charcoal); font-weight: 500; }
+        .legend-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; flex-wrap: wrap; }
+        .legend-label-text { font-family: var(--font-sans); font-size: 8px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--charcoal-lighter); }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+        .legend-text { font-family: var(--font-sans); font-size: 9px; font-weight: 400; color: var(--charcoal-light); }
+        .content { max-width: var(--page-max); margin: 0 auto; padding: 48px var(--pad-h); }
+        .page-intro-callout { font-family: var(--font-serif); font-size: 14px; font-weight: 300; line-height: 1.8; color: var(--charcoal-light); padding: 20px 24px; background: var(--warm-cream); border-left: 2px solid var(--gold); margin-bottom: 48px; }
+        .page-intro-callout strong { color: var(--charcoal); font-weight: 500; }
+        .map-section { margin-bottom: 48px; }
+        .map-section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 6px; padding-bottom: 16px; border-bottom: 1px solid var(--charcoal-subtle); }
+        .section-num { font-family: var(--font-sans); font-size: 9px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: var(--charcoal-lighter); flex-shrink: 0; }
+        .section-title { font-family: var(--font-serif); font-size: 24px; font-weight: 400; color: var(--charcoal); }
+        .section-title em { font-style: italic; font-weight: 300; }
+        .section-subtitle { font-family: var(--font-serif); font-size: 13px; font-weight: 300; font-style: italic; color: var(--charcoal-lighter); margin-bottom: 16px; line-height: 1.6; }
+        .section-divider { height: 1px; background: var(--charcoal-subtle); margin: 40px 0; }
+        .map-table { width: 100%; border-collapse: collapse; background: var(--warm-white); border: 1px solid var(--charcoal-border); font-size: 12px; }
+        .map-table thead tr { background: var(--warm-cream); border-bottom: 1px solid var(--charcoal-subtle); }
+        .map-table thead th { font-family: var(--font-sans); font-size: 8px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--charcoal-lighter); padding: 10px 14px; text-align: left; }
+        .map-table tbody tr { border-bottom: 1px solid var(--charcoal-subtle); transition: background 0.15s; }
+        .map-table tbody tr:last-child { border-bottom: none; }
+        .map-table tbody tr:hover { background: rgba(196,162,101,0.04); }
+        .map-table td { padding: 12px 14px; vertical-align: top; }
+        .col-el { width: 24%; font-family: var(--font-serif); font-size: 14px; font-weight: 400; color: var(--charcoal); }
+        .col-src { width: 10%; }
+        .col-field { width: 35%; font-family: var(--font-sans); font-size: 10px; font-weight: 400; color: var(--charcoal); line-height: 1.6; }
+        .col-notes { width: 31%; font-family: var(--font-serif); font-size: 12px; font-weight: 300; font-style: italic; color: var(--charcoal-light); line-height: 1.5; }
+        .src-dynamic { font-family: var(--font-sans); font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-dark); }
+        .src-static { font-family: var(--font-sans); font-size: 9px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--charcoal-lighter); }
+        .tbadge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px 2px 3px; border-radius: 16px; font-family: var(--font-sans); font-size: 9px; font-weight: 500; color: white; white-space: nowrap; line-height: 1; margin-bottom: 3px; margin-right: 4px; }
+        .tbadge .td { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,0.22); display: flex; align-items: center; justify-content: center; font-size: 7px; flex-shrink: 0; }
+        .tb1 { background: var(--t1); } .tb2 { background: var(--t2); } .tb3 { background: var(--t3); } .tb4 { background: var(--t4); } .tb5 { background: var(--t5); } .tb6 { background: var(--t6); }
+        .field-name { font-family: var(--font-serif); font-size: 11px; font-style: italic; font-weight: 300; color: var(--charcoal-lighter); margin-top: 2px; display: block; }
+        .footer { background: var(--charcoal); color: rgba(255,255,255,0.7); padding: 48px var(--pad-h) 32px; }
+        .footer-inner { max-width: var(--page-max); margin: 0 auto; display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .footer-brand { display: flex; flex-direction: column; gap: 12px; }
+        .footer-logo-placeholder { width: 56px; height: 56px; border: 2px dashed var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(196,162,101,0.08); }
+        .footer-logo-placeholder span { font-family: var(--font-sans); font-size: 7px; font-weight: 500; text-transform: uppercase; color: var(--gold); text-align: center; line-height: 1.3; }
+        .footer-brand-name { font-family: var(--font-serif); font-size: 15px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.9); }
+        .footer-brand-text { font-family: var(--font-serif); font-size: 12px; font-weight: 300; line-height: 1.7; color: rgba(255,255,255,0.45); font-style: italic; }
+        .footer-cols { display: grid; grid-template-columns: repeat(4, 140px); gap: 32px; }
+        .footer-col-title { font-family: var(--font-sans); font-size: 9px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+        .footer-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .footer-list li { font-family: var(--font-serif); font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.55); }
+        .footer-bottom { max-width: var(--page-max); margin: 0 auto; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+        .footer-copyright { font-family: var(--font-sans); font-size: 10px; font-weight: 300; letter-spacing: 0.05em; color: rgba(255,255,255,0.28); }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div></div>
+            <a href="tgs_home_v7.html" class="nav-logo-area" style="text-decoration:none;">
+                <div class="nav-logo-box"><span>Logo</span></div>
+                <div class="nav-brand">The Global Sanctum</div>
+            </a>
+            <div class="nav-right"><span class="nav-doc-tag">Developer Handoff Â· Internal</span></div>
+        </div>
+    </nav>
+
+    <div class="doc-hero">
+        <div class="doc-hero-inner">
+            <p class="doc-hero-eyebrow">Master Console Â· <span>Airtable â†’ Website Mapping</span></p>
+            <h1>Retreat Venue Detail Page <em>(8 Tabs)</em></h1>
+            <p class="doc-hero-desc">Complete individual venue detail page with tabbed navigation: Overview, Retreat Spaces, Accommodation, Amenities, Experiences, Location, Reviews, Booking. Heavily dynamic from T1-T6 + supporting tables.</p>
+            <div class="doc-meta-row">
+                <div class="doc-meta-item"><div class="doc-meta-label">Page Type</div><div class="doc-meta-value">Venue Detail (Dynamic)</div></div>
+                <div class="doc-meta-item"><div class="doc-meta-label">URL Pattern</div><div class="doc-meta-value">/retreat-venues/{slug}</div></div>
+                <div class="doc-meta-item"><div class="doc-meta-label">Version</div><div class="doc-meta-value">1.0</div></div>
+                <div class="doc-meta-item"><div class="doc-meta-label">Date</div><div class="doc-meta-value">19 February 2026</div></div>
+                <div class="doc-meta-item"><div class="doc-meta-label">Tables</div><div class="doc-meta-value">T1, T2, T3, T4, T5, T6, T8</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-info-bar">
+        <div class="page-info-left">
+            <span class="url-tag">/retreat-venues/{slug}</span>
+            <span class="info-stat"><strong>8 tabs</strong> dynamic content</span>
+            <span class="info-stat">Multiple tables</span>
+        </div>
+        <div class="legend-row">
+            <span class="legend-label-text">Table Key</span>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--t1)"></div><span class="legend-text">T1 Â· Venue</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--t2)"></div><span class="legend-text">T2 Â· Accom</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--t3)"></div><span class="legend-text">T3 Â· Amen</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--t4)"></div><span class="legend-text">T4 Â· Services</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--t5)"></div><span class="legend-text">T5 Â· Facilities</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--t6)"></div><span class="legend-text">T6 Â· Ret Fac</span></div>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <div class="page-intro-callout">
+            Comprehensive venue detail page with <strong>8-tab navigation</strong>. Dynamically populated from T1 (Venue Overview) as primary source with linked data from T2 (Accommodation), T3 (Amenities), T4 (Wellness Services), T5 (Wellness Facilities), T6 (Retreat Facilities), and T8 (Media). URL slug from T1 field 2 routes to specific venue record.
+        </div>
+
+        <div class="map-section">
+            <div class="map-section-header"><span class="section-num">Tab 1</span><h2 class="section-title">Overview</h2></div>
+            <p class="section-subtitle">Hero quote, intro, at-a-glance stats, experience section, retreat spaces preview, accommodation preview, venue highlights, policies.</p>
+            <table class="map-table">
+                <thead><tr><th>Element</th><th>Source</th><th>Field Reference</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td class="col-el">Hero quote</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb1"><span class="td">T1</span> field 43</span><span class="field-name">Tagline Quote</span></td><td class="col-notes">Large inspirational quote over image</td></tr>
+                    <tr><td class="col-el">Intro paragraphs</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb1"><span class="td">T1</span> field 41</span><span class="field-name">Full Description</span></td><td class="col-notes">Long text field</td></tr>
+                    <tr><td class="col-el">At a Glance stats (6 items)</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb1"><span class="td">T1</span></span> Guests (77), Shalas (85), Acres (82), Airport (136), Price (128), Rating</td><td class="col-notes">Key stats grid</td></tr>
+                    <tr><td class="col-el">Retreat styles tags</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb1"><span class="td">T1</span> field 25</span><span class="field-name">Retreat Styles Primary</span></td><td class="col-notes">Multiple select</td></tr>
+                    <tr><td class="col-el">Retreat spaces preview cards</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb6"><span class="td">T6</span></span> Retreat Facilities table (linked from T1)</td><td class="col-notes">Top 3-4 spaces shown</td></tr>
+                    <tr><td class="col-el">Accommodation preview</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb2"><span class="td">T2</span></span> Accommodation table (linked from T1)</td><td class="col-notes">Room type cards</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="map-section">
+            <div class="map-section-header"><span class="section-num">Tab 2</span><h2 class="section-title">Retreat Spaces</h2></div>
+            <p class="section-subtitle">Detailed cards for all retreat spaces (shalas, studios, ceremony spaces) from T6.</p>
+            <table class="map-table">
+                <thead><tr><th>Element</th><th>Source</th><th>Field Reference</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td class="col-el">All retreat space cards</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb6"><span class="td">T6</span></span> All records linked to this venue<br>Space Name (1), Type (2), Capacity (3), Size (4), Features (5), Description (6), Images (7)</td><td class="col-notes">Comprehensive space details with photos</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="map-section">
+            <div class="map-section-header"><span class="section-num">Tab 3</span><h2 class="section-title">Accommodation</h2></div>
+            <p class="section-subtitle">Room types, bed configurations, room features from T2.</p>
+            <table class="map-table">
+                <thead><tr><th>Element</th><th>Source</th><th>Field Reference</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td class="col-el">All room type cards</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb2"><span class="td">T2</span></span> All records linked to venue<br>Room Type (1), Qty (2), Bed Config (4-8), Max Occupancy (9), Ensuite (11), Features (12-29), Images</td><td class="col-notes">Detailed room info with amenities</td></tr>
+                    <tr><td class="col-el">Total capacity summary</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb1"><span class="td">T1</span> field 77</span><span class="field-name">Max Booking Capacity</span></td><td class="col-notes">Rollup from T2</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="map-section">
+            <div class="map-section-header"><span class="section-num">Tab 4</span><h2 class="section-title">Amenities</h2></div>
+            <p class="section-subtitle">General amenities from T3 organized by category (Connectivity, Climate, Leisure, Kitchen, etc.).</p>
+            <table class="map-table">
+                <thead><tr><th>Element</th><th>Source</th><th>Field Reference</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td class="col-el">All amenity categories</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb3"><span class="td">T3</span></span> 68 fields organized by category<br>WiFi, EV Charging, Heating/Cooling, Kitchen appliances, Laundry, AV equipment, Pool, Wellness facilities, etc.</td><td class="col-notes">Checkbox/yes-no amenities displayed by group</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="map-section">
+            <div class="map-section-header"><span class="section-num">Tab 5</span><h2 class="section-title">Experiences</h2></div>
+            <p class="section-subtitle">Wellness services/treatments from T4, wellness facilities from T5.</p>
+            <table class="map-table">
+                <thead><tr><th>Element</th><th>Source</th><th>Field Reference</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td class="col-el">Wellness services cards</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb4"><span class="td">T4</span></span> All linked services<br>Service Name (1), Type (2), Duration (3), Price (4), Description (5), Practitioner (6)</td><td class="col-notes">Bookable wellness offerings</td></tr>
+                    <tr><td class="col-el">Wellness facilities section</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb5"><span class="td">T5</span></span> All linked facilities<br>196 fields covering pools, saunas, spas, thermal facilities, treatment rooms, etc.</td><td class="col-notes">Available wellness infrastructure</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="map-section">
+            <div class="map-section-header"><span class="section-num">Tab 6</span><h2 class="section-title">Location</h2></div>
+            <p class="section-subtitle">Map, directions, nearby airports, local area info from T1.</p>
+            <table class="map-table">
+                <thead><tr><th>Element</th><th>Source</th><th>Field Reference</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td class="col-el">Map</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb1"><span class="td">T1</span> field 16</span><span class="field-name">GPS Coordinates</span></td><td class="col-notes">Embedded map at coordinates</td></tr>
+                    <tr><td class="col-el">Address</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb1"><span class="td">T1</span> fields 6-14</span><span class="field-name">Address fields, City, State, Country, Postcode</span></td><td class="col-notes">Full address display</td></tr>
+                    <tr><td class="col-el">Nearest airport</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb1"><span class="td">T1</span> field 136</span><span class="field-name">Nearest Airport Distance</span></td><td class="col-notes">Distance/time from airport</td></tr>
+                    <tr><td class="col-el">Directions text</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb1"><span class="td">T1</span> field 137</span><span class="field-name">Directions Detailed</span></td><td class="col-notes">Long text field</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="map-section">
+            <div class="map-section-header"><span class="section-num">Tab 7</span><h2 class="section-title">Reviews</h2></div>
+            <p class="section-subtitle">Guest reviews from T22 (if implemented), rating breakdown, review cards.</p>
+            <table class="map-table">
+                <thead><tr><th>Element</th><th>Source</th><th>Field Reference</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td class="col-el">Average rating</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field">T22 Reviews table (future implementation)<br>Average of all review ratings</td><td class="col-notes">Calculated from reviews</td></tr>
+                    <tr><td class="col-el">Review cards</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field">T22: Reviewer name, rating, date, review text, stay details</td><td class="col-notes">Paginated review list</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="map-section">
+            <div class="map-section-header"><span class="section-num">Tab 8</span><h2 class="section-title">Booking</h2></div>
+            <p class="section-subtitle">Availability calendar, pricing, policies, enquiry/booking form from T1 + T7.</p>
+            <table class="map-table">
+                <thead><tr><th>Element</th><th>Source</th><th>Field Reference</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td class="col-el">Pricing info</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb1"><span class="td">T1</span></span><span class="tbadge tb1"><span class="td">T7</span></span> Price From (128), Pricing Type (119), Min/Max Duration (122-123), Deposit (124), All pricing fields from T7</td><td class="col-notes">Comprehensive pricing structure</td></tr>
+                    <tr><td class="col-el">Availability calendar</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field">T1 + Booking system integration (TBD)</td><td class="col-notes">Shows available dates</td></tr>
+                    <tr><td class="col-el">Cancellation policy</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field"><span class="tbadge tb1"><span class="td">T1</span> field 148</span><span class="field-name">Cancellation Policy Type + Details</span></td><td class="col-notes">Policy text with refund schedule</td></tr>
+                    <tr><td class="col-el">Booking form</td><td class="col-src"><span class="src-dynamic">Dynamic</span></td><td class="col-field">Form writes to T12 Venue Booking Records</td><td class="col-notes">Date range, group size, enquiry details</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo-placeholder"><span>Logo</span></div>
+                <div class="footer-brand-name">The Global Sanctum</div>
+                <div class="footer-brand-text">Retreat Venue Detail (8 Tabs)<br>Airtable â†’ Website Mapping</div>
+            </div>
+            <div class="footer-cols">
+                <div><div class="footer-col-title">Page</div><ul class="footer-list"><li>Venue Detail</li><li>8 Dynamic Tabs</li><li>19 Feb 2026</li></ul></div>
+                <div><div class="footer-col-title">Primary Tables</div><ul class="footer-list"><li>T1 Â· Venue Overview</li><li>T2 Â· Accommodation</li><li>T3 Â· Amenities</li></ul></div>
+                <div><div class="footer-col-title">Secondary Tables</div><ul class="footer-list"><li>T4 Â· Wellness Services</li><li>T5 Â· Wellness Facilities</li><li>T6 Â· Retreat Facilities</li></ul></div>
+                <div><div class="footer-col-title">Supporting</div><ul class="footer-list"><li>T7 Â· Pricing/Booking</li><li>T8 Â· Marketing Media</li><li>T22 Â· Reviews (opt)</li></ul></div>
+            </div>
+        </div>
+        <div class="footer-bottom"><span class="footer-copyright">Â© 2026 The Global Sanctum. Internal documentation.</span></div>
+    </footer>
+
+</body>
+</html>
+
