@@ -1,962 +1,848 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TGS Internal Portal - Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <title>The Global Sanctum | Curated Retreat Venues &amp; Wellness Experiences Worldwide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --primary-bg: #FDFCF9;
-      --secondary-bg: #F7F5F1;
-      --accent: #B8B8B8;
-      --text: #313131;
-      --white: #FFFFFF;
-      --success: #4A7C59;
-      --warning: #D4A853;
-      --error: #C45C5C;
-    }
-
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: var(--primary-bg);
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.6;
-    }
-
-    h1, h2, h3, h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-
-    /* Layout */
-    .app-container {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: 260px;
-      background-color: var(--text);
-      color: var(--white);
-      padding: 0;
-      position: fixed;
-      height: 100vh;
-      overflow-y: auto;
-    }
-
-    .sidebar-header {
-      padding: 32px 24px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .sidebar-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--white);
-      text-transform: uppercase;
-    }
-
-    .sidebar-subtitle {
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-top: 4px;
-    }
-
-    .sidebar-nav {
-      padding: 24px 0;
-    }
-
-    .nav-section {
-      margin-bottom: 8px;
-    }
-
-    .nav-section-title {
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      padding: 8px 24px;
-      margin-bottom: 4px;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      padding: 12px 24px;
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 400;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    .nav-item:hover {
-      background-color: rgba(255,255,255,0.05);
-      color: var(--white);
-    }
-
-    .nav-item.active {
-      background-color: rgba(255,255,255,0.1);
-      color: var(--white);
-      border-left: 3px solid var(--white);
-      padding-left: 21px;
-    }
-
-    .nav-icon {
-      width: 18px;
-      height: 18px;
-      margin-right: 12px;
-      opacity: 0.7;
-    }
-
-    .nav-item.active .nav-icon {
-      opacity: 1;
-    }
-
-    .nav-badge {
-      margin-left: auto;
-      background-color: var(--warning);
-      color: var(--text);
-      font-size: 10px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 10px;
-    }
-
-    /* Main Content */
-    .main-content {
-      flex: 1;
-      margin-left: 260px;
-      padding: 40px 48px;
-      background-color: var(--primary-bg);
-    }
-
-    /* Page Header */
-    .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 40px;
-    }
-
-    .page-title {
-      font-size: 32px;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .page-subtitle {
-      font-size: 14px;
-      color: var(--accent);
-      font-weight: 400;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 12px;
-    }
-
-    .btn {
-      padding: 12px 24px;
-      border-radius: 20px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-primary {
-      background-color: var(--text);
-      color: var(--white);
-      border: none;
-    }
-
-    .btn-primary:hover {
-      background-color: #4a4a4a;
-    }
-
-    .btn-secondary {
-      background-color: transparent;
-      color: var(--text);
-      border: 1px solid var(--accent);
-    }
-
-    .btn-secondary:hover {
-      background-color: var(--secondary-bg);
-    }
-
-    /* Stats Cards */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-      margin-bottom: 40px;
-    }
-
-    .stat-card {
-      background-color: var(--white);
-      border-radius: 12px;
-      padding: 28px;
-      border: 1px solid rgba(184, 184, 184, 0.2);
-      transition: all 0.2s ease;
-    }
-
-    .stat-card:hover {
-      box-shadow: 0 4px 20px rgba(49, 49, 49, 0.08);
-    }
-
-    .stat-label {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 12px;
-    }
-
-    .stat-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 36px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .stat-change {
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .stat-change.positive {
-      color: var(--success);
-    }
-
-    .stat-change.negative {
-      color: var(--error);
-    }
-
-    .stat-breakdown {
-      font-size: 12px;
-      color: var(--accent);
-      margin-top: 8px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(184, 184, 184, 0.2);
-    }
-
-    /* Content Grid */
-    .content-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-bottom: 40px;
-    }
-
-    .content-card {
-      background-color: var(--white);
-      border-radius: 12px;
-      border: 1px solid rgba(184, 184, 184, 0.2);
-      overflow: hidden;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 24px;
-      border-bottom: 1px solid rgba(184, 184, 184, 0.15);
-    }
-
-    .card-title {
-      font-size: 18px;
-      color: var(--text);
-    }
-
-    .card-action {
-      font-size: 12px;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 500;
-      opacity: 0.6;
-      transition: opacity 0.2s ease;
-    }
-
-    .card-action:hover {
-      opacity: 1;
-    }
-
-    .card-body {
-      padding: 0;
-    }
-
-    /* Quick Actions */
-    .quick-actions {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1px;
-      background-color: rgba(184, 184, 184, 0.15);
-    }
-
-    .quick-action {
-      background-color: var(--white);
-      padding: 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-
-    .quick-action:hover {
-      background-color: var(--secondary-bg);
-    }
-
-    .quick-action-icon {
-      width: 44px;
-      height: 44px;
-      background-color: var(--secondary-bg);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .quick-action-text {
-      flex: 1;
-    }
-
-    .quick-action-title {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 2px;
-    }
-
-    .quick-action-subtitle {
-      font-size: 12px;
-      color: var(--accent);
-    }
-
-    /* Activity Feed */
-    .activity-list {
-      list-style: none;
-    }
-
-    .activity-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 16px 24px;
-      border-bottom: 1px solid rgba(184, 184, 184, 0.1);
-      transition: background-color 0.2s ease;
-    }
-
-    .activity-item:last-child {
-      border-bottom: none;
-    }
-
-    .activity-item:hover {
-      background-color: var(--secondary-bg);
-    }
-
-    .activity-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      margin-top: 6px;
-      flex-shrink: 0;
-    }
-
-    .activity-dot.booking {
-      background-color: var(--success);
-    }
-
-    .activity-dot.venue {
-      background-color: var(--warning);
-    }
-
-    .activity-dot.user {
-      background-color: #6B8EC9;
-    }
-
-    .activity-dot.payment {
-      background-color: #9B6BC9;
-    }
-
-    .activity-content {
-      flex: 1;
-    }
-
-    .activity-text {
-      font-size: 13px;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-
-    .activity-text strong {
-      font-weight: 600;
-    }
-
-    .activity-time {
-      font-size: 11px;
-      color: var(--accent);
-    }
-
-    /* Alerts Section */
-    .alerts-section {
-      margin-bottom: 40px;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-size: 20px;
-      color: var(--text);
-    }
-
-    .alerts-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .alert-card {
-      background-color: var(--white);
-      border-radius: 12px;
-      padding: 20px 24px;
-      border: 1px solid rgba(184, 184, 184, 0.2);
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .alert-card:hover {
-      box-shadow: 0 4px 20px rgba(49, 49, 49, 0.08);
-    }
-
-    .alert-card.warning {
-      border-left: 3px solid var(--warning);
-    }
-
-    .alert-card.error {
-      border-left: 3px solid var(--error);
-    }
-
-    .alert-card.info {
-      border-left: 3px solid #6B8EC9;
-    }
-
-    .alert-count {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .alert-text {
-      flex: 1;
-    }
-
-    .alert-title {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 2px;
-    }
-
-    .alert-subtitle {
-      font-size: 11px;
-      color: var(--accent);
-    }
-
-    /* User Menu */
-    .user-menu {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 20px 24px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .user-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background-color: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .user-info {
-      flex: 1;
-    }
-
-    .user-name {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--white);
-    }
-
-    .user-role {
-      font-size: 11px;
-      color: var(--accent);
-    }
-
-    /* SVG Icons (inline) */
-    .icon {
-      width: 18px;
-      height: 18px;
-      stroke: currentColor;
-      stroke-width: 1.5;
-      fill: none;
-    }
-
-    .icon-large {
-      width: 22px;
-      height: 22px;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 1400px) {
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .alerts-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 1100px) {
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: 'Montserrat', sans-serif; color: #2f2f2a; background: #f5f4f0; line-height: 1.65; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+    p { margin: 0; }
+    h1,h2,h3,h4 { margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 500; }
+    .container { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+
+    /* HEADER */
+    .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 36px; height: 72px; background: transparent; transition: background 0.3s ease, box-shadow 0.3s ease; }
+    .site-header.solid { background: rgba(252,251,248,0.97); backdrop-filter: blur(14px); box-shadow: 0 1px 0 rgba(47,47,42,0.1); }
+    .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+    .hamburger-lines { display: flex; flex-direction: column; gap: 5px; }
+    .hamburger-lines span { width: 22px; height: 1.5px; background: #fff; display: block; transition: background 0.3s; }
+    .site-header.solid .hamburger-lines span { background: #2f2f2a; }
+    .menu-label { font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #fff; transition: color 0.3s; }
+    .site-header.solid .menu-label { color: #2f2f2a; }
+    .header-center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; }
+    .logo-icon { width: 30px; height: 30px; }
+    .logo-text { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #fff; transition: color 0.3s; white-space: nowrap; }
+    .site-header.solid .logo-text { color: #2f2f2a; }
+    .header-right { width: 80px; }
+
+    /* MENU OVERLAY */
+    .menu-overlay { position: fixed; inset: 0; z-index: 1100; background: #fff; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; overflow: hidden; }
+    .menu-overlay.open { opacity: 1; pointer-events: auto; }
+    .menu-header { position: fixed; top: 0; left: 0; right: 0; padding: 20px 36px; display: flex; align-items: center; justify-content: space-between; z-index: 1101; border-bottom: 1px solid rgba(47,47,42,0.08); background: #fff; }
+    .menu-close { font-size: 22px; font-weight: 300; background: none; border: none; cursor: pointer; color: #2f2f2a; line-height: 1; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+    .menu-label { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #6f685f; }
+    .menu-inner { padding-top: 80px; padding-left: 40px; padding-right: 40px; padding-bottom: 40px; overflow-y: auto; height: 100vh; }
+    .menu-section { margin-bottom: 48px; }
+    .menu-section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #6f685f; margin-bottom: 18px; }
+    .menu-nav { list-style: none; padding: 0; margin: 0; display: grid; gap: 20px; }
+    .menu-nav a { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; color: #2f2f2a; transition: opacity 0.2s; display: block; line-height: 1.2; }
+    .menu-nav a:hover { opacity: 0.6; }
+
+    /* HERO */
+    .hero { position: relative; height: 100vh; min-height: 620px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('images/Woman%20Meditating%20In%20Sacred%20Site%20Nordic%20Filter.png'); background-size: cover; background-position: center 20%; }
+    .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,8,0.35) 0%, rgba(10,10,8,0.48) 60%, rgba(10,10,8,0.62) 100%); }
+    .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 24px; width: 100%; }
+    .hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 18px; }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(50px, 7vw, 90px); font-weight: 500; color: #fff; line-height: 1.06; letter-spacing: 0.01em; margin-bottom: 20px; }
+    .hero-sub { font-size: 15px; color: rgba(255,255,255,0.78); max-width: 50ch; margin: 0 auto 34px; line-height: 1.75; }
+    .hero-search { width: min(880px, calc(100% - 40px)); margin: 0 auto 26px; background: rgba(18,16,14,0.5); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; padding: 18px 24px; display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr auto; align-items: center; gap: 0; }
+    .search-div { width: 1px; background: rgba(255,255,255,0.18); height: 38px; }
+    .sf { padding: 0 18px; display: grid; gap: 4px; }
+    .sf label { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    .sf select { background: transparent; border: none; color: #fff; font-size: 14px; appearance: none; cursor: pointer; padding: 0; }
+    .sf select option { color: #2f2f2a; background: #fff; }
+    .sf select:focus { outline: none; }
+    .search-btn { background: rgba(255,255,255,0.95); color: #2f2f2a; border: none; border-radius: 6px; padding: 13px 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-left: 14px; transition: background 0.2s; white-space: nowrap; }
+    .search-btn:hover { background: #fff; }
+    .hero-links { display: flex; align-items: center; justify-content: center; gap: 36px; flex-wrap: wrap; }
+    .hero-link { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.68); transition: color 0.2s; }
+    .hero-link:hover { color: #fff; }
+
+    /* SECTIONS */
+    .section { padding: clamp(80px, 9vw, 116px) 0; }
+    .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: #6f685f; margin-bottom: 18px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4.5vw, 56px); font-weight: 400; color: #2f2f2a; line-height: 1.1; margin-bottom: 8px; }
+    .text-link { font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #2f2f2a; border-bottom: 1px solid #2f2f2a; padding-bottom: 2px; display: inline-flex; align-items: center; gap: 6px; transition: opacity 0.2s; }
+    .text-link:hover { opacity: 0.55; }
+    .link-arrow { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #2f2f2a; display: inline-flex; align-items: center; gap: 5px; transition: opacity 0.2s; white-space: nowrap; }
+    .link-arrow:hover { opacity: 0.55; }
+
+    /* STORY */
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .story-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4vw, 54px); font-weight: 400; line-height: 1.2; color: #2f2f2a; margin-bottom: 26px; }
+    .story-heading em { font-style: italic; }
+    .story-body { display: grid; gap: 16px; margin-bottom: 30px; }
+    .story-body p { font-size: 14px; color: #6f685f; line-height: 1.85; max-width: 50ch; }
+    .story-image { overflow: hidden; background: #e5ddd2; aspect-ratio: 0.82; }
+    .story-image img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* DISCOVER DIFFERENTLY */
+    .discover-header { text-align: center; margin-bottom: 44px; }
+    .discover-heading { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(30px, 4vw, 50px); font-weight: 400; color: #2f2f2a; margin-bottom: 16px; }
+    .discover-lede { font-size: 14px; color: #6f685f; max-width: 66ch; margin: 0 auto; line-height: 1.85; }
+    .mosaic-panorama { display: grid; grid-template-columns: 1.35fr 1fr 1fr 1.35fr; grid-template-rows: 1fr 1fr; gap: 4px; height: 520px; }
+    .mosaic-panel { position: relative; overflow: hidden; background: #d8d0c6; cursor: pointer; }
+    .mosaic-panel img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .mosaic-panel:hover img { transform: scale(1.04); }
+    .mosaic-panel.span-rows { grid-row: 1 / 3; }
+    .mosaic-panel::before { content: ''; position: absolute; inset: 0; z-index: 0; background: linear-gradient(180deg, transparent 45%, rgba(0,0,0,0.32) 100%); }
+    .mosaic-label { position: absolute; bottom: 14px; left: 14px; z-index: 1; font-size: 12px; font-weight: 600; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.45); }
+
+    /* FIND YOUR PATH */
+    .path-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .path-card { position: relative; aspect-ratio: 0.85; overflow: hidden; background: #d0c8bc; cursor: pointer; display: block; }
+    .path-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .path-card:hover img { transform: scale(1.04); }
+    .path-card::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(0,0,0,0) 28%, rgba(0,0,0,0.68) 100%); }
+    .path-card-content { position: absolute; bottom: 0; left: 0; right: 0; z-index: 2; padding: 22px; }
+    .path-card-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500; color: #fff; margin-bottom: 8px; line-height: 1.1; }
+    .path-card-sub { font-size: 12px; color: rgba(255,255,255,0.8); margin-bottom: 14px; line-height: 1.6; }
+    .path-card-cta { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.82); border-bottom: 1px solid rgba(255,255,255,0.45); padding-bottom: 2px; }
+
+    /* YEAR AHEAD */
+    .year-header { display: grid; grid-template-columns: 1fr auto; align-items: flex-end; gap: 20px; margin-bottom: 40px; }
+    .year-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 4.2vw, 54px); font-weight: 400; color: #2f2f2a; line-height: 1.1; max-width: 20ch; }
+    .exp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .exp-card { display: grid; gap: 0; }
+    .exp-image { overflow: hidden; background: #d8d0c6; margin-bottom: 20px; }
+    .exp-image img { width: 100%; aspect-ratio: 0.88; object-fit: cover; transition: transform 0.4s ease; }
+    .exp-card:hover .exp-image img { transform: scale(1.04); }
+    .exp-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #6f685f; margin-bottom: 9px; }
+    .exp-title { font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 500; color: #2f2f2a; margin-bottom: 9px; line-height: 1.2; }
+    .exp-desc { font-size: 13px; color: #6f685f; line-height: 1.75; }
+
+    /* CAROUSELS */
+    .venue-section-header { display: grid; grid-template-columns: 1fr auto; align-items: flex-start; gap: 20px; margin-bottom: 10px; }
+    .venue-section-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4vw, 50px); font-weight: 400; color: #2f2f2a; line-height: 1.1; }
+    .venue-section-lede { font-size: 13px; color: #6f685f; margin-top: 10px; max-width: 60ch; line-height: 1.8; }
+    .carousel-nav { display: flex; align-items: center; gap: 10px; margin: 24px 0 20px; }
+    .car-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(47,47,42,0.25); background: #fff; cursor: pointer; font-size: 15px; color: #2f2f2a; display: flex; align-items: center; justify-content: center; transition: background 0.2s, border-color 0.2s; }
+    .car-btn:hover { background: #2f2f2a; color: #fff; border-color: #2f2f2a; }
+    .car-dots { display: flex; gap: 6px; padding: 0 6px; }
+    .car-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(47,47,42,0.18); transition: background 0.2s; cursor: pointer; }
+    .car-dot.active { background: #2f2f2a; }
+    .carousel-track { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
+    .carousel-track::-webkit-scrollbar { display: none; }
+    .carousel-track > * { scroll-snap-align: start; }
+    .venue-card { background: #fff; border: 1px solid rgba(47,47,42,0.1); display: grid; grid-template-rows: auto 1fr; }
+    .venue-card-media { position: relative; overflow: hidden; background: #d8d0c6; }
+    .venue-card-media img { width: 100%; aspect-ratio: 1.1; object-fit: cover; transition: transform 0.4s ease; }
+    .venue-card:hover .venue-card-media img { transform: scale(1.04); }
+    .venue-badge { position: absolute; top: 14px; left: 14px; z-index: 1; background: #fff; padding: 5px 10px; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #2f2f2a; }
+    .venue-card-body { padding: 18px 20px 22px; display: grid; gap: 0; }
+    .venue-loc { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #6f685f; margin-bottom: 7px; }
+    .venue-name { font-family: 'Cormorant Garamond', serif; font-size: 25px; font-weight: 400; color: #2f2f2a; margin-bottom: 8px; line-height: 1.15; }
+    .venue-desc-text { font-size: 13px; color: #6f685f; line-height: 1.75; margin-bottom: 10px; }
+    .venue-tags { font-size: 11px; color: #9a9490; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(47,47,42,0.1); }
+    .venue-explore { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #2f2f2a; display: inline-flex; align-items: center; gap: 4px; }
+
+    /* QUOTE */
+    .quote-banner { background: #353330; padding: 70px 24px; text-align: center; }
+    .quote-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(19px, 2.2vw, 27px); font-weight: 400; color: rgba(255,255,255,0.7); max-width: 66ch; margin: 0 auto 16px; line-height: 1.7; }
+    .quote-attr { font-size: 11px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.38); }
+
+    /* SEARCH BEYOND */
+    .beyond-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .beyond-image { overflow: hidden; background: #d8d0c6; }
+    .beyond-image img { width: 100%; aspect-ratio: 0.85; object-fit: cover; }
+    .beyond-heading { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(32px, 4vw, 50px); font-weight: 400; color: #2f2f2a; margin-bottom: 18px; line-height: 1.15; }
+    .beyond-intro { font-size: 14px; color: #6f685f; line-height: 1.85; margin-bottom: 34px; }
+    .beyond-item { padding: 18px 0; border-top: 1px solid rgba(47,47,42,0.1); }
+    .beyond-item:last-child { border-bottom: 1px solid rgba(47,47,42,0.1); }
+    .beyond-item-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; color: #2f2f2a; margin-bottom: 5px; }
+    .beyond-item-desc { font-size: 13px; color: #6f685f; line-height: 1.7; }
+
+    /* PHILOSOPHY */
+    .philosophy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .philosophy-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px, 3.8vw, 48px); font-weight: 400; color: #2f2f2a; margin-bottom: 22px; line-height: 1.2; max-width: 18ch; }
+    .philosophy-body { display: grid; gap: 14px; margin-bottom: 36px; }
+    .philosophy-body p { font-size: 14px; color: #6f685f; line-height: 1.85; max-width: 50ch; }
+    .philosophy-attrs { display: grid; grid-template-columns: 1fr 1fr; }
+    .phil-attr { padding: 22px 20px 22px 0; border-top: 1px solid rgba(47,47,42,0.12); }
+    .phil-attr:nth-child(even) { padding-right: 0; padding-left: 20px; }
+    .phil-attr-title { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 500; color: #2f2f2a; margin-bottom: 7px; }
+    .phil-attr-desc { font-size: 13px; color: #6f685f; line-height: 1.7; }
+    .phil-images { display: grid; grid-template-rows: auto auto; gap: 6px; }
+    .phil-img-main { overflow: hidden; background: #d8d0c6; }
+    .phil-img-main img { width: 100%; aspect-ratio: 1.55; object-fit: cover; }
+    .phil-img-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .phil-img-small { overflow: hidden; background: #d8d0c6; }
+    .phil-img-small img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+
+    /* NEWSLETTER */
+    .newsletter-section { background: #efece6; padding: clamp(80px, 9vw, 116px) 0; text-align: center; }
+    .newsletter-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: #6f685f; margin-bottom: 14px; }
+    .newsletter-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 4.5vw, 54px); font-weight: 400; color: #2f2f2a; margin-bottom: 14px; }
+    .newsletter-sub { font-size: 14px; color: #6f685f; max-width: 56ch; margin: 0 auto 34px; line-height: 1.8; }
+    .newsletter-form { display: flex; align-items: stretch; max-width: 490px; margin: 0 auto; }
+    .newsletter-form input { flex: 1; padding: 0 18px; height: 52px; border: 1px solid rgba(47,47,42,0.18); border-right: none; background: #fff; color: #2f2f2a; font-size: 14px; }
+    .newsletter-form input:focus { outline: none; border-color: #2f2f2a; }
+    .newsletter-form input::placeholder { color: #aaa; }
+    .newsletter-form button { padding: 0 26px; height: 52px; background: #2f2f2a; color: #fff; border: none; cursor: pointer; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; transition: background 0.2s; white-space: nowrap; }
+    .newsletter-form button:hover { background: #444; }
+
+    /* FOOTER */
+    .site-footer { background: #2d2b27; padding: 60px 0 0; }
+    .footer-grid { display: grid; grid-template-columns: 1.4fr repeat(5, 1fr); gap: 30px; padding-bottom: 44px; border-bottom: 1px solid rgba(255,255,255,0.09); }
+    .footer-brand-col { display: grid; gap: 14px; align-content: start; }
+    .footer-logo { display: flex; align-items: center; gap: 10px; }
+    .footer-logo-icon { width: 26px; height: 26px; }
+    .footer-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: #fff; }
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.75; max-width: 28ch; }
+    .footer-socials { display: flex; gap: 14px; margin-top: 2px; }
+    .footer-socials a { color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer-socials a:hover { color: #fff; }
+    .footer-col { display: grid; gap: 0; align-content: start; }
+    .footer-col-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+    .footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+    .footer-col li a { font-size: 13px; color: rgba(255,255,255,0.65); transition: color 0.2s; }
+    .footer-col li a:hover { color: #fff; }
+    .footer-col li a.hl { color: #c9a96e; }
+    .footer-bottom { padding: 18px 0; text-align: center; font-size: 12px; color: rgba(255,255,255,0.28); }
+
+    /* COOKIE */
+    .cookie-banner { position: fixed; right: 20px; bottom: 20px; max-width: 330px; z-index: 1200; background: rgba(252,251,248,0.97); border: 1px solid rgba(47,47,42,0.1); box-shadow: 0 10px 36px rgba(0,0,0,0.11); padding: 16px 16px 14px; display: grid; gap: 11px; transition: opacity 0.2s, transform 0.2s; }
+    .cookie-banner.hide { opacity: 0; transform: translateY(12px); pointer-events: none; }
+    .cookie-banner p { font-size: 13px; color: #6f685f; line-height: 1.6; }
+    .cookie-accept { background: #2f2f2a; color: #fff; border: none; padding: 9px 18px; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; cursor: pointer; align-self: end; justify-self: end; transition: background 0.2s; }
+    .cookie-accept:hover { background: #444; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1060px) {
+      .story-grid, .beyond-grid, .philosophy-grid { grid-template-columns: 1fr; gap: 40px; }
+      .story-image, .beyond-image { aspect-ratio: 1.4 / 1; }
+      .story-image img, .beyond-image img { aspect-ratio: 1.4 / 1; }
+      .path-grid { grid-template-columns: repeat(2, 1fr); }
+      .exp-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr 1fr; }
+      .mosaic-panorama { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 240px); height: auto; }
+      .mosaic-panel.span-rows { grid-row: auto; }
+    }
+    @media (max-width: 700px) {
+      .site-header { padding: 0 20px; }
+      .hero-search { grid-template-columns: 1fr; padding: 14px; gap: 0; }
+      .search-div { display: none; }
+      .sf { padding: 10px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .search-btn { margin: 10px 0 0; justify-content: center; }
+      .hero-links { gap: 16px; }
+      .path-grid { grid-template-columns: 1fr; }
+      .exp-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .philosophy-attrs { grid-template-columns: 1fr; }
+      .year-header, .venue-section-header { grid-template-columns: 1fr; }
+      .mosaic-panorama { grid-template-columns: 1fr; height: auto; grid-template-rows: repeat(6, 200px); }
     }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-logo">The Global Sanctum</div>
-        <div class="sidebar-subtitle">Internal Portal</div>
-      </div>
-      
-      <nav class="sidebar-nav">
-        <div class="nav-section">
-          <a class="nav-item active" href="TGS Internal Portal Home Page V2.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="3" y="3" width="7" height="7" rx="1"/>
-              <rect x="14" y="3" width="7" height="7" rx="1"/>
-              <rect x="3" y="14" width="7" height="7" rx="1"/>
-              <rect x="14" y="14" width="7" height="7" rx="1"/>
-            </svg>
-            Dashboard
-          </a>
-        </div>
 
-        <div class="nav-section">
-          <div class="nav-section-title">Manage</div>
-          <a class="nav-item" href="TGS Internal Portal Venues Page V2.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-              <polyline points="9,22 9,12 15,12 15,22"/>
-            </svg>
-            Venues
-            <span class="nav-badge">47</span>
-          </a>
-          <a class="nav-item" href="TGS Internal Portal - Bookings Dashboard.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
-            </svg>
-            Bookings
-            <span class="nav-badge">3</span>
-          </a>
-          <a class="nav-item" href="TGS Internal Portal Enquiries Dashboard.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-            </svg>
-            Enquiries
-            <span class="nav-badge">5</span>
-          </a>
-        </div>
-
-        <div class="nav-section">
-          <div class="nav-section-title">Contacts</div>
-          <a class="nav-item" href="TGS Internal Portal Venue Owners General Dashboard.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-            Venue Owners
-          </a>
-          <a class="nav-item" href="TGS Internal Portal - Retreat Host General Dashboard.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 16v-4"/>
-              <path d="M12 8h.01"/>
-            </svg>
-            Retreat Hosts
-          </a>
-          <a class="nav-item" href="TGS Internal Portal - Wellness Guest General Dashboard.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 00-3-3.87"/>
-              <path d="M16 3.13a4 4 0 010 7.75"/>
-            </svg>
-            Wellness Guests
-          </a>
-        </div>
-
-        <div class="nav-section">
-          <div class="nav-section-title">Finance</div>
-          <a class="nav-item" href="TGS Internal Portal Subscriptions.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2z"/>
-              <line x1="1" y1="10" x2="23" y2="10"/>
-            </svg>
-            Subscriptions
-          </a>
-          <a class="nav-item" href="TGS Internal Portal Payments.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <line x1="12" y1="1" x2="12" y2="23"/>
-              <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-            </svg>
-            Payments
-          </a>
-        </div>
-
-        <div class="nav-section">
-          <div class="nav-section-title">Content</div>
-          <a class="nav-item" href="TGS Internal Portal The Wellness Edit.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 19l7-7 3 3-7 7-3-3z"/>
-              <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
-              <path d="M2 2l7.586 7.586"/>
-              <circle cx="11" cy="11" r="2"/>
-            </svg>
-            Wellness Edit
-          </a>
-          <a class="nav-item" href="TGS Internal Portal Sanctum Journal.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
-            </svg>
-            Sanctum Journal
-          </a>
-        </div>
-
-        <div class="nav-section">
-          <div class="nav-section-title">Insights</div>
-          <a class="nav-item" href="TGS Internal Portal Analytics.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <line x1="18" y1="20" x2="18" y2="10"/>
-              <line x1="12" y1="20" x2="12" y2="4"/>
-              <line x1="6" y1="20" x2="6" y2="14"/>
-            </svg>
-            Analytics
-          </a>
-        </div>
-
-        <div class="nav-section">
-          <div class="nav-section-title">Team</div>
-          <a class="nav-item" href="TGS Internal Portal Users.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-            </svg>
-            Users
-          </a>
-        </div>
-
-        <div class="nav-section">
-          <a class="nav-item" href="TGS Internal Portal Settings.html">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
-            </svg>
-            Settings
-          </a>
-        </div>
-      </nav>
-
-      <div class="user-menu">
-        <div class="user-avatar">K</div>
-        <div class="user-info">
-          <div class="user-name">Kate</div>
-          <div class="user-role">Administrator</div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-      <!-- Page Header -->
-      <header class="page-header">
-        <div>
-          <h1 class="page-title">Dashboard</h1>
-          <p class="page-subtitle">Welcome back, Kate. Here's what's happening today.</p>
-        </div>
-        <div class="header-actions">
-          <button class="btn btn-secondary">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-              <polyline points="17,8 12,3 7,8"/>
-              <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
-            Export
-          </button>
-          <button class="btn btn-primary">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-            Add Venue
-          </button>
-        </div>
-      </header>
-
-      <!-- Stats Cards -->
-      <section class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total Venues</div>
-          <div class="stat-value">47</div>
-          <div class="stat-change positive">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
-              <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
-            </svg>
-            +12 this month
-          </div>
-          <div class="stat-breakdown">32 Active · 10 Draft · 5 Inactive</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-label">Bookings This Month</div>
-          <div class="stat-value">23</div>
-          <div class="stat-change positive">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
-              <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
-            </svg>
-            +18% vs last month
-          </div>
-          <div class="stat-breakdown">19 Confirmed · 3 Pending · 1 Cancelled</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-label">Revenue MTD</div>
-          <div class="stat-value">$14,280</div>
-          <div class="stat-change positive">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
-              <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
-            </svg>
-            +24% vs last month
-          </div>
-          <div class="stat-breakdown">$8,420 Subscriptions · $5,860 Commissions</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-label">Total Contacts</div>
-          <div class="stat-value">312</div>
-          <div class="stat-change positive">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
-              <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
-            </svg>
-            +8 new this week
-          </div>
-          <div class="stat-breakdown">189 Guests · 76 Hosts · 47 Owners</div>
-        </div>
-      </section>
-
-      <!-- Alerts Section -->
-      <section class="alerts-section">
-        <div class="section-header">
-          <h2 class="section-title">Requires Attention</h2>
-          <a href="#" class="card-action">View All</a>
-        </div>
-        <div class="alerts-grid">
-          <div class="alert-card warning">
-            <div class="alert-count">5</div>
-            <div class="alert-text">
-              <div class="alert-title">New Enquiries</div>
-              <div class="alert-subtitle">Awaiting response</div>
-            </div>
-          </div>
-          <div class="alert-card warning">
-            <div class="alert-count">3</div>
-            <div class="alert-text">
-              <div class="alert-title">Pending Bookings</div>
-              <div class="alert-subtitle">Awaiting confirmation</div>
-            </div>
-          </div>
-          <div class="alert-card error">
-            <div class="alert-count">1</div>
-            <div class="alert-text">
-              <div class="alert-title">Failed Payment</div>
-              <div class="alert-subtitle">Subscription renewal failed</div>
-            </div>
-          </div>
-          <div class="alert-card info">
-            <div class="alert-count">5</div>
-            <div class="alert-text">
-              <div class="alert-title">Incomplete Profiles</div>
-              <div class="alert-subtitle">Venues missing key info</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Content Grid -->
-      <section class="content-grid">
-        <!-- Quick Actions -->
-        <div class="content-card">
-          <div class="card-header">
-            <h3 class="card-title">Quick Actions</h3>
-          </div>
-          <div class="card-body">
-            <div class="quick-actions">
-              <div class="quick-action">
-                <div class="quick-action-icon">
-                  <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="#313131" stroke-width="1.5">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                    <line x1="12" y1="12" x2="12" y2="16"/>
-                    <line x1="10" y1="14" x2="14" y2="14"/>
-                  </svg>
-                </div>
-                <div class="quick-action-text">
-                  <div class="quick-action-title">Add New Venue</div>
-                  <div class="quick-action-subtitle">Create a new listing</div>
-                </div>
-              </div>
-              <div class="quick-action">
-                <div class="quick-action-icon">
-                  <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="#313131" stroke-width="1.5">
-                    <rect x="3" y="4" width="18" height="18" rx="2"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                    <circle cx="8" cy="15" r="1" fill="#313131"/>
-                  </svg>
-                </div>
-                <div class="quick-action-text">
-                  <div class="quick-action-title">View Pending Bookings</div>
-                  <div class="quick-action-subtitle">3 awaiting review</div>
-                </div>
-              </div>
-              <div class="quick-action">
-                <div class="quick-action-icon">
-                  <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="#313131" stroke-width="1.5">
-                    <line x1="12" y1="1" x2="12" y2="23"/>
-                    <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-                  </svg>
-                </div>
-                <div class="quick-action-text">
-                  <div class="quick-action-title">Process Payouts</div>
-                  <div class="quick-action-subtitle">$2,340 ready to send</div>
-                </div>
-              </div>
-              <div class="quick-action">
-                <div class="quick-action-icon">
-                  <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="#313131" stroke-width="1.5">
-                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-                    <circle cx="9" cy="7" r="4"/>
-                    <line x1="19" y1="8" x2="19" y2="14"/>
-                    <line x1="16" y1="11" x2="22" y2="11"/>
-                  </svg>
-                </div>
-                <div class="quick-action-text">
-                  <div class="quick-action-title">View New Users</div>
-                  <div class="quick-action-subtitle">8 registered this week</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="content-card">
-          <div class="card-header">
-            <h3 class="card-title">Recent Activity</h3>
-            <a href="#" class="card-action">View All</a>
-          </div>
-          <div class="card-body">
-            <ul class="activity-list">
-              <li class="activity-item">
-                <div class="activity-dot booking"></div>
-                <div class="activity-content">
-                  <div class="activity-text"><strong>Sarah Mitchell</strong> booked <strong>Moraea Farm</strong></div>
-                  <div class="activity-time">12 minutes ago</div>
-                </div>
-              </li>
-              <li class="activity-item">
-                <div class="activity-dot venue"></div>
-                <div class="activity-content">
-                  <div class="activity-text">New venue added: <strong>Curraweena House</strong></div>
-                  <div class="activity-time">2 hours ago</div>
-                </div>
-              </li>
-              <li class="activity-item">
-                <div class="activity-dot payment"></div>
-                <div class="activity-content">
-                  <div class="activity-text">Payment received: <strong>$490</strong> from Byron Wellness Retreat</div>
-                  <div class="activity-time">3 hours ago</div>
-                </div>
-              </li>
-              <li class="activity-item">
-                <div class="activity-dot user"></div>
-                <div class="activity-content">
-                  <div class="activity-text"><strong>Tom Cronin</strong> registered as Retreat Host</div>
-                  <div class="activity-time">5 hours ago</div>
-                </div>
-              </li>
-              <li class="activity-item">
-                <div class="activity-dot booking"></div>
-                <div class="activity-content">
-                  <div class="activity-text">Booking confirmed: <strong>Anna's Nutrition Retreat</strong></div>
-                  <div class="activity-time">Yesterday</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-    </main>
+<!-- HEADER -->
+<header class="site-header" id="site-header">
+  <div class="header-left" id="menu-toggle" role="button" tabindex="0" aria-label="Open navigation">
+    <div class="hamburger-lines"><span></span><span></span><span></span></div>
+    <span class="menu-label">Menu</span>
   </div>
+  <div class="header-center">
+    <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="20" cy="20" r="17" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.65"/>
+      <path d="M20 5.5 C20 5.5 27 12.5 27 20 C27 27.5 20 34.5 20 34.5 C20 34.5 13 27.5 13 20 C13 12.5 20 5.5 20 5.5Z" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.85"/>
+      <path d="M5.5 20 C5.5 20 12.5 13 20 13 C27.5 13 34.5 20 34.5 20 C34.5 20 27.5 27 20 27 C12.5 27 5.5 20 5.5 20Z" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.85"/>
+      <circle cx="20" cy="20" r="2.8" fill="currentColor" opacity="0.9"/>
+    </svg>
+    <span class="logo-text">The Global Sanctum</span>
+  </div>
+  <div class="header-right"></div>
+</header>
+
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menu-overlay" aria-hidden="true">
+  <div class="menu-header">
+    <button class="menu-close" id="menu-close" aria-label="Close menu">&times;</button>
+    <span class="menu-label">MENU</span>
+    <div style="width: 24px;"></div>
+  </div>
+  <div class="menu-inner">
+    <div class="menu-section">
+      <div class="menu-section-label">DISCOVER</div>
+      <ul class="menu-nav">
+        <li><a href="tgs_venues.html">Explore Venues</a></li>
+        <li><a href="tgs_wellness_experiences_v6.html">Wellness Experiences</a></li>
+      </ul>
+    </div>
+    <div class="menu-section">
+      <div class="menu-section-label">LEARN</div>
+      <ul class="menu-nav">
+        <li><a href="tgs_about_v4.html">About Us</a></li>
+        <li><a href="tgs_how_it_works_v4 (2).html">How It Works</a></li>
+        <li><a href="tgs_wellness_edit_v2 (1).html">The Wellness Edit</a></li>
+      </ul>
+    </div>
+    <div class="menu-section">
+      <div class="menu-section-label">CONNECT</div>
+      <ul class="menu-nav">
+        <li><a href="tgs_contact_v4.html">Contact Us</a></li>
+        <li><a href="tgs_list_your_venue_v4.html">List Your Venue</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" aria-label="Hero">
+  <div class="hero-bg" role="img" aria-label="Person meditating in a sacred natural site"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">The Global Sanctum</p>
+    <h1>Thoughtfully Curated.<br>Globally Connected.</h1>
+    <p class="hero-sub">Discover exceptional retreat venues and wellness sanctuaries around the world.</p>
+    <form class="hero-search" action="#" aria-label="Search retreats">
+      <div class="sf">
+        <label for="dest">Destination</label>
+        <select id="dest" name="destination">
+          <option>Where to?</option>
+          <option>Asia Pacific</option>
+          <option>Europe</option>
+          <option>The Americas</option>
+          <option>Australia &amp; Oceania</option>
+        </select>
+      </div>
+      <div class="search-div" aria-hidden="true"></div>
+      <div class="sf">
+        <label for="vtype">Venue Type</label>
+        <select id="vtype" name="venue-type">
+          <option>Any type</option>
+          <option>Retreat Venue</option>
+          <option>Wellness Studio</option>
+          <option>Spa &amp; Thermal</option>
+          <option>Eco Lodge</option>
+        </select>
+      </div>
+      <div class="search-div" aria-hidden="true"></div>
+      <div class="sf">
+        <label for="sett">Setting</label>
+        <select id="sett" name="setting">
+          <option>Any setting</option>
+          <option>Mountain</option>
+          <option>Beach &amp; Coastal</option>
+          <option>Forest &amp; Jungle</option>
+          <option>Desert</option>
+        </select>
+      </div>
+      <div class="search-div" aria-hidden="true"></div>
+      <div class="sf">
+        <label for="gsts">Guests</label>
+        <select id="gsts" name="guests">
+          <option>How many?</option>
+          <option>1-10 guests</option>
+          <option>11-20 guests</option>
+          <option>21-40 guests</option>
+          <option>40+ guests</option>
+        </select>
+      </div>
+      <button class="search-btn" type="submit">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+        Search
+      </button>
+    </form>
+    <div class="hero-links">
+      <a class="hero-link" href="#ways">Browse Retreat Venues &nbsp;&#8594;</a>
+      <a class="hero-link" href="#ways">Explore Wellness Venues &nbsp;&#8594;</a>
+      <a class="hero-link" href="#experiences">Discover Experiences &nbsp;&#8594;</a>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<!-- SECTION 2: STORY -->
+<section class="section" id="story" aria-labelledby="story-title">
+  <div class="container story-grid">
+    <div>
+      <p class="eyebrow">A New Era of Wellness Discovery</p>
+      <h2 class="story-heading" id="story-title">
+        The spaces where wellness happens. <em>The venues where retreats come to life.</em> Curated and connected worldwide.
+      </h2>
+      <div class="story-body">
+        <p>We are the world&#8217;s first curated platform dedicated exclusively to transformative wellness venues and retreat spaces.</p>
+        <p>Whether you&#8217;re a retreat host seeking the perfect venue, a wellness guest designing your next journey, or simply seeking restoration, The Global Sanctum connects you with extraordinary spaces around the world.</p>
+      </div>
+      <a class="text-link" href="#philosophy">Discover Our Story &nbsp;&#8594;</a>
+    </div>
+    <div class="story-image">
+      <img src="images/Ayurveda%20Shirodhara%20Nordic%20Filter.jpg" alt="Oil massage treatment" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: DISCOVER DIFFERENTLY -->
+<section class="section" id="discover" style="background:#f0ede8;" aria-labelledby="discover-title">
+  <div class="container">
+    <div class="discover-header">
+      <p class="eyebrow">Discover Differently</p>
+      <h2 class="discover-heading" id="discover-title">Explore Intentional Spaces Around The World</h2>
+      <p class="discover-lede">From soul-restoring coastal sanctuaries to mountain retreats where silence does the work. Thermal springs rising from volcanic earth, forest hideaways hidden in ancient canopy &#8212; spaces where wellness lives in the foundations.</p>
+    </div>
+    <div class="mosaic-panorama">
+      <a class="mosaic-panel span-rows" href="#" aria-label="Coastal Sanctuaries">
+        <img src="images/Beach%20With%20Boat%20Rainforest%20Aerial%20Nordic%20Filter.png" alt="Coastal cliffs and ocean sanctuary" loading="lazy">
+        <span class="mosaic-label">Coastal Sanctuaries</span>
+      </a>
+      <a class="mosaic-panel" href="#" aria-label="Forest Hideaways">
+        <img src="images/Misty%20Forest%20Nordic%20Filter.png" alt="Misty forest hideaway" loading="lazy">
+        <span class="mosaic-label">Forest Hideaways</span>
+      </a>
+      <a class="mosaic-panel" href="#" aria-label="Desert Retreats">
+        <img src="images/Australia%20Uluru%20Nordic%20Filter.png" alt="Red rock desert landscape" loading="lazy">
+        <span class="mosaic-label">Desert Retreats</span>
+      </a>
+      <a class="mosaic-panel" href="#" aria-label="Mountain Sanctuaries">
+        <img src="images/Meditation%20Black%20%26%20White%20Mountain.jpg" alt="Yoga in misty mountains" loading="lazy">
+        <span class="mosaic-label">Mountain Sanctuaries</span>
+      </a>
+      <a class="mosaic-panel" href="#" aria-label="Tropical Hideaways">
+        <img src="images/Misty%20Jungle%20Forest%20Nordic%20Filter.png" alt="Tropical jungle forest" loading="lazy">
+        <span class="mosaic-label">Tropical Hideaways</span>
+      </a>
+      <a class="mosaic-panel span-rows" href="#" aria-label="Sacred Temple Retreats">
+        <img src="images/Bali%20Pool%20Nordic%20Filter.png" alt="Bali sacred temple with reflection" loading="lazy">
+        <span class="mosaic-label">Sacred Temples</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: FIND YOUR PATH -->
+<section class="section" id="ways" aria-labelledby="ways-title">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:44px;">
+      <p class="eyebrow">Find Your Path</p>
+      <h2 class="section-title" id="ways-title">Four Ways to Discover</h2>
+      <p style="font-size:14px;color:#6f685f;max-width:60ch;margin:14px auto 0;line-height:1.85;">From thermal springs to forest sanctuaries, coastal retreats to mountain hideaways. Spaces where restoration isn&#8217;t an afterthought &#8212; it&#8217;s the foundation.</p>
+    </div>
+    <div class="path-grid">
+      <a class="path-card" href="#" aria-label="Retreat Venues">
+        <img src="images/Jungle%20Cabin%20Nordic%20Filter.png" alt="Retreat venue in jungle" loading="lazy">
+        <div class="path-card-content">
+          <div class="path-card-title">Retreat Venues</div>
+          <div class="path-card-sub">Exclusive-use spaces built for transformation.</div>
+          <span class="path-card-cta">Explore Venues &nbsp;&#8594;</span>
+        </div>
+      </a>
+      <a class="path-card" href="#" aria-label="Wellness Venues">
+        <img src="images/Woman%20Hot%20Stone%20Silhouette%20Nordic%20Filter.png" alt="Hot stone massage wellness venue" loading="lazy">
+        <div class="path-card-content">
+          <div class="path-card-title">Wellness Venues</div>
+          <div class="path-card-sub">Sanctuaries where wellness is woven into every architectural detail.</div>
+          <span class="path-card-cta">Discover Stays &nbsp;&#8594;</span>
+        </div>
+      </a>
+      <a class="path-card" href="#" aria-label="Wellness Experiences">
+        <img src="images/Woman%20In%20Spa%20Dark%20Tiles%20Nordic%20Filter.png" alt="Wellness spa experience" loading="lazy">
+        <div class="path-card-content">
+          <div class="path-card-title">Wellness Experiences</div>
+          <div class="path-card-sub">Thermal springs, ancient healing traditions, and practices that restore.</div>
+          <span class="path-card-cta">Book Experiences &nbsp;&#8594;</span>
+        </div>
+      </a>
+      <a class="path-card" href="#" aria-label="Wellness Insights">
+        <img src="images/Woman%20Eyes%20Closed%20Meditate%20Nordic%20Filter.png" alt="Meditation wellness insights" loading="lazy">
+        <div class="path-card-content">
+          <div class="path-card-title">Wellness Insights</div>
+          <div class="path-card-sub">Stories, guides, and inspiration from the global wellness community.</div>
+          <span class="path-card-cta">Browse Articles &nbsp;&#8594;</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: THE YEAR AHEAD -->
+<section class="section" id="experiences" aria-labelledby="experiences-title">
+  <div class="container">
+    <div class="year-header">
+      <div>
+        <p class="eyebrow">The Year Ahead</p>
+        <h2 class="year-heading" id="experiences-title">Defining Wellness Experiences for 2026</h2>
+      </div>
+      <a class="link-arrow" href="#">Explore All Experiences &nbsp;&#8594;</a>
+    </div>
+    <div class="exp-grid">
+      <article class="exp-card">
+        <div class="exp-image"><img src="images/Reiki%20Image%20Nordic%20Filter.png" alt="Thermal bathing ritual" loading="lazy"></div>
+        <p class="exp-tag">Hydrotherapy</p>
+        <h3 class="exp-title">Thermal Bathing Rituals</h3>
+        <p class="exp-desc">Ancient waters, volcanic springs, and the art of restoration through heat and cold.</p>
+      </article>
+      <article class="exp-card">
+        <div class="exp-image"><img src="images/Black%20%26%20White%20Massage%20Nordic%20Filter.png" alt="Sound healing massage" loading="lazy"></div>
+        <p class="exp-tag">Sound Therapy</p>
+        <h3 class="exp-title">Vibrational Sound Journeys</h3>
+        <p class="exp-desc">Crystal bowls, gongs, and frequencies that recalibrate the nervous system.</p>
+      </article>
+      <article class="exp-card">
+        <div class="exp-image"><img src="images/Misty%20Forest%20Nordic%20Filter.png" alt="Forest bathing shinrin yoku" loading="lazy"></div>
+        <p class="exp-tag">Nature Immersion</p>
+        <h3 class="exp-title">Forest Bathing &amp; Shinrin-Yoku</h3>
+        <p class="exp-desc">The Japanese art of forest medicine and intentional nature connection.</p>
+      </article>
+      <article class="exp-card">
+        <div class="exp-image"><img src="images/Breathwork%20lying%20down%20Nordic%20Filter.png" alt="Breathwork conscious breathing" loading="lazy"></div>
+        <p class="exp-tag">Breathwork</p>
+        <h3 class="exp-title">Conscious Breathing Practices</h3>
+        <p class="exp-desc">Holotropic, Wim Hof, and pranayama traditions for deep transformation.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: PREMIUM COLLECTION -->
+<section class="section" id="premium" aria-labelledby="premium-title">
+  <div class="container">
+    <div class="venue-section-header">
+      <div>
+        <p class="eyebrow">Intentionally Curated</p>
+        <h2 class="venue-section-heading" id="premium-title">Our Premium Collection</h2>
+        <p class="venue-section-lede">The most exceptional wellness and retreat venues, offering unparalleled experiences in extraordinary settings.</p>
+      </div>
+      <div style="padding-top:6px;"><a class="link-arrow" href="#">Explore Premium Venues &nbsp;&#8594;</a></div>
+    </div>
+    <div data-carousel="premium">
+      <div class="carousel-nav">
+        <button class="car-btn" data-prev aria-label="Previous">&#8592;</button>
+        <button class="car-btn" data-next aria-label="Next">&#8594;</button>
+        <div class="car-dots">
+          <span class="car-dot active"></span><span class="car-dot"></span><span class="car-dot"></span><span class="car-dot"></span><span class="car-dot"></span>
+        </div>
+      </div>
+      <div class="carousel-track">
+        <article class="venue-card">
+          <div class="venue-card-media"><img src="images/Beach%20With%20Boat%20Rainforest%20Aerial%20Nordic%20Filter.png" alt="Float and Flow" loading="lazy"><span class="venue-badge">Brooklyn</span></div>
+          <div class="venue-card-body">
+            <p class="venue-loc">Brooklyn, Australia</p>
+            <h3 class="venue-name">Float &amp; Flow</h3>
+            <p class="venue-desc-text">Floating river retreat on the Hawkesbury with purpose-built pavilions on water.</p>
+            <p class="venue-tags">Wellness Retreat &middot; Yoga Retreat</p>
+            <a class="venue-explore" href="#">Explore Venue &nbsp;&#8594;</a>
+          </div>
+        </article>
+        <article class="venue-card">
+          <div class="venue-card-media"><img src="images/Sauna%20Modern%20Nordic%20Filter.png" alt="Serenity Springs" loading="lazy"><span class="venue-badge">Katoomba</span></div>
+          <div class="venue-card-body">
+            <p class="venue-loc">Katoomba, Australia</p>
+            <h3 class="venue-name">Serenity Springs</h3>
+            <p class="venue-desc-text">Natural hot spring retreat in the Blue Mountains with mineral pools and forest meditation.</p>
+            <p class="venue-tags">Wellness Retreat &middot; Yoga Retreat</p>
+            <a class="venue-explore" href="#">Explore Venue &nbsp;&#8594;</a>
+          </div>
+        </article>
+        <article class="venue-card">
+          <div class="venue-card-media"><img src="images/Moroccan%20Pool%20Scandi%20Filter.png" alt="Kyoto Onsen" loading="lazy"><span class="venue-badge">Hahndorf</span></div>
+          <div class="venue-card-body">
+            <p class="venue-loc">Hahndorf, Australia</p>
+            <h3 class="venue-name">Kyoto Onsen</h3>
+            <p class="venue-desc-text">Japanese-inspired onsen retreat in the Adelaide Hills with mineral springs and zen gardens.</p>
+            <p class="venue-tags">Wellness Retreat &middot; Cultural Retreat</p>
+            <a class="venue-explore" href="#">Explore Venue &nbsp;&#8594;</a>
+          </div>
+        </article>
+        <article class="venue-card">
+          <div class="venue-card-media"><img src="images/Bali%20Pool%20Nordic%20Filter.png" alt="Rapture Surfcamp Bali" loading="lazy"><span class="venue-badge">Bali</span></div>
+          <div class="venue-card-body">
+            <p class="venue-loc">Bali, Indonesia</p>
+            <h3 class="venue-name">Rapture Surfcamp Bali</h3>
+            <p class="venue-desc-text">A tropical retreat designed for surfing, wellness, and meaningful connection.</p>
+            <p class="venue-tags">Wellness Retreat &middot; Surf Retreat</p>
+            <a class="venue-explore" href="#">Explore Venue &nbsp;&#8594;</a>
+          </div>
+        </article>
+        <article class="venue-card">
+          <div class="venue-card-media"><img src="images/Oriental%20Building%20Nordic%20Filter.png" alt="Sunshine Retreat" loading="lazy"><span class="venue-badge">Nafplio</span></div>
+          <div class="venue-card-body">
+            <p class="venue-loc">Nafplio, Greece</p>
+            <h3 class="venue-name">Sunshine Retreat Venue</h3>
+            <p class="venue-desc-text">Where expansion and tranquility comes naturally in the Peloponnese.</p>
+            <p class="venue-tags">Dedicated Retreat Centre</p>
+            <a class="venue-explore" href="#">Explore Venue &nbsp;&#8594;</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: RUMI QUOTE -->
+<div class="quote-banner" role="blockquote">
+  <p class="quote-text">&#8220;Let yourself be silently drawn by the strange pull of what you really love. It will not lead you astray.&#8221;</p>
+  <p class="quote-attr">&#8212; Rumi</p>
+</div>
+
+<!-- SECTION 8: FEATURED SANCTUARIES -->
+<section class="section" id="featured" aria-labelledby="featured-title">
+  <div class="container">
+    <div class="venue-section-header">
+      <div>
+        <p class="eyebrow">Featured Sanctuaries</p>
+        <h2 class="venue-section-heading" id="featured-title">Our Collection of Featured Venues</h2>
+        <p class="venue-section-lede">From Japanese onsen to Greek island retreats. Mountain sanctuaries to coastal hideaways. Spaces where the environment does half the healing.</p>
+      </div>
+      <div style="padding-top:6px;"><a class="link-arrow" href="#">Explore All Venues &nbsp;&#8594;</a></div>
+    </div>
+    <div data-carousel="featured">
+      <div class="carousel-nav">
+        <button class="car-btn" data-prev aria-label="Previous">&#8592;</button>
+        <button class="car-btn" data-next aria-label="Next">&#8594;</button>
+        <div class="car-dots">
+          <span class="car-dot active"></span><span class="car-dot"></span><span class="car-dot"></span><span class="car-dot"></span><span class="car-dot"></span>
+        </div>
+      </div>
+      <div class="carousel-track">
+        <article class="venue-card">
+          <div class="venue-card-media"><img src="images/Sauna%20Modern%20Nordic%20Filter.png" alt="Serenity Springs" loading="lazy"><span class="venue-badge">Katoomba</span></div>
+          <div class="venue-card-body">
+            <p class="venue-loc">Katoomba, Australia</p>
+            <h3 class="venue-name">Serenity Springs</h3>
+            <a class="venue-explore" href="#">Explore Venue &nbsp;&#8594;</a>
+          </div>
+        </article>
+        <article class="venue-card">
+          <div class="venue-card-media"><img src="images/Meditation%20Room%20Nordic%20Filter.png" alt="Urban Oasis Melbourne" loading="lazy"><span class="venue-badge">Melbourne</span></div>
+          <div class="venue-card-body">
+            <p class="venue-loc">Melbourne, Australia</p>
+            <h3 class="venue-name">Urban Oasis</h3>
+            <a class="venue-explore" href="#">Explore Venue &nbsp;&#8594;</a>
+          </div>
+        </article>
+        <article class="venue-card">
+          <div class="venue-card-media"><img src="images/Meditation%20Black%20%26%20White%20Mountain.jpg" alt="Alpine Wellness Retreat" loading="lazy"><span class="venue-badge">Mount Hotham</span></div>
+          <div class="venue-card-body">
+            <p class="venue-loc">Mount Hotham, Australia</p>
+            <h3 class="venue-name">Alpine Wellness Retreat</h3>
+            <a class="venue-explore" href="#">Explore Venue &nbsp;&#8594;</a>
+          </div>
+        </article>
+        <article class="venue-card">
+          <div class="venue-card-media"><img src="images/Misty%20Forest%20Nordic%20Filter.png" alt="Sacred Valley Retreat" loading="lazy"><span class="venue-badge">Strahan</span></div>
+          <div class="venue-card-body">
+            <p class="venue-loc">Strahan, Australia</p>
+            <h3 class="venue-name">Sacred Valley Retreat</h3>
+            <a class="venue-explore" href="#">Explore Venue &nbsp;&#8594;</a>
+          </div>
+        </article>
+        <article class="venue-card">
+          <div class="venue-card-media"><img src="images/Moroccan%20Pool%20Scandi%20Filter.png" alt="Kyoto Onsen" loading="lazy"><span class="venue-badge">Hahndorf</span></div>
+          <div class="venue-card-body">
+            <p class="venue-loc">Hahndorf, Australia</p>
+            <h3 class="venue-name">Kyoto Onsen</h3>
+            <a class="venue-explore" href="#">Explore Venue &nbsp;&#8594;</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9: SEARCH BEYOND THE SURFACE -->
+<section class="section" aria-labelledby="beyond-title">
+  <div class="container beyond-grid">
+    <div class="beyond-image">
+      <img src="images/Ayurveda%20Shirodhara%20Nordic%20Filter.jpg" alt="Oil pouring massage treatment" loading="lazy">
+    </div>
+    <div>
+      <p class="eyebrow">Discover Intentionally</p>
+      <h2 class="beyond-heading" id="beyond-title">Search Beyond The Surface</h2>
+      <p class="beyond-intro">Search for what truly matters &#8212; the practices supported, the experiences felt, the spaces designed, the environments created &#8212; not just where and when.</p>
+      <div>
+        <div class="beyond-item">
+          <div class="beyond-item-title">By Modality</div>
+          <p class="beyond-item-desc">Yoga, breathwork, plant medicine, somatic work, sound healing, permaculture and more.</p>
+        </div>
+        <div class="beyond-item">
+          <div class="beyond-item-title">By Location</div>
+          <p class="beyond-item-desc">Coastal sanctuaries, mountain temples, thermal springs, tropical hideaways.</p>
+        </div>
+        <div class="beyond-item">
+          <div class="beyond-item-title">By Wellness Type</div>
+          <p class="beyond-item-desc">Ayurvedic, traditional Chinese medicine, thermal hydrotherapy, cryotherapy.</p>
+        </div>
+        <div class="beyond-item">
+          <div class="beyond-item-title">By Architecture</div>
+          <p class="beyond-item-desc">Eco lodges, heritage properties, purpose-built centres, minimalist sanctuaries.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 10: OUR PHILOSOPHY -->
+<section class="section" id="philosophy" aria-labelledby="philosophy-title">
+  <div class="container philosophy-grid">
+    <div>
+      <p class="eyebrow">Our Philosophy</p>
+      <h2 class="philosophy-heading" id="philosophy-title">Spaces That Hold Intention In Their Foundations</h2>
+      <div class="philosophy-body">
+        <p>We believe that where you practice matters as much as how you practice. That architecture can amplify intention. That the right environment becomes a silent teacher.</p>
+        <p>Every venue in our collection has been selected not just for its beauty, but for its capacity to hold transformation &#8212; spaces built with the same care that practitioners bring to their work.</p>
+      </div>
+      <div class="philosophy-attrs">
+        <div class="phil-attr">
+          <div class="phil-attr-title">Intentional Design</div>
+          <p class="phil-attr-desc">Spaces built for practice, not adapted to it.</p>
+        </div>
+        <div class="phil-attr">
+          <div class="phil-attr-title">Natural Materials</div>
+          <p class="phil-attr-desc">Stone, wood, water &#8212; elements that ground.</p>
+        </div>
+        <div class="phil-attr">
+          <div class="phil-attr-title">Cultural Integrity</div>
+          <p class="phil-attr-desc">Traditions honoured, not commodified.</p>
+        </div>
+        <div class="phil-attr">
+          <div class="phil-attr-title">Environmental Harmony</div>
+          <p class="phil-attr-desc">Built with the land, not against it.</p>
+        </div>
+      </div>
+    </div>
+    <div class="phil-images">
+      <div class="phil-img-main">
+        <img src="images/Woman%20Hot%20Stone%20Silhouette%20Nordic%20Filter.png" alt="Hot stone massage" loading="lazy">
+      </div>
+      <div class="phil-img-row">
+        <div class="phil-img-small"><img src="images/Woman%20Meditating%20In%20Sacred%20Site%20Nordic%20Filter.png" alt="Yoga at sunset" loading="lazy"></div>
+        <div class="phil-img-small"><img src="images/Misty%20Forest%20Nordic%20Filter.png" alt="Misty forest" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 11: NEWSLETTER -->
+<section class="newsletter-section" id="newsletter" aria-labelledby="newsletter-title">
+  <div class="container">
+    <p class="newsletter-eyebrow">Stay Connected</p>
+    <h2 class="newsletter-heading" id="newsletter-title">Join The Community</h2>
+    <p class="newsletter-sub">Featured venues, practitioner spotlights, wellness discoveries, and our global calendar of retreats. Curated for the Sanctum community, delivered weekly.</p>
+    <form class="newsletter-form" action="#" aria-label="Subscribe to newsletter">
+      <input type="email" name="email" placeholder="Your email address" aria-label="Email address" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer" id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand-col">
+        <div class="footer-logo">
+          <svg class="footer-logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="20" cy="20" r="17" stroke="#c9a96e" stroke-width="1.2" fill="none" opacity="0.7"/>
+            <path d="M20 5.5 C20 5.5 27 12.5 27 20 C27 27.5 20 34.5 20 34.5 C20 34.5 13 27.5 13 20 C13 12.5 20 5.5 20 5.5Z" stroke="#c9a96e" stroke-width="1.2" fill="none"/>
+            <path d="M5.5 20 C5.5 20 12.5 13 20 13 C27.5 13 34.5 20 34.5 20 C34.5 20 27.5 27 20 27 C12.5 27 5.5 20 5.5 20Z" stroke="#c9a96e" stroke-width="1.2" fill="none"/>
+            <circle cx="20" cy="20" r="2.8" fill="#c9a96e"/>
+          </svg>
+          <span class="footer-brand-name">The Global Sanctum</span>
+        </div>
+        <p class="footer-tagline">Extraordinary retreat spaces, wellness venues, and the experiences they hold &#8212; curated and connected worldwide.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/profile.php?id=61577706717526" target="_blank" rel="noreferrer" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/theglobalsanctum/" target="_blank" rel="noreferrer" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/the-global-sanctum/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-heading">About TGS</div>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">How It Works</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-heading">Discover</div>
+        <ul>
+          <li><a href="#">Retreat Venues</a></li>
+          <li><a href="#">Wellness Venues</a></li>
+          <li><a href="#">Experiences</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-heading">Partner With Us</div>
+        <ul>
+          <li><a href="#">List Your Venue</a></li>
+          <li><a href="#">Press &amp; Media</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-heading">Resources</div>
+        <ul>
+          <li><a href="#" class="hl">The Wellness Edit</a></li>
+          <li><a href="#" class="hl">Join the Journal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-heading">Legal</div>
+        <ul>
+          <li><a href="#">Terms &amp; Conditions</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookies Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">&#169; 2026 The Global Sanctum. All rights reserved.</div>
+  </div>
+</footer>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <p>We use cookies to improve your experience. By continuing to browse, you agree to our use of cookies.</p>
+  <button class="cookie-accept" id="accept-cookies" type="button">Accept All</button>
+</div>
+
+<script>
+  // Header solid on scroll
+  const hdr = document.getElementById('site-header');
+  const updateHeader = () => hdr.classList.toggle('solid', window.scrollY > 50);
+  window.addEventListener('scroll', updateHeader, { passive: true });
+  updateHeader();
+
+  // Menu overlay
+  const overlay = document.getElementById('menu-overlay');
+  const openMenu = () => { overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
+  const closeMenu = () => { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
+  document.getElementById('menu-toggle').addEventListener('click', openMenu);
+  document.getElementById('menu-toggle').addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') openMenu(); });
+  document.getElementById('menu-close').addEventListener('click', closeMenu);
+  overlay.addEventListener('click', e => { if(e.target===overlay) closeMenu(); });
+  overlay.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+  // Carousels
+  document.querySelectorAll('[data-carousel]').forEach(c => {
+    const track = c.querySelector('.carousel-track');
+    const prevBtn = c.querySelector('[data-prev]');
+    const nextBtn = c.querySelector('[data-next]');
+    const dotEls = c.querySelectorAll('.car-dot');
+    let idx = 0;
+    const cardW = () => { const el = track.children[0]; return el ? el.offsetWidth + 20 : 300; };
+    const setDots = () => dotEls.forEach((d,i) => d.classList.toggle('active', i===idx));
+    prevBtn?.addEventListener('click', () => { idx = Math.max(0, idx-1); track.scrollBy({left:-cardW(),behavior:'smooth'}); setDots(); });
+    nextBtn?.addEventListener('click', () => { idx = Math.min(dotEls.length-1, idx+1); track.scrollBy({left:cardW(),behavior:'smooth'}); setDots(); });
+    dotEls.forEach((d,i) => d.addEventListener('click', () => { const diff=i-idx; idx=i; track.scrollBy({left:diff*cardW(),behavior:'smooth'}); setDots(); }));
+  });
+
+  // Cookie
+  document.getElementById('accept-cookies')?.addEventListener('click', () => document.getElementById('cookie-banner').classList.add('hide'));
+</script>
 </body>
 </html>

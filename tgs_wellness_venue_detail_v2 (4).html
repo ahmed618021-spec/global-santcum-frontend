@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en-AU">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         WELLNESS VENUE DETAIL PAGE â€” TEMPLATE
-         â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WELLNESS VENUE DETAIL PAGE — TEMPLATE
+         ─────────────────────────────────────────────────────────────────────
          Production note (Kane's team):
 
          All {{venue.*}} values below are placeholders to be filled by Supabase
@@ -13,13 +13,13 @@
          hardcoded in the body for visual preview; in production both <head>
          and <body> will template from the same venue record.
 
-         CRITICAL â€” SERVICE-TO-MODALITY WIRING (this is the Wellness Venue
+         CRITICAL — SERVICE-TO-MODALITY WIRING (this is the Wellness Venue
          specific concern beyond the standard overhaul):
 
          Each Service that a wellness venue offers MUST be tagged with both:
-           1. categoryId â€” FK to Modalities table where parentCategory IS NULL
+           1. categoryId — FK to Modalities table where parentCategory IS NULL
               (one of the 14 modality categories from Taxonomy doc Part 2)
-           2. practiceId â€” FK to Modalities table where parentCategory = the
+           2. practiceId — FK to Modalities table where parentCategory = the
               chosen categoryId (one of the ~91 practices)
 
          Both fields are REQUIRED on the Service record. The portal Service
@@ -47,20 +47,20 @@
          separate generated pages that query the link table to list venues.
 
          New venue-level field required (not in current Airtable/Supabase):
-           - primaryCategoryId â€” single-select FK to Modalities top-level
+           - primaryCategoryId — single-select FK to Modalities top-level
              categories. Used for the breadcrumb hierarchy and the page's
              primary category display. Set when the venue's predominant
              modality is unambiguous (e.g., a Float Centre is Thermal &
-             Hydrotherapy). Optional â€” venues with mixed offerings can
+             Hydrotherapy). Optional — venues with mixed offerings can
              leave null and the breadcrumb falls back to no category level.
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-    <title>{{venue.name}} â€“ {{venue.city}}, {{venue.country}} | The Global Sanctum</title>
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <title>{{venue.name}} – {{venue.city}}, {{venue.country}} | The Global Sanctum</title>
     <meta name="description" content="{{venue.meta_description}}">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="bingbot" content="index, follow">
 
-    <!-- AI search bot allowance â€” supports AEO strategy (see Discovery Strategy Part 4) -->
+    <!-- AI search bot allowance — supports AEO strategy (see Discovery Strategy Part 4) -->
     <meta name="GPTBot" content="index, follow">
     <meta name="OAI-SearchBot" content="index, follow">
     <meta name="ChatGPT-User" content="index, follow">
@@ -72,7 +72,7 @@
     <meta name="Applebot-Extended" content="index, follow">
     <meta name="CCBot" content="index, follow">
 
-    <!-- Content Security Policy â€” defensive in-document layer.
+    <!-- Content Security Policy — defensive in-document layer.
          img-src includes https: to allow Unsplash hero gallery images and
          external venue imagery. Real CSP belongs in HTTP headers via
          Cloudflare/Vercel post-migration. -->
@@ -102,21 +102,21 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="The Global Sanctum">
     <meta property="og:locale" content="en_AU">
-    <meta property="og:title" content="{{venue.name}} â€“ {{venue.city}}, {{venue.country}} | The Global Sanctum">
+    <meta property="og:title" content="{{venue.name}} – {{venue.city}}, {{venue.country}} | The Global Sanctum">
     <meta property="og:description" content="{{venue.meta_description}}">
     <meta property="og:url" content="https://www.theglobalsanctum.com/wellness-venues/{{venue.slug}}">
     <meta property="og:image" content="{{venue.hero_image_url}}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="{{venue.name}} â€” wellness venue in {{venue.city}}, {{venue.country}}">
+    <meta property="og:image:alt" content="{{venue.name}} — wellness venue in {{venue.city}}, {{venue.country}}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@theglobalsanctum">
-    <meta name="twitter:title" content="{{venue.name}} â€“ {{venue.city}}, {{venue.country}} | The Global Sanctum">
+    <meta name="twitter:title" content="{{venue.name}} – {{venue.city}}, {{venue.country}} | The Global Sanctum">
     <meta name="twitter:description" content="{{venue.meta_description}}">
     <meta name="twitter:image" content="{{venue.hero_image_url}}">
-    <meta name="twitter:image:alt" content="{{venue.name}} â€” wellness venue in {{venue.city}}, {{venue.country}}">
+    <meta name="twitter:image:alt" content="{{venue.name}} — wellness venue in {{venue.city}}, {{venue.country}}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -125,12 +125,12 @@
     <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/montserrat/v25/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXp-p7K4KLg.woff2">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <!-- â•â•â• tgsTrackOnce â€” single-fire dataLayer guard â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══ tgsTrackOnce — single-fire dataLayer guard ═══════════════════════
          Production code calls window.tgsTrackOnce(name, payload) instead of
          dataLayer.push directly. Each event payload must include a unique
          submissionId or interactionId for deduplication.
          See Implementation Requirements PDF, Items 24-26.
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════ -->
     <script>
     window.__tgsEventsFired = window.__tgsEventsFired || {};
     window.tgsTrackOnce = function(eventName, payload) {
@@ -144,9 +144,9 @@
     };
     </script>
 
-    <!-- â•â•â• GOOGLE TAG MANAGER â€” HEAD SNIPPET â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══ GOOGLE TAG MANAGER — HEAD SNIPPET ════════════════════════════
          Container ID: GTM-NBQCMQXG
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════ -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -155,9 +155,9 @@
     <!-- End GTM Head Snippet -->
 
     <style>
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            DESIGN SYSTEM
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         :root {
             --warm-white: #FDFCF9;
@@ -212,9 +212,9 @@
 
         img { max-width: 100%; height: auto; display: block; }
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════
            SKIP TO CONTENT (accessibility)
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════ */
         .skip-to-content {
             position: absolute; top: -100px; left: 16px;
             background: var(--charcoal); color: var(--warm-white);
@@ -225,12 +225,12 @@
         }
         .skip-to-content:focus { top: 16px; outline: 2px solid var(--gold-accent); }
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-           VISUALLY HIDDEN (screen-reader only) â€” used for tab
+        /* ═══════════════════════════════════════════════════
+           VISUALLY HIDDEN (screen-reader only) — used for tab
            section H2s that maintain heading hierarchy without
            changing the visual design. Standard accessibility
            pattern (Bootstrap, Tailwind use the same approach).
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════ */
         .sr-only {
             position: absolute;
             width: 1px;
@@ -243,11 +243,11 @@
             border: 0;
         }
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════
            SAMPLE LISTING RIBBON (placeholder venue indicator)
            Removed in production once real venues onboarded.
            Database flag: venue.is_sample_listing = false
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════ */
         .sample-ribbon {
             position: absolute;
             top: 110px;
@@ -289,15 +289,15 @@
             .sample-ribbon-text { font-size: 11px; }
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            SITE HEADER
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════
            NAVIGATION (matches standard pattern across all pages)
            Transparent over hero gallery with scrim+blur for readability,
            fades to opaque cream on scroll past hero.
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════ */
         .nav {
             position: fixed; top: 0; left: 0; right: 0;
             z-index: 100;
@@ -363,9 +363,9 @@
         }
         .nav-right { width: 80px; }
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════
            DRAWER (matches standard pattern)
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════ */
         .drawer-overlay {
             position: fixed; inset: 0; z-index: 998;
             background: rgba(49,49,49,0.45);
@@ -495,9 +495,9 @@
         }
         .drawer-social a:hover { border-color: var(--charcoal); color: var(--charcoal); }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            HERO GALLERY
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .hero-gallery {
             position: relative;
@@ -584,9 +584,9 @@
             opacity: 1;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            TAB NAVIGATION
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .tab-nav {
             position: sticky;
@@ -634,9 +634,9 @@
             border-bottom-color: var(--charcoal);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            MAIN LAYOUT (Content + Sidebar)
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .main-layout {
             display: grid;
@@ -659,9 +659,9 @@
             display: block;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            STICKY BOOKING SIDEBAR
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .booking-sidebar {
             position: relative;
@@ -819,9 +819,9 @@
             text-decoration: underline;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            SECTION STYLING
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .section {
             padding: var(--section-padding) 0;
@@ -871,9 +871,9 @@
             margin: 60px 0;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            OVERVIEW TAB - FEATURED SERVICES
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .featured-services {
             display: grid;
@@ -946,9 +946,9 @@
             opacity: 0.7;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            OVERVIEW TAB - QUICK AMENITIES
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .quick-amenities {
             display: grid;
@@ -976,9 +976,9 @@
             color: var(--charcoal);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            OVERVIEW TAB - AT A GLANCE
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .at-a-glance {
             display: grid;
@@ -1006,9 +1006,9 @@
             color: var(--charcoal);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            SERVICES TAB
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .service-category {
             margin-bottom: 48px;
@@ -1094,9 +1094,9 @@
             opacity: 0.9;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            THE SPACE TAB
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .facilities-grid {
             display: grid;
@@ -1169,9 +1169,9 @@
             color: var(--charcoal);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            LOCATION TAB
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .map-container {
             height: 400px;
@@ -1240,9 +1240,9 @@
             color: var(--charcoal);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            POLICIES TAB
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .policy-section {
             margin-bottom: 48px;
@@ -1278,7 +1278,7 @@
         }
         
         .policy-content li::before {
-            content: "â€¢";
+            content: "•";
             position: absolute;
             left: 0;
             color: var(--charcoal);
@@ -1291,9 +1291,9 @@
             margin-top: 16px;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            SIMILAR VENUES
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .similar-venues {
             background: var(--warm-cream);
@@ -1361,9 +1361,9 @@
             color: var(--charcoal-lighter);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            CTA SECTION
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .cta-section {
             background: var(--charcoal);
@@ -1425,13 +1425,13 @@
             border-color: white;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            FOOTER
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════
            FOOTER (standard pattern across all pages)
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════ */
         .footer { background: var(--charcoal); color: rgba(255,255,255,0.7); padding: 80px 48px 40px; }
         .footer-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 48px; padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,0.08); }
         .footer-brand { display: flex; flex-direction: column; gap: 20px; }
@@ -1450,9 +1450,9 @@
         .footer-social a { font-family: var(--font-sans); font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); transition: color 0.3s ease; text-decoration: none; }
         .footer-social a:hover { color: var(--gold-accent); }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            CONDITIONAL TAB INDICATOR
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .conditional-tab {
             position: relative;
@@ -1471,9 +1471,9 @@
             border-radius: 2px;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            MOBILE FLOATING BAR
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .mobile-booking-bar {
             display: none;
@@ -1514,9 +1514,9 @@
             cursor: pointer;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            RESPONSIVE
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         @media (max-width: 1024px) {
             .main-layout {
@@ -1578,11 +1578,11 @@
             }
         }
     
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-           TAXONOMY â€” WELLNESS CATEGORY PILLS
+        /* ═══════════════════════════════════════════════════════════════
+           TAXONOMY — WELLNESS CATEGORY PILLS
            Pulls from wellness_categories table in Supabase.
-           Parent categories only. Used for discovery/search â€” not service booking.
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           Parent categories only. Used for discovery/search — not service booking.
+           ═══════════════════════════════════════════════════════════════ */
 
         .taxonomy-section {
             margin-bottom: 0;
@@ -1617,11 +1617,11 @@
             transition: none;
         }
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-           SERVICES TAB â€” CATEGORY FILTER BAR
+        /* ═══════════════════════════════════════════════════════════════
+           SERVICES TAB — CATEGORY FILTER BAR
            Allows guests to jump to a specific category on the services tab.
            Category titles pull from wellness_categories via data-taxonomy-category.
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
 
         .services-filter-bar {
             display: flex;
@@ -1677,7 +1677,7 @@
 
     </style>
 
-    <!-- â•â•â• JSON-LD STRUCTURED DATA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══ JSON-LD STRUCTURED DATA ═══════════════════════════════════════
          Production note (Kane's team): all {{venue.*}} placeholders below
          must be filled at render time from the venue Supabase record.
          The mockup has Serenity Day Spa values shown in the body for visual
@@ -1688,16 +1688,16 @@
            - Organization (sitewide)
            - WebSite (sitewide)
            - BreadcrumbList (Home > Wellness Venues > {{primary_category}}
-             > {{venue.name}}) â€” extended with primary category for stronger
+             > {{venue.name}}) — extended with primary category for stronger
              hierarchy signal. If venue.primary_category_id is null, omit
              the third item and fall back to a 3-step breadcrumb.
            - HealthAndBeautyBusiness (THE high-value schema for wellness
-             venues per Architecture doc Part 4 â€” drives Google rich results
+             venues per Architecture doc Part 4 — drives Google rich results
              with images, ratings, prices, geo, hours, and crucially the
              makesOffer array which connects the venue to specific practices)
            - ImageGallery (the {{venue.gallery_count}}-image gallery)
 
-         CRITICAL â€” MAKES_OFFER ARRAY:
+         CRITICAL — MAKES_OFFER ARRAY:
          Each entry in `makesOffer` corresponds to a Service the venue offers.
          The category field uses the format
            "[modality-category-slug]/[practice-slug]"
@@ -1712,9 +1712,9 @@
          secondary way. Both signals are read by Google.
 
          The makesOffer array is generated from the venue's Service records
-         in the portal â€” see the dev comment block at the top of <head> for
+         in the portal — see the dev comment block at the top of <head> for
          the full Service-to-Modality wiring spec.
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════════ -->
 
     <!-- Organization (sitewide canonical) -->
     <script type="application/ld+json">
@@ -1761,7 +1761,7 @@
     }
     </script>
 
-    <!-- BreadcrumbList â€” extended with primary category
+    <!-- BreadcrumbList — extended with primary category
          If {{venue.primary_category_id}} is null, omit position 3 and
          renumber position 4 -> 3 (the venue itself). -->
     <script type="application/ld+json">
@@ -1777,15 +1777,15 @@
     }
     </script>
 
-    <!-- HealthAndBeautyBusiness â€” primary venue schema (per Architecture doc Part 4)
-         IMPORTANT â€” sample listing handling:
+    <!-- HealthAndBeautyBusiness — primary venue schema (per Architecture doc Part 4)
+         IMPORTANT — sample listing handling:
          - "availability": "PreOrder" signals to Google this is not yet
            directly bookable (correct while platform is pre-launch).
          - When venue.is_sample_listing = false (real venue onboarded),
            change "availability" to "InStock" or remove the field, and
            remove the description prefix about being a sample listing.
 
-         additionalType array â€” references the canonical schema.org URLs
+         additionalType array — references the canonical schema.org URLs
          for the practice types this venue offers. Reinforces the venue's
          practice associations to Google in a different way than makesOffer.
          Generated from the venue's distinct practices (deduplicated). -->
@@ -1795,7 +1795,7 @@
       "@type": "HealthAndBeautyBusiness",
       "@id": "https://www.theglobalsanctum.com/wellness-venues/{{venue.slug}}#venue",
       "name": "{{venue.name}}",
-      "description": "{{venue.is_sample_listing ? 'Sample listing â€” preview only. ' : ''}}{{venue.long_description}}",
+      "description": "{{venue.is_sample_listing ? 'Sample listing — preview only. ' : ''}}{{venue.long_description}}",
       "url": "https://www.theglobalsanctum.com/wellness-venues/{{venue.slug}}",
       "image": [
         "{{venue.hero_image_url}}",
@@ -1889,15 +1889,15 @@
     }
     </script>
 
-    <!-- ImageGallery â€” venue photo gallery -->
+    <!-- ImageGallery — venue photo gallery -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ImageGallery",
-      "name": "{{venue.name}} â€” Photo Gallery",
+      "name": "{{venue.name}} — Photo Gallery",
       "description": "Curated photography of {{venue.name}} wellness venue in {{venue.city}}, {{venue.country}}.",
       "image": [
-        { "@type": "ImageObject", "contentUrl": "{{venue.hero_image_url}}", "caption": "{{venue.name}} â€” main view" },
+        { "@type": "ImageObject", "contentUrl": "{{venue.hero_image_url}}", "caption": "{{venue.name}} — main view" },
         { "@type": "ImageObject", "contentUrl": "{{venue.gallery_image_2_url}}", "caption": "{{venue.gallery_image_2_caption}}" },
         { "@type": "ImageObject", "contentUrl": "{{venue.gallery_image_3_url}}", "caption": "{{venue.gallery_image_3_caption}}" },
         { "@type": "ImageObject", "contentUrl": "{{venue.gallery_image_4_url}}", "caption": "{{venue.gallery_image_4_caption}}" }
@@ -1909,1245 +1909,14 @@
 </head>
 <body>
 
-    <!-- â•â•â• GOOGLE TAG MANAGER â€” BODY (NOSCRIPT) SNIPPET â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══ GOOGLE TAG MANAGER — BODY (NOSCRIPT) SNIPPET ═══════════════
          First element after opening <body>. Required noscript fallback.
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════ -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NBQCMQXG"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Skip to main content link (accessibility) -->
-    <a class="skip-to-content" href="#main-content">Skip to main content</a>
-
-    <!-- â•â•â• NAVIGATION (standard pattern) â•â•â• -->
-    <nav class="nav" id="mainNav" aria-label="Primary">
-        <div class="nav-inner">
-            <div class="nav-left" onclick="toggleDrawer()">
-                <button class="nav-hamburger" id="navHamburger" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navDrawer">
-                    <span></span><span></span><span></span>
-                </button>
-                <span class="nav-hamburger-label" aria-hidden="true">Menu</span>
-            </div>
-            <a href="tgs_home_v7.html" class="nav-logo-area" aria-label="The Global Sanctum â€” home">
-                <span class="nav-logo" aria-hidden="true"></span>
-                <span class="nav-brand-text">The Global Sanctum</span>
-            </a>
-            <div class="nav-right"></div>
-        </div>
-    </nav>
-
-    <!-- â•â•â• DRAWER â•â•â• -->
-    <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()" aria-hidden="true"></div>
-    <div class="drawer" id="navDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu" aria-hidden="true">
-        <div class="drawer-header">
-            <div class="drawer-header-left">
-                <span class="drawer-logo"></span>
-                <span class="drawer-label">Navigation</span>
-            </div>
-            <button class="drawer-close" onclick="toggleDrawer()" aria-label="Close menu">&times;</button>
-        </div>
-        <div class="drawer-search">
-            <div class="drawer-search-bar">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input type="text" placeholder="Search venues, experiences, locations...">
-            </div>
-        </div>
-        <div class="drawer-body">
-            <div class="drawer-group">
-                <div class="drawer-group-label">Discover</div>
-                <a href="tgs_venues_v3.html" class="drawer-link">Retreat Venues<span class="drawer-link-arrow">â†’</span></a>
-                <a href="tgs_venues_v3.html" class="drawer-link">Wellness Venues<span class="drawer-link-arrow">â†’</span></a>
-                <a href="tgs_wellness_experiences_v6.html" class="drawer-link">Wellness Experiences<span class="drawer-link-arrow">â†’</span></a>
-            </div>
-            <div class="drawer-group">
-                <div class="drawer-group-label">Learn</div>
-                <a href="tgs_about_v4.html" class="drawer-secondary-link">About Us</a>
-                <a href="tgs_how_it_works_v4 (2).html" class="drawer-secondary-link">How It Works</a>
-                <a href="tgs_wellness_edit_v2 (1).html" class="drawer-secondary-link">The Wellness Edit</a>
-            </div>
-            <div class="drawer-group">
-                <div class="drawer-group-label">Connect</div>
-                <a href="tgs_contact_v4.html" class="drawer-secondary-link">Contact Us</a>
-                <a href="tgs_list_your_venue_v4.html" class="drawer-secondary-link">List Your Venue</a>
-            </div>
-            <div class="drawer-group">
-                <a href="tgs_list_your_venue_v4.html" class="drawer-cta">List Your Venue</a>
-            </div>
-        </div>
-        <div class="drawer-footer">
-            <div class="drawer-footer-contact">
-                <a class="email-link drawer-footer-item" data-u="hello" data-d="theglobalsanctum.com">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                    <span class="email-text">hello [at] theglobalsanctum [dot] com</span>
-                </a>
-            </div>
-            <div class="drawer-social">
-                <a href="https://www.facebook.com/profile.php?id=61577706717526" target="_blank" rel="noopener" aria-label="Facebook">Fb</a>
-                <a href="https://www.instagram.com/theglobalsanctum/" target="_blank" rel="noopener" aria-label="Instagram">Ig</a>
-                <a href="https://www.linkedin.com/company/the-global-sanctum/" target="_blank" rel="noopener" aria-label="LinkedIn">Li</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- â•â•â• MAIN CONTENT â•â•â• -->
-    <main id="main-content" role="main">
-
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         HERO GALLERY
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-    
-    <section class="hero-gallery">
-        <!-- â•â•â• SAMPLE LISTING RIBBON â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-             Visible to humans + reinforced by schema "availability: PreOrder"
-             so this venue cannot be mistaken for a real bookable listing.
-             Production: hide via {{#if venue.is_sample_listing}} when real
-             venues are onboarded.
-             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-        <div class="sample-ribbon" role="note" aria-label="This is a sample listing">
-            <span class="sample-ribbon-eyebrow">Sample Listing</span>
-            <span class="sample-ribbon-text">Preview Only</span>
-        </div>
-        <div class="hero-content">
-            <p class="hero-venue-type">Day Spa</p>
-            <h1 class="hero-venue-name">Serenity Day Spa</h1>
-            <p class="hero-location">Brisbane, Queensland, Australia</p>
-            <a href="#" class="hero-view-photos">View All Photos</a>
-        </div>
-        <div class="hero-thumbnails">
-            <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=200&q=80" alt="Spa treatment" class="hero-thumb">
-            <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=200&q=80" alt="Relaxation area" class="hero-thumb">
-            <img src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=200&q=80" alt="Sauna" class="hero-thumb">
-            <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=200&q=80" alt="Pool" class="hero-thumb">
-        </div>
-    </section>
-
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         TAB NAVIGATION
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-    
-    <nav class="tab-nav">
-        <div class="tab-nav-inner">
-            <div class="tab active" data-tab="overview">Overview</div>
-            <!-- CONDITIONAL: render with style="display:none" if venue.has_accommodation = false -->
-            <div class="tab conditional-tab" data-tab="accommodation" data-condition="has-accommodation">Accommodation</div>
-            <div class="tab" data-tab="services">Services</div>
-            <!-- CONDITIONAL: render with style="display:none" if venue.has_packages = false -->
-            <div class="tab conditional-tab" data-tab="packages" data-condition="has-packages">Packages</div>
-            <!-- CONDITIONAL: render with style="display:none" if venue.has_practitioners = false -->
-            <div class="tab conditional-tab" data-tab="practitioners" data-condition="has-practitioners">Practitioners</div>
-            <div class="tab" data-tab="space">The Space</div>
-            <div class="tab" data-tab="location">Location &amp; Hours</div>
-            <div class="tab" data-tab="policies">Policies</div>
-        </div>
-    </nav>
-
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         MAIN LAYOUT (Content + Sidebar)
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-    
-    <div class="main-layout">
-        
-        <!-- MAIN CONTENT -->
-        <div class="main-content">
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 1: OVERVIEW
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content active" id="overview">
-                <h2 class="sr-only">Overview</h2>
-                <!-- Welcome Section -->
-                <section class="section">
-                    <p class="section-label">Welcome</p>
-                    <div class="section-text">
-                        <p>Serenity Day Spa is Brisbane's premier urban wellness destination, offering a tranquil escape from the demands of daily life. Nestled in the heart of the city, our award-winning spa combines ancient healing traditions with modern therapeutic techniques.</p>
-                        <p>Every visit is designed to restore balance to body, mind, and spirit. From our signature thermal circuit to our expert massage therapists, we invite you to surrender to stillness and emerge renewed.</p>
-                    </div>
-                </section>
-                
-                <div class="section-divider"></div>
-
-                <!-- Wellness Categories â€” Taxonomy Discovery Tags -->
-                <!-- SOURCE: wellness_categories table in Supabase (parent categories only) -->
-                <!-- PURPOSE: Search/discovery and relational data â€” NOT service booking fields -->
-                <section class="section taxonomy-section">
-                    <p class="taxonomy-label">Wellness Categories</p>
-                    <div class="taxonomy-pills">
-                        <!-- These pills are populated dynamically from venue_wellness_services â†’ wellness_categories in Supabase -->
-                        <!-- Only categories with at least one active service at this venue are shown -->
-                        <span class="taxonomy-pill" data-taxonomy-category="body-therapies-bodywork">Body Therapies &amp; Bodywork</span>
-                        <span class="taxonomy-pill" data-taxonomy-category="thermal-hydrotherapy">Thermal &amp; Hydrotherapy</span>
-                        <span class="taxonomy-pill" data-taxonomy-category="skin-ritual-beauty">Skin &amp; Ritual Beauty</span>
-                        <span class="taxonomy-pill" data-taxonomy-category="yoga-movement">Yoga &amp; Movement</span>
-                    </div>
-                </section>
-
-                <!-- Featured Services -->
-                <section class="section">
-                    <p class="section-label">Featured Experiences</p>
-                    <p class="section-subtitle">Our most loved treatments</p>
-                    
-                    <div class="featured-services">
-                        <div class="featured-service-card">
-                            <div class="featured-service-image" style="background-image: url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80');"></div>
-                            <div class="featured-service-content">
-                                <h3 class="featured-service-name">Signature Massage</h3>
-                                <p class="featured-service-meta">60 min â€” From $129</p>
-                                <a href="#" class="featured-service-btn">Book</a>
-                            </div>
-                        </div>
-                        <div class="featured-service-card">
-                            <div class="featured-service-image" style="background-image: url('https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=600&q=80');"></div>
-                            <div class="featured-service-content">
-                                <h3 class="featured-service-name">Thermal Circuit</h3>
-                                <p class="featured-service-meta">2 hours â€” $89</p>
-                                <a href="#" class="featured-service-btn">Book</a>
-                            </div>
-                        </div>
-                        <div class="featured-service-card">
-                            <div class="featured-service-image" style="background-image: url('https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80');"></div>
-                            <div class="featured-service-content">
-                                <h3 class="featured-service-name">Facial Ritual</h3>
-                                <p class="featured-service-meta">75 min â€” $159</p>
-                                <a href="#" class="featured-service-btn">Book</a>
-                            </div>
-                        </div>
-                        <div class="featured-service-card">
-                            <div class="featured-service-image" style="background-image: url('https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=600&q=80');"></div>
-                            <div class="featured-service-content">
-                                <h3 class="featured-service-name">Float Therapy</h3>
-                                <p class="featured-service-meta">60 min â€” $99</p>
-                                <a href="#" class="featured-service-btn">Book</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <a href="#" class="view-all-link" onclick="switchTab('services')">View All Services â†’</a>
-                </section>
-                
-                <div class="section-divider"></div>
-                
-                <!-- Quick Amenities -->
-                <section class="section">
-                    <p class="section-label">Amenities</p>
-                    
-                    <div class="quick-amenities">
-                        <div class="quick-amenity">
-                            <div class="quick-amenity-icon">ðŸ…¿ï¸</div>
-                            <div class="quick-amenity-label">Free Parking</div>
-                        </div>
-                        <div class="quick-amenity">
-                            <div class="quick-amenity-icon">ðŸš¿</div>
-                            <div class="quick-amenity-label">Showers</div>
-                        </div>
-                        <div class="quick-amenity">
-                            <div class="quick-amenity-icon">ðŸ§–</div>
-                            <div class="quick-amenity-label">Robes Provided</div>
-                        </div>
-                        <div class="quick-amenity">
-                            <div class="quick-amenity-icon">ðŸµ</div>
-                            <div class="quick-amenity-label">Tea Lounge</div>
-                        </div>
-                        <div class="quick-amenity">
-                            <div class="quick-amenity-icon">ðŸ”’</div>
-                            <div class="quick-amenity-label">Lockers</div>
-                        </div>
-                        <div class="quick-amenity">
-                            <div class="quick-amenity-icon">â™¿</div>
-                            <div class="quick-amenity-label">Accessible</div>
-                        </div>
-                        <div class="quick-amenity">
-                            <div class="quick-amenity-icon">ðŸ“¶</div>
-                            <div class="quick-amenity-label">WiFi</div>
-                        </div>
-                        <div class="quick-amenity">
-                            <div class="quick-amenity-icon">â„ï¸</div>
-                            <div class="quick-amenity-label">Air Conditioning</div>
-                        </div>
-                    </div>
-                    
-                    <a href="#" class="view-all-link" onclick="switchTab('space')">View All Amenities â†’</a>
-                </section>
-                
-                <div class="section-divider"></div>
-                
-                <!-- At a Glance -->
-                <section class="section">
-                    <p class="section-label">At a Glance</p>
-                    
-                    <div class="at-a-glance">
-                        <div class="glance-item">
-                            <span class="glance-label">Venue Type</span>
-                            <span class="glance-value">Day Spa</span>
-                        </div>
-                        <div class="glance-item">
-                            <span class="glance-label">Established</span>
-                            <span class="glance-value">2018</span>
-                        </div>
-                        <div class="glance-item">
-                            <span class="glance-label">Best For</span>
-                            <span class="glance-value">Couples, Solo, Groups</span>
-                        </div>
-                        <div class="glance-item">
-                            <span class="glance-label">Languages</span>
-                            <span class="glance-value">English, Mandarin</span>
-                        </div>
-                        <div class="glance-item">
-                            <span class="glance-label">Today's Hours</span>
-                            <span class="glance-value">9:00 AM â€“ 9:00 PM</span>
-                        </div>
-                        <div class="glance-item">
-                            <span class="glance-label">Accessibility</span>
-                            <span class="glance-value">Wheelchair Accessible</span>
-                        </div>
-                    </div>
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 2: SERVICES
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content" id="services">
-                <h2 class="sr-only">Services</h2>
-                <section class="section">
-                    <p class="section-label">Experiences & Treatments</p>
-                    <p class="section-subtitle">Restore, rejuvenate, reconnect</p>
-
-                    <!-- Services Category Filter Bar -->
-                    <!-- Populated dynamically from wellness_categories â€” matching categories this venue offers -->
-                    <!-- Each button scrolls to / filters the corresponding service-category section -->
-                    <div class="services-filter-bar">
-                        <span class="services-filter-label">Filter by</span>
-                        <button class="services-filter-btn active" data-filter="all" onclick="filterServices('all', this)">All</button>
-                        <button class="services-filter-btn" data-filter="body-therapies-bodywork" onclick="filterServices('body-therapies-bodywork', this)">Body Therapies</button>
-                        <button class="services-filter-btn" data-filter="thermal-hydrotherapy" onclick="filterServices('thermal-hydrotherapy', this)">Thermal &amp; Water</button>
-                        <button class="services-filter-btn" data-filter="skin-ritual-beauty" onclick="filterServices('skin-ritual-beauty', this)">Skin &amp; Beauty</button>
-                    </div>
-
-
-                    <!-- Massage Category â€”â€” data-taxonomy-category = slug from wellness_categories table -->
-                    <div class="service-category" data-taxonomy-category="body-therapies-bodywork">
-                        <h3 class="service-category-title">Massage <span class="service-category-title-note">â†³ Body Therapies &amp; Bodywork</span></h3>
-                        
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4 class="service-name">Signature Relaxation Massage</h4>
-                                <p class="service-description">A flowing, full-body massage using warm aromatherapy oils to release tension and restore calm.</p>
-                                <p class="service-options">30 min â€” $69 | 60 min â€” $119 | 90 min â€” $159</p>
-                            </div>
-                            <div class="service-actions">
-                                <span class="service-price">From $69</span>
-                                <button class="service-book-btn">Book</button>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4 class="service-name">Deep Tissue Massage</h4>
-                                <p class="service-description">Targeted pressure to release chronic muscle tension and knots. Best for those who prefer firm pressure.</p>
-                                <p class="service-options">60 min â€” $139 | 90 min â€” $189</p>
-                            </div>
-                            <div class="service-actions">
-                                <span class="service-price">From $139</span>
-                                <button class="service-book-btn">Book</button>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4 class="service-name">Hot Stone Massage</h4>
-                                <p class="service-description">Smooth, heated basalt stones combined with massage techniques to deeply relax muscles and improve circulation.</p>
-                                <p class="service-options">75 min â€” $169 | 90 min â€” $199</p>
-                            </div>
-                            <div class="service-actions">
-                                <span class="service-price">From $169</span>
-                                <button class="service-book-btn">Book</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Thermal Category -->
-                    <div class="service-category">
-                        <h3 class="service-category-title">Thermal & Water</h3>
-                        
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4 class="service-name">Thermal Circuit</h4>
-                                <p class="service-description">Journey through our Finnish sauna, steam room, ice fountain, and heated relaxation pool. Includes herbal tea.</p>
-                                <p class="service-options">2 hours access</p>
-                            </div>
-                            <div class="service-actions">
-                                <span class="service-price">$89</span>
-                                <button class="service-book-btn">Book</button>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4 class="service-name">Float Therapy</h4>
-                                <p class="service-description">Effortlessly float in our sensory deprivation pods filled with magnesium-rich water. Complete stillness for body and mind.</p>
-                                <p class="service-options">60 min â€” $99 | 90 min â€” $129</p>
-                            </div>
-                            <div class="service-actions">
-                                <span class="service-price">From $99</span>
-                                <button class="service-book-btn">Book</button>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4 class="service-name">Infrared Sauna</h4>
-                                <p class="service-description">Private infrared sauna session for detoxification, pain relief, and deep relaxation at a gentle temperature.</p>
-                                <p class="service-options">45 min â€” $59 | 60 min â€” $75</p>
-                            </div>
-                            <div class="service-actions">
-                                <span class="service-price">From $59</span>
-                                <button class="service-book-btn">Book</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Facials Category -->
-                    <div class="service-category" data-taxonomy-category="skin-ritual-beauty">
-                        <h3 class="service-category-title">Facials <span class="service-category-title-note">â†³ Skin &amp; Ritual Beauty</span></h3>
-                        
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4 class="service-name">Signature Facial</h4>
-                                <p class="service-description">Customised facial treatment including cleansing, exfoliation, mask, and facial massage. Tailored to your skin type.</p>
-                                <p class="service-options">60 min â€” $129 | 90 min â€” $179</p>
-                            </div>
-                            <div class="service-actions">
-                                <span class="service-price">From $129</span>
-                                <button class="service-book-btn">Book</button>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4 class="service-name">Hydrating Facial</h4>
-                                <p class="service-description">Intensive hydration for dry or dehydrated skin using hyaluronic acid and vitamin-rich serums.</p>
-                                <p class="service-options">75 min</p>
-                            </div>
-                            <div class="service-actions">
-                                <span class="service-price">$159</span>
-                                <button class="service-book-btn">Book</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Body Treatments Category -->
-                    <div class="service-category" data-taxonomy-category="skin-ritual-beauty">
-                        <h3 class="service-category-title">Body Treatments <span class="service-category-title-note">â†³ Skin &amp; Ritual Beauty</span></h3>
-                        
-                        <div class="service-item">
-                            <div class="service-info">
-                                <h4 class="service-name">Body Scrub & Wrap</h4>
-                                <p class="service-description">Full body exfoliation followed by a nourishing body wrap. Leaves skin silky smooth and deeply moisturised.</p>
-                                <p class="service-options">90 min</p>
-                            </div>
-                            <div class="service-actions">
-                                <span class="service-price">$189</span>
-                                <button class="service-book-btn">Book</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB: ACCOMMODATION (Conditional - Show when Has Accommodation = Yes)
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content conditional-content" id="accommodation" data-condition="has-accommodation">
-                <h2 class="sr-only">Accommodation</h2>
-                <!-- Hero Image for Accommodation -->
-                <div style="width: 100%; height: 400px; background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1600&q=80') center/cover; margin-bottom: 0;"></div>
-                
-                <!-- Accommodation Overview -->
-                <section class="section">
-                    <p class="section-label">Stay With Us</p>
-                    <div class="section-text">
-                        <p>Extend your wellness journey with an overnight stay at our boutique retreat rooms. Each room has been thoughtfully designed as a sanctuary of calm, featuring organic linens, blackout curtains, and views of our meditation gardens.</p>
-                        <p>Overnight guests enjoy exclusive access to our thermal facilities before and after regular hours, plus a wellness breakfast included with your stay.</p>
-                    </div>
-                </section>
-                
-                <div class="section-divider"></div>
-                
-                <!-- Room Types -->
-                <section class="section">
-                    <p class="section-label">Room Types</p>
-                    <p class="section-subtitle">Choose your sanctuary</p>
-                    
-                    <div class="facilities-grid">
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&q=80');"></div>
-                            <div class="facility-content">
-                                <h4 class="facility-name">Garden Room</h4>
-                                <p class="facility-description">Intimate room overlooking our zen garden. Queen bed, ensuite bathroom, meditation corner.</p>
-                                <p style="font-family: var(--font-sans); font-size: 12px; color: var(--charcoal-lighter); margin-top: 8px;">Sleeps 2 Â· 28 sqm Â· Ground floor</p>
-                                <p style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin-top: 12px;">$350 / night</p>
-                                <button class="service-book-btn" style="margin-top: 16px;">Book Room</button>
-                            </div>
-                        </div>
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&q=80');"></div>
-                            <div class="facility-content">
-                                <h4 class="facility-name">Wellness Suite</h4>
-                                <p class="facility-description">Spacious suite with private balcony, king bed, deep soaking tub, and dedicated relaxation area.</p>
-                                <p style="font-family: var(--font-sans); font-size: 12px; color: var(--charcoal-lighter); margin-top: 8px;">Sleeps 2 Â· 45 sqm Â· First floor</p>
-                                <p style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin-top: 12px;">$495 / night</p>
-                                <button class="service-book-btn" style="margin-top: 16px;">Book Room</button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <div class="section-divider"></div>
-                
-                <!-- What's Included -->
-                <section class="section">
-                    <p class="section-label">What's Included</p>
-                    <div class="amenities-grid" style="grid-template-columns: repeat(3, 1fr);">
-                        <div class="amenity-item"><span class="amenity-icon">ðŸ³</span><span class="amenity-label">Wellness Breakfast</span></div>
-                        <div class="amenity-item"><span class="amenity-icon">ðŸ§–</span><span class="amenity-label">Robes & Slippers</span></div>
-                        <div class="amenity-item"><span class="amenity-icon">ðŸŒ¡ï¸</span><span class="amenity-label">Thermal Access</span></div>
-                        <div class="amenity-item"><span class="amenity-icon">ðŸ§´</span><span class="amenity-label">Organic Amenities</span></div>
-                        <div class="amenity-item"><span class="amenity-icon">ðŸµ</span><span class="amenity-label">In-Room Tea</span></div>
-                        <div class="amenity-item"><span class="amenity-icon">ðŸ“¶</span><span class="amenity-label">WiFi</span></div>
-                    </div>
-                </section>
-                
-                <div class="section-divider"></div>
-                
-                <!-- Check-in/Check-out -->
-                <section class="section">
-                    <p class="section-label">Check-In / Check-Out</p>
-                    <div class="location-details" style="grid-template-columns: 1fr;">
-                        <div class="location-block">
-                            <table class="hours-table">
-                                <tr>
-                                    <td>Check-in</td>
-                                    <td>3:00 PM</td>
-                                </tr>
-                                <tr>
-                                    <td>Check-out</td>
-                                    <td>11:00 AM</td>
-                                </tr>
-                            </table>
-                            <p style="margin-top: 16px; font-family: var(--font-serif); font-size: 15px; color: var(--charcoal-light);">Early check-in and late check-out available on request, subject to availability.</p>
-                        </div>
-                    </div>
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB: PACKAGES (Conditional - Show when Has Packages = Yes)
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content conditional-content" id="packages" data-condition="has-packages">
-                <h2 class="sr-only">Packages</h2>
-                <section class="section">
-                    <p class="section-label">Curated Packages</p>
-                    <p class="section-subtitle">Complete wellness experiences designed for transformation</p>
-                    <div class="section-text" style="margin-bottom: 48px;">
-                        <p>Our packages combine accommodation, treatments, and experiences into seamless wellness journeys. Each has been thoughtfully curated to provide deep restoration and lasting benefits.</p>
-                    </div>
-                    
-                    <!-- Package Cards -->
-                    <div class="facilities-grid">
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80');"></div>
-                            <div class="facility-content">
-                                <p style="font-family: var(--font-sans); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 8px;">Day Package</p>
-                                <h4 class="facility-name">Restore & Renew</h4>
-                                <p class="facility-description">A half-day escape featuring thermal circuit access, signature massage, and organic lunch.</p>
-                                <ul style="list-style: none; margin-top: 16px; font-family: var(--font-serif); font-size: 14px; color: var(--charcoal-light);">
-                                    <li style="padding: 4px 0;">âœ“ 2-hour thermal circuit access</li>
-                                    <li style="padding: 4px 0;">âœ“ 60-min signature massage</li>
-                                    <li style="padding: 4px 0;">âœ“ Organic wellness lunch</li>
-                                    <li style="padding: 4px 0;">âœ“ Herbal tea service</li>
-                                </ul>
-                                <p style="font-family: var(--font-serif); font-size: 20px; color: var(--charcoal); margin-top: 16px;">$299 per person</p>
-                                <button class="service-book-btn" style="margin-top: 16px;">Book Package</button>
-                            </div>
-                        </div>
-                        
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=600&q=80');"></div>
-                            <div class="facility-content">
-                                <p style="font-family: var(--font-sans); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 8px;">Overnight</p>
-                                <h4 class="facility-name">Weekend Wellness</h4>
-                                <p class="facility-description">Two nights of complete immersion including accommodation, daily treatments, and all meals.</p>
-                                <ul style="list-style: none; margin-top: 16px; font-family: var(--font-serif); font-size: 14px; color: var(--charcoal-light);">
-                                    <li style="padding: 4px 0;">âœ“ 2 nights Garden Room</li>
-                                    <li style="padding: 4px 0;">âœ“ Daily breakfast & dinner</li>
-                                    <li style="padding: 4px 0;">âœ“ 90-min massage</li>
-                                    <li style="padding: 4px 0;">âœ“ Signature facial</li>
-                                    <li style="padding: 4px 0;">âœ“ Unlimited thermal access</li>
-                                </ul>
-                                <p style="font-family: var(--font-serif); font-size: 20px; color: var(--charcoal); margin-top: 16px;">$1,250 per person</p>
-                                <button class="service-book-btn" style="margin-top: 16px;">Book Package</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="background: var(--warm-cream); padding: 32px; border-radius: 8px; margin-top: 48px; text-align: center;">
-                        <p style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin-bottom: 16px;">Looking for something different?</p>
-                        <p style="font-family: var(--font-serif); font-size: 15px; color: var(--charcoal-light); margin-bottom: 24px;">We can create custom packages tailored to your needs.</p>
-                        <a href="#" class="view-all-link">Contact Us â†’</a>
-                    </div>
-                    
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB: PRACTITIONERS (Conditional - Show when Has Practitioners = Yes)
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content conditional-content" id="practitioners" data-condition="has-practitioners">
-                <h2 class="sr-only">Practitioners</h2>
-                <section class="section">
-                    <p class="section-label">Our Practitioners</p>
-                    <p class="section-subtitle">Experienced healers dedicated to your wellbeing</p>
-                    <div class="section-text" style="margin-bottom: 48px;">
-                        <p>Our team of qualified practitioners brings together diverse modalities and decades of combined experience. Each therapist is carefully selected not only for their technical expertise but for their intuitive approach to healing.</p>
-                    </div>
-                    
-                    <!-- Practitioner Cards -->
-                    <div class="facilities-grid">
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80'); background-position: top;"></div>
-                            <div class="facility-content">
-                                <h4 class="facility-name">Dr. Sarah Chen</h4>
-                                <p style="font-family: var(--font-sans); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 12px;">Traditional Chinese Medicine</p>
-                                <p class="facility-description">B.HSc (TCM), AHPRA Registered. 15+ years experience specialising in women's health, fertility, and chronic pain management.</p>
-                                <p style="font-family: var(--font-sans); font-size: 11px; color: var(--charcoal-lighter); margin-top: 12px;">Specialises in: Acupuncture, Herbal Medicine, Cupping</p>
-                                <button class="service-book-btn" style="margin-top: 16px;">Book with Sarah</button>
-                            </div>
-                        </div>
-                        
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600&q=80'); background-position: top;"></div>
-                            <div class="facility-content">
-                                <h4 class="facility-name">Michael Torres</h4>
-                                <p style="font-family: var(--font-sans); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 12px;">Senior Massage Therapist</p>
-                                <p class="facility-description">Diploma Remedial Massage, Cert IV Myotherapy. 12+ years experience with elite athletes and chronic pain patients.</p>
-                                <p style="font-family: var(--font-sans); font-size: 11px; color: var(--charcoal-lighter); margin-top: 12px;">Specialises in: Deep Tissue, Sports Massage, Myofascial Release</p>
-                                <button class="service-book-btn" style="margin-top: 16px;">Book with Michael</button>
-                            </div>
-                        </div>
-                        
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80'); background-position: top;"></div>
-                            <div class="facility-content">
-                                <h4 class="facility-name">Emma Williams</h4>
-                                <p style="font-family: var(--font-sans); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 12px;">Naturopath & Nutritionist</p>
-                                <p class="facility-description">BHSc Naturopathy, Adv Dip Nutritional Medicine. 10+ years helping clients optimise health through natural therapies.</p>
-                                <p style="font-family: var(--font-sans); font-size: 11px; color: var(--charcoal-lighter); margin-top: 12px;">Specialises in: Gut Health, Hormonal Balance, Stress Management</p>
-                                <button class="service-book-btn" style="margin-top: 16px;">Book with Emma</button>
-                            </div>
-                        </div>
-                        
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=600&q=80'); background-position: top;"></div>
-                            <div class="facility-content">
-                                <h4 class="facility-name">James Liu</h4>
-                                <p style="font-family: var(--font-sans); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 12px;">Ayurvedic Practitioner</p>
-                                <p class="facility-description">BAMS (India), Certified Panchakarma Specialist. 8+ years bringing authentic Ayurvedic healing to Western wellness.</p>
-                                <p style="font-family: var(--font-sans); font-size: 11px; color: var(--charcoal-lighter); margin-top: 12px;">Specialises in: Ayurvedic Consultation, Abhyanga, Shirodhara</p>
-                                <button class="service-book-btn" style="margin-top: 16px;">Book with James</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-
-                    
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 3: THE SPACE
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content" id="space">
-                <h2 class="sr-only">The Space</h2>
-                <!-- About Section -->
-                <section class="section">
-                    <p class="section-label">About Serenity Day Spa</p>
-                    <div class="section-text">
-                        <p>Founded in 2018, Serenity Day Spa was created with a singular vision: to bring world-class spa experiences to the heart of Brisbane. Our 800 square metre urban sanctuary features treatment rooms, thermal facilities, and relaxation spaces designed by leading wellness architects.</p>
-                        <p>We believe in the transformative power of touch, heat, and stillness. Every element of our space â€” from the natural materials to the ambient soundscape â€” has been carefully considered to support your journey back to balance.</p>
-                    </div>
-                </section>
-                
-                <div class="section-divider"></div>
-                
-                <!-- Facilities -->
-                <section class="section">
-                    <p class="section-label">Facilities</p>
-                    <p class="section-subtitle">Spaces designed for restoration</p>
-                    
-                    <div class="facilities-grid">
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=600&q=80');"></div>
-                            <div class="facility-content">
-                                <h4 class="facility-name">Thermal Suite</h4>
-                                <p class="facility-description">Finnish sauna, steam room, ice fountain, and heated relaxation pool.</p>
-                                <p class="facility-access">Included with Thermal Circuit booking</p>
-                            </div>
-                        </div>
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=600&q=80');"></div>
-                            <div class="facility-content">
-                                <h4 class="facility-name">Float Pods</h4>
-                                <p class="facility-description">Two private sensory deprivation pods with shower facilities.</p>
-                                <p class="facility-access">By booking only</p>
-                            </div>
-                        </div>
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=600&q=80');"></div>
-                            <div class="facility-content">
-                                <h4 class="facility-name">Relaxation Lounge</h4>
-                                <p class="facility-description">Quiet space with heated loungers, herbal tea station, and ambient music.</p>
-                                <p class="facility-access">Included with all treatments</p>
-                            </div>
-                        </div>
-                        <div class="facility-card">
-                            <div class="facility-image" style="background-image: url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80');"></div>
-                            <div class="facility-content">
-                                <h4 class="facility-name">Treatment Rooms</h4>
-                                <p class="facility-description">Six private treatment rooms including one couples suite.</p>
-                                <p class="facility-access">By booking only</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <div class="section-divider"></div>
-                
-                <!-- Amenities -->
-                <section class="section">
-                    <p class="section-label">Amenities</p>
-                    
-                    <div class="amenities-grid">
-                        <div class="amenity-item">
-                            <span class="amenity-icon">ðŸ…¿ï¸</span>
-                            <span class="amenity-label">Free Parking</span>
-                        </div>
-                        <div class="amenity-item">
-                            <span class="amenity-icon">ðŸš¿</span>
-                            <span class="amenity-label">Showers</span>
-                        </div>
-                        <div class="amenity-item">
-                            <span class="amenity-icon">ðŸ§–</span>
-                            <span class="amenity-label">Robes & Slippers</span>
-                        </div>
-                        <div class="amenity-item">
-                            <span class="amenity-icon">ðŸ”’</span>
-                            <span class="amenity-label">Lockers</span>
-                        </div>
-                        <div class="amenity-item">
-                            <span class="amenity-icon">ðŸ§´</span>
-                            <span class="amenity-label">Toiletries</span>
-                        </div>
-                        <div class="amenity-item">
-                            <span class="amenity-icon">ðŸ’¨</span>
-                            <span class="amenity-label">Hair Dryers</span>
-                        </div>
-                        <div class="amenity-item">
-                            <span class="amenity-icon">ðŸµ</span>
-                            <span class="amenity-label">Tea Station</span>
-                        </div>
-                        <div class="amenity-item">
-                            <span class="amenity-icon">ðŸ’§</span>
-                            <span class="amenity-label">Water Station</span>
-                        </div>
-                        <div class="amenity-item">
-                            <span class="amenity-icon">ðŸ“¶</span>
-                            <span class="amenity-label">WiFi</span>
-                        </div>
-                        <div class="amenity-item">
-                            <span class="amenity-icon">â„ï¸</span>
-                            <span class="amenity-label">Air Conditioning</span>
-                        </div>
-                        <div class="amenity-item">
-                            <span class="amenity-icon">â™¿</span>
-                            <span class="amenity-label">Accessible Entry</span>
-                        </div>
-                        <div class="amenity-item">
-                            <span class="amenity-icon">ðŸŒ¿</span>
-                            <span class="amenity-label">Outdoor Terrace</span>
-                        </div>
-                    </div>
-                </section>
-                
-                <div class="section-divider"></div>
-                
-                <!-- What to Bring -->
-                <section class="section">
-                    <p class="section-label">What to Bring</p>
-                    <div class="section-text">
-                        <p><strong>We provide:</strong> Robes, slippers, towels, lockers, toiletries, hair dryers</p>
-                        <p><strong>Please bring:</strong> Swimwear for thermal facilities, personal items, a calm mindset</p>
-                        <p><strong>Optional:</strong> Your own products if you have specific preferences</p>
-                    </div>
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 4: LOCATION & HOURS
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content" id="location">
-                <h2 class="sr-only">Location and Hours</h2>
-                <!-- Location Section -->
-                <section class="section">
-                    <p class="section-label">Find Us</p>
-                    
-                    <div class="map-container">
-                        [Google Map Embed]
-                    </div>
-                    
-                    <div class="location-details">
-                        <div class="location-block">
-                            <h4>Address</h4>
-                            <p>123 Wellness Lane<br>Brisbane QLD 4000<br>Australia</p>
-                            <br>
-                            <a href="#" class="view-all-link">Get Directions â†’</a>
-                        </div>
-                        
-                        <div class="location-block">
-                            <h4>Getting Here</h4>
-                            <ul>
-                                <li><strong>By Car:</strong> Free parking available on-site (20 spaces)</li>
-                                <li><strong>Public Transport:</strong> 5 min walk from Central Station</li>
-                                <li><strong>From Airport:</strong> 25 min by car or train</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-                
-                <div class="section-divider"></div>
-                
-                <!-- Hours Section -->
-                <section class="section">
-                    <p class="section-label">Opening Hours</p>
-                    
-                    <table class="hours-table">
-                        <tr>
-                            <td>Monday</td>
-                            <td>9:00 AM â€“ 9:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>Tuesday</td>
-                            <td>9:00 AM â€“ 9:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>Wednesday</td>
-                            <td>9:00 AM â€“ 9:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>Thursday</td>
-                            <td>9:00 AM â€“ 9:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>Friday</td>
-                            <td>9:00 AM â€“ 10:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>Saturday</td>
-                            <td>8:00 AM â€“ 10:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>Sunday</td>
-                            <td>8:00 AM â€“ 8:00 PM</td>
-                        </tr>
-                    </table>
-                    
-                    <p style="margin-top: 24px; font-family: var(--font-sans); font-size: 12px; color: var(--charcoal-lighter);">
-                        Last treatment booking 1 hour before close. Public holiday hours may vary.
-                    </p>
-                </section>
-                
-                <div class="section-divider"></div>
-                
-                <!-- Contact Section -->
-                <section class="section">
-                    <p class="section-label">Contact</p>
-                    <div class="location-details">
-                        <div class="location-block">
-                            <h4>Phone</h4>
-                            <p>+61 7 1234 5678</p>
-                        </div>
-                        <div class="location-block">
-                            <h4>Email</h4>
-                            <p><a class="email-link" data-u="{{venue.email_user}}" data-d="{{venue.email_domain}}"><span class="email-text">{{venue.email_user}} [at] {{venue.email_domain}}</span></a></p>
-                        </div>
-                    </div>
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 5: POLICIES
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content" id="policies">
-                <h2 class="sr-only">Policies</h2>
-                <!-- Cancellation Policy -->
-                <section class="section">
-                    <div class="policy-section">
-                        <h3 class="policy-title">Cancellation Policy</h3>
-                        <div class="policy-content">
-                            <ul>
-                                <li><strong>48+ hours before appointment:</strong> Full refund</li>
-                                <li><strong>24-48 hours before:</strong> 50% refund</li>
-                                <li><strong>Less than 24 hours:</strong> No refund</li>
-                            </ul>
-                            <div class="policy-highlight">
-                                <p><strong>Rescheduling:</strong> Bookings can be rescheduled free of charge up to 24 hours before your appointment, subject to availability.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="policy-section">
-                        <h3 class="policy-title">Arrival</h3>
-                        <div class="policy-content">
-                            <p>Please arrive 15 minutes before your appointment to complete check-in and prepare for your treatment. This allows time to change, store belongings, and begin relaxing before your service.</p>
-                            <ul>
-                                <li><strong>Late arrivals:</strong> Your treatment may be shortened to accommodate subsequent bookings</li>
-                                <li><strong>No-shows:</strong> Full charge applies</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="policy-section">
-                        <h3 class="policy-title">Health & Safety</h3>
-                        <div class="policy-content">
-                            <p>Please inform us of any health conditions, allergies, injuries, or pregnancy when booking. Some treatments have contraindications.</p>
-                            <ul>
-                                <li>Thermal facilities not recommended for pregnant women</li>
-                                <li>Some treatments not suitable for certain medical conditions</li>
-                                <li>Please consult your doctor if unsure</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="policy-section">
-                        <h3 class="policy-title">Venue Etiquette</h3>
-                        <div class="policy-content">
-                            <ul>
-                                <li><strong>Quiet zones:</strong> Please maintain a peaceful atmosphere throughout the spa</li>
-                                <li><strong>Mobile phones:</strong> Silent mode required; no calls in common areas</li>
-                                <li><strong>Photography:</strong> Not permitted in treatment areas or changing rooms</li>
-                                <li><strong>Dress code:</strong> Swimwear required in thermal facilities; robes provided for all other areas</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="policy-section">
-                        <h3 class="policy-title">Payment</h3>
-                        <div class="policy-content">
-                            <ul>
-                                <li><strong>Accepted:</strong> Visa, Mastercard, AMEX, EFTPOS, Cash</li>
-                                <li><strong>Gift vouchers:</strong> Valid for 3 years from purchase date</li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-                
-            </div>
-            
-        </div>
-        
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-             STICKY BOOKING SIDEBAR
-             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-        
-        <!-- VERSION A: Day Wellness (default shown) -->
-        <!-- Show when: Has Accommodation = No AND Has Practitioners = No -->
-        <aside class="booking-sidebar sidebar-version-a">
-            <div class="sidebar-card">
-                <p class="sidebar-header">Book an Experience</p>
-                <p class="sidebar-price">From $59</p>
-                <p class="sidebar-price-note">Per service</p>
-                
-                <select class="sidebar-select">
-                    <option>Select a Service</option>
-                    <option>Signature Massage â€” From $69</option>
-                    <option>Deep Tissue Massage â€” From $139</option>
-                    <option>Hot Stone Massage â€” From $169</option>
-                    <option>Thermal Circuit â€” $89</option>
-                    <option>Float Therapy â€” From $99</option>
-                    <option>Infrared Sauna â€” From $59</option>
-                    <option>Signature Facial â€” From $129</option>
-                    <option>Body Scrub & Wrap â€” $189</option>
-                </select>
-                
-                <button class="sidebar-btn-primary">Check Availability</button>
-                
-                <div class="sidebar-divider"></div>
-                
-                <div class="sidebar-trust">
-                    <div class="sidebar-trust-item">
-                        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-                        Instant confirmation
-                    </div>
-                    <div class="sidebar-trust-item">
-                        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-                        Free cancellation 48hrs+
-                    </div>
-                    <div class="sidebar-trust-item">
-                        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-                        Secure payment
-                    </div>
-                </div>
-                
-                <div class="sidebar-divider"></div>
-                
-                <button class="sidebar-wishlist">
-                    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    Save to Wishlist
-                </button>
-                
-                <p class="sidebar-contact">
-                    Questions? <a class="email-link" data-u="hello" data-d="theglobalsanctum.com">Contact us</a>
-                </p>
-            </div>
-        </aside>
-        
-        <!-- VERSION B: Wellness Resort (hidden by default - uncomment to preview) -->
-        <!-- Show when: Has Accommodation = Yes -->
-        <!--
-        <aside class="booking-sidebar sidebar-version-b" style="display: none;">
-            <div class="sidebar-card">
-                <p class="sidebar-header">Plan Your Stay</p>
-                <p class="sidebar-price">From $350<span> / night</span></p>
-                <p class="sidebar-price-note">Room only</p>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                    <div>
-                        <label style="font-family: var(--font-sans); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--charcoal-lighter); display: block; margin-bottom: 6px;">Check-in</label>
-                        <input type="date" class="sidebar-select" style="width: 100%;">
-                    </div>
-                    <div>
-                        <label style="font-family: var(--font-sans); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--charcoal-lighter); display: block; margin-bottom: 6px;">Check-out</label>
-                        <input type="date" class="sidebar-select" style="width: 100%;">
-                    </div>
-                </div>
-                
-                <select class="sidebar-select">
-                    <option>2 Guests</option>
-                    <option>1 Guest</option>
-                    <option>3 Guests</option>
-                    <option>4 Guests</option>
-                </select>
-                
-                <button class="sidebar-btn-primary">Check Availability</button>
-                
-                <div class="sidebar-divider"></div>
-                
-                <p style="font-family: var(--font-sans); font-size: 11px; color: var(--charcoal-lighter); text-align: center; margin-bottom: 12px;">Or book a treatment only:</p>
-                
-                <select class="sidebar-select">
-                    <option>Select a Service</option>
-                    <option>Signature Massage â€” From $69</option>
-                    <option>Thermal Circuit â€” $89</option>
-                    <option>Float Therapy â€” From $99</option>
-                </select>
-                
-                <button style="width: 100%; padding: 14px; font-family: var(--font-sans); font-size: 11px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--charcoal); background: transparent; border: 1px solid var(--charcoal-border); border-radius: 4px; cursor: pointer;">Book Treatment</button>
-                
-                <div class="sidebar-divider"></div>
-                
-                <div class="sidebar-trust">
-                    <div class="sidebar-trust-item">
-                        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-                        Instant confirmation
-                    </div>
-                    <div class="sidebar-trust-item">
-                        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-                        Free cancellation 48hrs+
-                    </div>
-                    <div class="sidebar-trust-item">
-                        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-                        Secure payment
-                    </div>
-                </div>
-                
-                <div class="sidebar-divider"></div>
-                
-                <button class="sidebar-wishlist">
-                    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    Save to Wishlist
-                </button>
-            </div>
-        </aside>
-        -->
-        
-        <!-- VERSION C: Medical/Clinical (hidden by default - uncomment to preview) -->
-        <!-- Show when: Has Practitioners = Yes -->
-        <!--
-        <aside class="booking-sidebar sidebar-version-c" style="display: none;">
-            <div class="sidebar-card">
-                <p class="sidebar-header">Begin Your Journey</p>
-                
-                <p style="font-family: var(--font-serif); font-size: 15px; color: var(--charcoal-light); margin-bottom: 20px; line-height: 1.6;">New patients start with a consultation to assess your needs and create a personalised treatment plan.</p>
-                
-                <button class="sidebar-btn-primary">Book a Consultation</button>
-                <p class="sidebar-price-note" style="text-align: center; margin-top: 8px;">From $150</p>
-                
-                <div class="sidebar-divider"></div>
-                
-                <p style="font-family: var(--font-sans); font-size: 11px; color: var(--charcoal-lighter); text-align: center; margin-bottom: 12px;">Returning patient?</p>
-                
-                <select class="sidebar-select">
-                    <option>Select a Treatment</option>
-                    <option>Acupuncture â€” From $95</option>
-                    <option>Remedial Massage â€” From $89</option>
-                    <option>Naturopathy Follow-up â€” $120</option>
-                    <option>Ayurvedic Treatment â€” From $110</option>
-                </select>
-                
-                <button style="width: 100%; padding: 14px; font-family: var(--font-sans); font-size: 11px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--charcoal); background: transparent; border: 1px solid var(--charcoal-border); border-radius: 4px; cursor: pointer;">Book Treatment</button>
-                
-                <div class="sidebar-divider"></div>
-                
-                <div class="sidebar-trust">
-                    <div class="sidebar-trust-item">
-                        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-                        AHPRA registered practitioners
-                    </div>
-
-                    <div class="sidebar-trust-item">
-                        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-                        Secure payment
-                    </div>
-                </div>
-                
-                <div class="sidebar-divider"></div>
-                
-                <button class="sidebar-wishlist">
-                    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    Save to Wishlist
-                </button>
-                
-                <p class="sidebar-contact">
-                    Questions? <a class="email-link" data-u="hello" data-d="theglobalsanctum.com">Contact us</a>
-                </p>
-            </div>
-        </aside>
-        -->
-        
-    </div>
-
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         SIMILAR VENUES
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-    
-    <section class="similar-venues">
-        <div class="section-header">
-            <p class="section-label">You May Also Like</p>
-        </div>
-        
-        <div class="venue-cards">
-            <article class="venue-card">
-                <div class="venue-card-image" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80');"></div>
-                <div class="venue-card-content">
-                    <h3 class="venue-card-name">Endota Spa</h3>
-                    <p class="venue-card-location">Brisbane, Queensland</p>
-                    <p class="venue-card-price">From $79 <span>/ service</span></p>
-                </div>
-            </article>
-            <article class="venue-card">
-                <div class="venue-card-image" style="background-image: url('https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=600&q=80');"></div>
-                <div class="venue-card-content">
-                    <h3 class="venue-card-name">Float Space</h3>
-                    <p class="venue-card-location">Brisbane, Queensland</p>
-                    <p class="venue-card-price">From $89 <span>/ session</span></p>
-                </div>
-            </article>
-            <article class="venue-card">
-                <div class="venue-card-image" style="background-image: url('https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=600&q=80');"></div>
-                <div class="venue-card-content">
-                    <h3 class="venue-card-name">Nordic Bathhouse</h3>
-                    <p class="venue-card-location">Sunshine Coast, Queensland</p>
-                    <p class="venue-card-price">From $69 <span>/ entry</span></p>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         CTA SECTION
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-    
-    <section class="cta-section">
-        <h2 class="cta-title">Ready to Book?</h2>
-        <p class="cta-text">Experience relaxation at Serenity Day Spa</p>
-        <div class="cta-buttons">
-            <a href="#" class="btn btn--primary">Book Now</a>
-            <a href="#" class="btn btn--secondary">Download Venue PDF</a>
-        </div>
-    </section>
-
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         FOOTER
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-
-    </main>
-    <!-- â•â•â• END MAIN CONTENT â•â•â• -->
-
-    <!-- â•â•â• FOOTER (standard pattern across all pages) â•â•â• -->
-    <footer class="footer">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <!-- â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-                     â”‚  LOGO GOES HERE                              â”‚
-                     â”‚  Image logo: Gold mandala on transparent bg  â”‚
-                     â”‚  Displays on dark (charcoal) background      â”‚
-                     â”‚  Recommended size: ~72px height              â”‚
-                     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ -->
-                <div class="footer-logo-placeholder">
-                    <span>Logo Goes Here</span>
-                </div>
-                <span class="footer-brand-name">The Global Sanctum</span>
-                <p class="footer-brand-text">Curated wellness venues and transformational retreat spaces for retreat hosts, wellness guests, and seekers worldwide.</p>
-                <p class="footer-brand-meta">Aurella Group Pty Ltd<br>ABN 70 649 742 423</p>
-            </div>
-            <div class="footer-col">
-                <h4 class="footer-col-title">Discover</h4>
-                <ul class="footer-links">
-                    <li><a href="tgs_venues_v3.html">Retreat Venues</a></li>
-                    <li><a href="tgs_venues_v3.html">Wellness Venues</a></li>
-                    <li><a href="tgs_wellness_experiences_v6.html">Wellness Experiences</a></li>
-                    <li><a href="tgs_how_it_works_v4 (2).html">How It Works</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 class="footer-col-title">Partner With Us</h4>
-                <ul class="footer-links">
-                    <li><a href="tgs_list_your_venue_v4.html">List Your Venue</a></li>
-                    <li><a href="tgs_list_your_venue_v4.html">Host A Retreat</a></li>
-                    <li><a href="tgs_contact_v4.html#press-media">Press &amp; Media</a></li>
-                    <li><a href="tgs_contact_v4.html">Contact Us</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 class="footer-col-title">Resources</h4>
-                <ul class="footer-links">
-                    <li><a href="tgs_wellness_edit_v2 (1).html">The Wellness Edit</a></li>
-                    <li><a href="tgs_sanctum_journal_modal.html">Sanctum Journal</a></li>
+    </li>
                     <li><a href="tgs_about_v4.html">About Us</a></li>
                     <li><a href="tgs_about_v4.html">Our Story</a></li>
                 </ul>
@@ -3158,12 +1927,12 @@
                     <li><a href="tgs_legal_v5.html">Terms &amp; Conditions</a></li>
                     <li><a href="tgs_legal_v5.html">Privacy Policy</a></li>
                     <li><a href="tgs_legal_v5.html">Cookies Policy</a></li>
-                    <li><a href="tgs_legal_v5.html">All Legal &amp; Policies â†’</a></li>
+                    <li><a href="tgs_legal_v5.html">All Legal &amp; Policies →</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p class="footer-copyright">Â© 2026 The Global Sanctum. All rights reserved.</p>
+            <p class="footer-copyright">© 2026 The Global Sanctum. All rights reserved.</p>
             <div class="footer-social">
                 <a href="https://www.instagram.com/theglobalsanctum/" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
                 <a href="https://www.facebook.com/profile.php?id=61577706717526" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
@@ -3172,21 +1941,21 @@
         </div>
     </footer>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══════════════════════════════════════════════════════════════════════════
          MOBILE FLOATING BOOKING BAR
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════════════ -->
     
     <div class="mobile-booking-bar">
         <div class="mobile-price">From $59 <span>/ service</span></div>
         <button class="mobile-book-btn">Check Availability</button>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══════════════════════════════════════════════════════════════════════════
          JAVASCRIPT
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════════════ -->
     
     <script>
-    // â”€â”€ SERVICES CATEGORY FILTER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── SERVICES CATEGORY FILTER ────────────────────────────────────────────
     // Filters service groups by taxonomy category slug
     // In production: category slugs come from wellness_categories table in Supabase
     function filterServices(categorySlug, btn) {
@@ -3206,10 +1975,10 @@
 
     </script>
     <script>
-        // â•â•â• EMAIL OBFUSCATION CONVERTER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // ═══ EMAIL OBFUSCATION CONVERTER ═══════════════════════════════════
         // Converts <a class="email-link" data-u="..." data-d="..."> elements
         // into real mailto: links on page load. Plain "hello@..." text is
-        // never present in raw HTML â€” harvester crawlers grepping for @ get
+        // never present in raw HTML — harvester crawlers grepping for @ get
         // nothing usable. JS-enabled humans see the real email and can click.
         (function() {
             document.querySelectorAll('.email-link').forEach(function(el) {
@@ -3228,7 +1997,7 @@
             document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 20);
         });
 
-        // â•â•â• DRAWER TOGGLE (standard ARIA-aware pattern) â•â•â•
+        // ═══ DRAWER TOGGLE (standard ARIA-aware pattern) ═══
         function toggleDrawer() {
             const hamburger = document.getElementById('navHamburger');
             const drawer = document.getElementById('navDrawer');
@@ -3284,18 +2053,18 @@
             });
         });
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════════════
            CONDITIONAL TAB VISIBILITY
-           â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+           ─────────────────────────────────────────────────────────────────────
            MOCKUP BEHAVIOUR (this file): all conditional tabs visible by
            default so the full template can be previewed end-to-end.
 
            PRODUCTION BEHAVIOUR (Kane's team): conditional tabs are shown or
            hidden based on boolean fields on the venue record in Supabase:
 
-             venue.has_accommodation  â†’ controls the Accommodation tab
-             venue.has_packages       â†’ controls the Packages tab
-             venue.has_practitioners  â†’ controls the Practitioners tab
+             venue.has_accommodation  → controls the Accommodation tab
+             venue.has_packages       → controls the Packages tab
+             venue.has_practitioners  → controls the Practitioners tab
 
            These boolean fields can either be stored explicitly on the venue
            record, OR derived from related data (e.g., has_accommodation is
@@ -3310,13 +2079,13 @@
            Real-world examples:
              SHA Wellness Clinic (multi-day programs + accommodation):
                has_accommodation=true, has_packages=true, has_practitioners=true
-               â†’ all three conditional tabs visible
+               → all three conditional tabs visible
 
              Local bathhouse (drop-in single-session bookings only):
                has_accommodation=false, has_packages=false, has_practitioners=false
-               â†’ none of the three conditional tabs visible (just Overview,
+               → none of the three conditional tabs visible (just Overview,
                  Services, The Space, Location, Policies)
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════════════ */
         // Mockup: show all conditional tabs by default for full template preview.
         // Production: server-render each tab with display:none when the matching
         // venue boolean is false; this block is a no-op in that scenario.
@@ -3325,13 +2094,13 @@
         });
     </script>
 
-    <!-- â•â•â• PAGE META EVENT â€” fires on page mount via tgsTrackOnce â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══ PAGE META EVENT — fires on page mount via tgsTrackOnce ═══════════
          Architecture doc Part 8 Standard Event: page_meta
          Payload: page_type=venue_detail, page_category=wellness-venues,
                   venue_slug={{venue.slug}}, page_path=/wellness-venues/{{venue.slug}}
          is_sample_listing flag is sent so analytics can segment real vs sample
          engagement during the pre-launch period.
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════════ -->
     <script>
     (function() {
         if (typeof window.tgsTrackOnce !== 'function') return;
@@ -3348,4 +2117,5 @@
 
 </body>
 </html>
+
 

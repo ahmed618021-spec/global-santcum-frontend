@@ -1,24 +1,24 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en-AU">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         VENUE DETAIL PAGE â€” TEMPLATE
-         â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         VENUE DETAIL PAGE — TEMPLATE
+         ─────────────────────────────────────────────────────────────────────
          Production note (Kane's team): all {{venue.*}} values below are
          placeholders to be filled by Supabase data at render time. The mockup
          currently displays Santosa Retreat hardcoded in the body for visual
          preview; in production both <head> and <body> will template from the
          same venue record. See Architecture doc Part 8 for the venue schema.
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-    <title>{{venue.name}} â€“ {{venue.city}}, {{venue.country}} | The Global Sanctum</title>
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <title>{{venue.name}} – {{venue.city}}, {{venue.country}} | The Global Sanctum</title>
     <meta name="description" content="{{venue.meta_description}}">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="bingbot" content="index, follow">
 
-    <!-- AI search bot allowance â€” supports AEO strategy (see Discovery Strategy Part 4) -->
+    <!-- AI search bot allowance — supports AEO strategy (see Discovery Strategy Part 4) -->
     <meta name="GPTBot" content="index, follow">
     <meta name="OAI-SearchBot" content="index, follow">
     <meta name="ChatGPT-User" content="index, follow">
@@ -30,7 +30,7 @@
     <meta name="Applebot-Extended" content="index, follow">
     <meta name="CCBot" content="index, follow">
 
-    <!-- Content Security Policy â€” defensive in-document layer.
+    <!-- Content Security Policy — defensive in-document layer.
          img-src includes https: to allow Unsplash hero gallery images and any
          external venue imagery. Real CSP belongs in HTTP headers via
          Cloudflare/Vercel post-migration. -->
@@ -60,21 +60,21 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="The Global Sanctum">
     <meta property="og:locale" content="en_AU">
-    <meta property="og:title" content="{{venue.name}} â€“ {{venue.city}}, {{venue.country}} | The Global Sanctum">
+    <meta property="og:title" content="{{venue.name}} – {{venue.city}}, {{venue.country}} | The Global Sanctum">
     <meta property="og:description" content="{{venue.meta_description}}">
     <meta property="og:url" content="https://www.theglobalsanctum.com/retreat-venues/{{venue.slug}}">
     <meta property="og:image" content="{{venue.hero_image_url}}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="{{venue.name}} â€” retreat venue in {{venue.city}}, {{venue.country}}">
+    <meta property="og:image:alt" content="{{venue.name}} — retreat venue in {{venue.city}}, {{venue.country}}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@theglobalsanctum">
-    <meta name="twitter:title" content="{{venue.name}} â€“ {{venue.city}}, {{venue.country}} | The Global Sanctum">
+    <meta name="twitter:title" content="{{venue.name}} – {{venue.city}}, {{venue.country}} | The Global Sanctum">
     <meta name="twitter:description" content="{{venue.meta_description}}">
     <meta name="twitter:image" content="{{venue.hero_image_url}}">
-    <meta name="twitter:image:alt" content="{{venue.name}} â€” retreat venue in {{venue.city}}, {{venue.country}}">
+    <meta name="twitter:image:alt" content="{{venue.name}} — retreat venue in {{venue.city}}, {{venue.country}}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -83,12 +83,12 @@
     <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/montserrat/v25/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXp-p7K4KLg.woff2">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <!-- â•â•â• tgsTrackOnce â€” single-fire dataLayer guard â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══ tgsTrackOnce — single-fire dataLayer guard ═══════════════════════
          Production code (Kane's team) calls window.tgsTrackOnce(name, payload)
          instead of dataLayer.push directly. Each event payload must include a
          unique submissionId or interactionId for deduplication.
          See Implementation Requirements PDF, Items 24-26.
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════ -->
     <script>
     window.__tgsEventsFired = window.__tgsEventsFired || {};
     window.tgsTrackOnce = function(eventName, payload) {
@@ -102,9 +102,9 @@
     };
     </script>
 
-    <!-- â•â•â• GOOGLE TAG MANAGER â€” HEAD SNIPPET â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══ GOOGLE TAG MANAGER — HEAD SNIPPET ════════════════════════════
          Container ID: GTM-NBQCMQXG
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════ -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -113,9 +113,9 @@
     <!-- End GTM Head Snippet -->
 
     <style>
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            DESIGN SYSTEM
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         :root {
             --warm-white: #FDFCF9;
@@ -170,9 +170,9 @@
 
         img { max-width: 100%; height: auto; display: block; }
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════
            SKIP TO CONTENT (accessibility)
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════ */
         .skip-to-content {
             position: absolute; top: -100px; left: 16px;
             background: var(--charcoal); color: var(--warm-white);
@@ -183,11 +183,11 @@
         }
         .skip-to-content:focus { top: 16px; outline: 2px solid var(--gold-accent); }
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════
            SAMPLE LISTING RIBBON (placeholder venue indicator)
            Removed in production once real venues onboarded.
            Database flag: venue.is_sample_listing = false
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════ */
         .sample-ribbon {
             position: absolute;
             top: 110px;
@@ -229,15 +229,15 @@
             .sample-ribbon-text { font-size: 11px; }
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            SITE HEADER
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════
            NAVIGATION (matches standard pattern across all pages)
            Transparent over hero gallery with scrim+blur for readability,
            fades to opaque cream on scroll past hero.
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════ */
         .nav {
             position: fixed; top: 0; left: 0; right: 0;
             z-index: 100;
@@ -303,9 +303,9 @@
         }
         .nav-right { width: 80px; }
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════
            DRAWER (matches standard pattern)
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════ */
         .drawer-overlay {
             position: fixed; inset: 0; z-index: 998;
             background: rgba(49,49,49,0.45);
@@ -436,9 +436,9 @@
         }
         .drawer-social a:hover { border-color: var(--charcoal); color: var(--charcoal); }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            HERO GALLERY
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .hero-gallery {
             position: relative;
@@ -515,9 +515,9 @@
             opacity: 1;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            STICKY INFO BAR
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .sticky-info-bar {
             position: sticky;
@@ -591,9 +591,9 @@
             opacity: 0.85;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            TAB NAVIGATION
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .tab-nav {
             position: sticky;
@@ -645,9 +645,9 @@
             border-bottom-color: var(--charcoal);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            MAIN LAYOUT
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .main-content {
             display: flex;
@@ -668,9 +668,9 @@
             display: block;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            FLOATING SIDEBAR
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .floating-sidebar {
             width: 340px;
@@ -808,9 +808,9 @@
             border-top: 1px solid var(--charcoal-subtle);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            SECTION STYLING
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .section {
             padding: var(--section-padding) 40px;
@@ -881,9 +881,9 @@
             max-width: var(--text-width);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            TAB HERO
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .tab-hero {
             position: relative;
@@ -938,9 +938,9 @@
             opacity: 0.9;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            INTRO SECTION
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .intro-text {
             max-width: var(--text-width);
@@ -968,9 +968,9 @@
             margin-bottom: 0;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            STATS GRID
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .stats-grid {
             display: grid;
@@ -1007,9 +1007,9 @@
             color: var(--charcoal-lighter);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            FEATURE BLOCK
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .feature-block {
             display: grid;
@@ -1092,9 +1092,9 @@
             background: var(--warm-white);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            CARD GRIDS
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .card-grid {
             display: grid;
@@ -1173,9 +1173,9 @@
             color: var(--charcoal-light);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            ICON GRID
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .icon-grid {
             display: grid;
@@ -1211,9 +1211,9 @@
             color: var(--charcoal);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            VIEW ALL LINK
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .view-all {
             text-align: center;
@@ -1235,9 +1235,9 @@
             opacity: 0.7;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            HOST SECTION
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .host-image {
             aspect-ratio: 4/5;
@@ -1251,9 +1251,9 @@
             object-fit: cover;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            IMAGE BREAK
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .image-break {
             height: 50vh;
@@ -1270,9 +1270,9 @@
             }
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            AMENITY LISTS
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .amenity-columns {
             display: grid;
@@ -1316,9 +1316,9 @@
             color: var(--charcoal-light);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            POLICY CARDS
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .policy-card {
             padding: 40px;
@@ -1365,9 +1365,9 @@
             color: var(--charcoal-light);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            PRICING SECTION
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .pricing-hero {
             text-align: center;
@@ -1520,9 +1520,9 @@
             color: var(--charcoal-lighter);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            PROCESS TIMELINE
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .process-timeline {
             position: relative;
@@ -1588,9 +1588,9 @@
             color: var(--charcoal-light);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            CANCELLATION TABLE
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .cancellation-table {
             width: 100%;
@@ -1636,9 +1636,9 @@
             color: var(--charcoal);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            FAQ ACCORDION
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .faq-list {
             max-width: 800px;
@@ -1722,9 +1722,9 @@
             padding-bottom: 24px;
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            CTA SECTION
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .cta {
             padding: 80px 40px;
@@ -1790,9 +1790,9 @@
             border-color: rgba(255, 255, 255, 0.6);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            SIMILAR VENUES
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         .similar-venues {
             padding: var(--section-padding) 40px;
@@ -1870,9 +1870,9 @@
             color: var(--charcoal-light);
         }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════
            FOOTER (standard pattern across all pages)
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════ */
         .footer { background: var(--charcoal); color: rgba(255,255,255,0.7); padding: 80px 48px 40px; }
         .footer-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 48px; padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,0.08); }
         .footer-brand { display: flex; flex-direction: column; gap: 20px; }
@@ -1891,9 +1891,9 @@
         .footer-social a { font-family: var(--font-sans); font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); transition: color 0.3s ease; text-decoration: none; }
         .footer-social a:hover { color: var(--gold-accent); }
         
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════════════════════
            RESPONSIVE
-           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+           ═══════════════════════════════════════════════════════════════ */
         
         @media (max-width: 1200px) {
             .floating-sidebar {
@@ -2042,7 +2042,7 @@
         }
     </style>
 
-    <!-- â•â•â• JSON-LD STRUCTURED DATA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══ JSON-LD STRUCTURED DATA ═══════════════════════════════════════
          Production note (Kane's team): all {{venue.*}} placeholders below
          must be filled at render time from the venue Supabase record.
          The mockup currently has Santosa Retreat values shown in the body
@@ -2052,11 +2052,11 @@
            - Organization (sitewide)
            - WebSite (sitewide)
            - BreadcrumbList (Home > Retreat Venues > {{venue.name}})
-           - LodgingBusiness (the high-value venue schema â€” drives Google
+           - LodgingBusiness (the high-value venue schema — drives Google
              rich results with images, ratings, prices, amenities, geo)
            - ImageGallery (for the {{venue.gallery_count}}-image hero
              gallery, max ~10 images recommended in schema)
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════════ -->
 
     <!-- Organization (sitewide canonical) -->
     <script type="application/ld+json">
@@ -2116,8 +2116,8 @@
     }
     </script>
 
-    <!-- LodgingBusiness â€” primary venue schema (per Discovery Strategy Part 5)
-         IMPORTANT â€” sample listing handling:
+    <!-- LodgingBusiness — primary venue schema (per Discovery Strategy Part 5)
+         IMPORTANT — sample listing handling:
          - "availability": "PreOrder" signals to Google this is not yet
            directly bookable (correct while platform is pre-launch).
          - When venue.is_sample_listing = false (real venue onboarded),
@@ -2129,7 +2129,7 @@
       "@type": "LodgingBusiness",
       "@id": "https://www.theglobalsanctum.com/retreat-venues/{{venue.slug}}#venue",
       "name": "{{venue.name}}",
-      "description": "{{venue.is_sample_listing ? 'Sample listing â€” preview only. ' : ''}}{{venue.long_description}}",
+      "description": "{{venue.is_sample_listing ? 'Sample listing — preview only. ' : ''}}{{venue.long_description}}",
       "url": "https://www.theglobalsanctum.com/retreat-venues/{{venue.slug}}",
       "image": [
         "{{venue.hero_image_url}}",
@@ -2176,15 +2176,15 @@
     }
     </script>
 
-    <!-- ImageGallery â€” hero gallery -->
+    <!-- ImageGallery — hero gallery -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ImageGallery",
-      "name": "{{venue.name}} â€” Photo Gallery",
+      "name": "{{venue.name}} — Photo Gallery",
       "description": "Curated photography of {{venue.name}} retreat venue in {{venue.city}}, {{venue.country}}.",
       "image": [
-        { "@type": "ImageObject", "contentUrl": "{{venue.hero_image_url}}", "caption": "{{venue.name}} â€” main view" },
+        { "@type": "ImageObject", "contentUrl": "{{venue.hero_image_url}}", "caption": "{{venue.name}} — main view" },
         { "@type": "ImageObject", "contentUrl": "{{venue.gallery_image_2_url}}", "caption": "{{venue.gallery_image_2_caption}}" },
         { "@type": "ImageObject", "contentUrl": "{{venue.gallery_image_3_url}}", "caption": "{{venue.gallery_image_3_caption}}" },
         { "@type": "ImageObject", "contentUrl": "{{venue.gallery_image_4_url}}", "caption": "{{venue.gallery_image_4_caption}}" }
@@ -2196,1448 +2196,14 @@
 </head>
 <body>
 
-    <!-- â•â•â• GOOGLE TAG MANAGER â€” BODY (NOSCRIPT) SNIPPET â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══ GOOGLE TAG MANAGER — BODY (NOSCRIPT) SNIPPET ═══════════════
          First element after opening <body>. Required noscript fallback.
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════ -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NBQCMQXG"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Skip to main content link (accessibility) -->
-    <a class="skip-to-content" href="#main-content">Skip to main content</a>
-
-    <!-- â•â•â• NAVIGATION (standard pattern) â•â•â• -->
-    <nav class="nav" id="mainNav" aria-label="Primary">
-        <div class="nav-inner">
-            <div class="nav-left" onclick="toggleDrawer()">
-                <button class="nav-hamburger" id="navHamburger" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navDrawer">
-                    <span></span><span></span><span></span>
-                </button>
-                <span class="nav-hamburger-label" aria-hidden="true">Menu</span>
-            </div>
-            <a href="tgs_home_v7.html" class="nav-logo-area" aria-label="The Global Sanctum â€” home">
-                <span class="nav-logo" aria-hidden="true"></span>
-                <span class="nav-brand-text">The Global Sanctum</span>
-            </a>
-            <div class="nav-right"></div>
-        </div>
-    </nav>
-
-    <!-- â•â•â• DRAWER â•â•â• -->
-    <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()" aria-hidden="true"></div>
-    <div class="drawer" id="navDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu" aria-hidden="true">
-        <div class="drawer-header">
-            <div class="drawer-header-left">
-                <span class="drawer-logo"></span>
-                <span class="drawer-label">Navigation</span>
-            </div>
-            <button class="drawer-close" onclick="toggleDrawer()" aria-label="Close menu">&times;</button>
-        </div>
-        <div class="drawer-search">
-            <div class="drawer-search-bar">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input type="text" placeholder="Search venues, experiences, locations...">
-            </div>
-        </div>
-        <div class="drawer-body">
-            <div class="drawer-group">
-                <div class="drawer-group-label">Discover</div>
-                <a href="tgs_venues_v3.html" class="drawer-link">Retreat Venues<span class="drawer-link-arrow">â†’</span></a>
-                <a href="tgs_venues_v3.html" class="drawer-link">Wellness Venues<span class="drawer-link-arrow">â†’</span></a>
-                <a href="tgs_wellness_experiences_v6.html" class="drawer-link">Wellness Experiences<span class="drawer-link-arrow">â†’</span></a>
-            </div>
-            <div class="drawer-group">
-                <div class="drawer-group-label">Learn</div>
-                <a href="tgs_about_v4.html" class="drawer-secondary-link">About Us</a>
-                <a href="tgs_how_it_works_v4 (2).html" class="drawer-secondary-link">How It Works</a>
-                <a href="tgs_wellness_edit_v2 (1).html" class="drawer-secondary-link">The Wellness Edit</a>
-            </div>
-            <div class="drawer-group">
-                <div class="drawer-group-label">Connect</div>
-                <a href="tgs_contact_v4.html" class="drawer-secondary-link">Contact Us</a>
-                <a href="tgs_list_your_venue_v4.html" class="drawer-secondary-link">List Your Venue</a>
-            </div>
-            <div class="drawer-group">
-                <a href="tgs_list_your_venue_v4.html" class="drawer-cta">List Your Venue</a>
-            </div>
-        </div>
-        <div class="drawer-footer">
-            <div class="drawer-footer-contact">
-                <a class="email-link drawer-footer-item" data-u="hello" data-d="theglobalsanctum.com">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                    <span class="email-text">hello [at] theglobalsanctum [dot] com</span>
-                </a>
-            </div>
-            <div class="drawer-social">
-                <a href="https://www.facebook.com/profile.php?id=61577706717526" target="_blank" rel="noopener" aria-label="Facebook">Fb</a>
-                <a href="https://www.instagram.com/theglobalsanctum/" target="_blank" rel="noopener" aria-label="Instagram">Ig</a>
-                <a href="https://www.linkedin.com/company/the-global-sanctum/" target="_blank" rel="noopener" aria-label="LinkedIn">Li</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- â•â•â• MAIN CONTENT â•â•â• -->
-    <main id="main-content" role="main">
-
-    <!-- Hero Gallery -->
-    <section class="hero-gallery">
-        <!-- â•â•â• SAMPLE LISTING RIBBON â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-             Visible to humans + reinforced by schema "availability: PreOrder"
-             so this venue cannot be mistaken for a real bookable listing.
-             Production: hide via {{#if venue.is_sample_listing}} when real
-             venues are onboarded.
-             â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-        <div class="sample-ribbon" role="note" aria-label="This is a sample listing">
-            <span class="sample-ribbon-eyebrow">Sample Listing</span>
-            <span class="sample-ribbon-text">Preview Only</span>
-        </div>
-        <div class="hero-content">
-            <h1 class="hero-venue-name">Santosa Retreat</h1>
-            <p class="hero-location">Coromandel Peninsula, New Zealand</p>
-            <a href="#" class="hero-view-photos">View All 48 Photos</a>
-        </div>
-        <div class="hero-thumbnails">
-            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=200&q=80" alt="Thumbnail 1" class="hero-thumb">
-            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=200&q=80" alt="Thumbnail 2" class="hero-thumb">
-            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=200&q=80" alt="Thumbnail 3" class="hero-thumb">
-            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=200&q=80" alt="Thumbnail 4" class="hero-thumb">
-        </div>
-    </section>
-
-    <!-- Sticky Info Bar -->
-    <div class="sticky-info-bar" id="stickyInfoBar">
-        <div class="sticky-info-inner">
-            <div class="sticky-info-left">
-                <h2>Santosa Retreat</h2>
-                <p>Coromandel, New Zealand</p>
-            </div>
-            <div class="sticky-info-right">
-                <div class="sticky-stats">
-                    24 Guests<span>Â·</span>3 Shalas<span>Â·</span>From $2,800/night
-                </div>
-                <a href="#" class="sticky-cta">Enquire Now</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tab Navigation -->
-    <nav class="tab-nav">
-        <div class="tab-nav-inner">
-            <button class="tab active" data-tab="overview">Overview</button>
-            <button class="tab" data-tab="spaces">Retreat Spaces</button>
-            <button class="tab" data-tab="accommodation">Accommodation</button>
-            <button class="tab" data-tab="amenities">Amenities</button>
-            <button class="tab" data-tab="experiences">Experiences</button>
-            <button class="tab" data-tab="location">Location</button>
-            <button class="tab" data-tab="reviews">Reviews</button>
-            <button class="tab" data-tab="booking">Booking</button>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <div class="main-content">
-        
-        <!-- Content Area -->
-        <div class="content-area">
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 1: OVERVIEW
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content active" id="overview">
-                
-                <!-- Hero Quote -->
-                <section class="tab-hero" style="background-image: url('https://images.unsplash.com/photo-1545389336-cf090694435e?w=1920&q=80');">
-                    <div class="tab-hero-content">
-                        <p class="tab-hero-subtitle" style="font-size: 28px;">"A place where transformation happens as naturally as breathing"</p>
-                    </div>
-                </section>
-                
-                <!-- Introduction -->
-                <section class="section section--cream">
-                    <div class="intro-text">
-                        <div class="intro-line"></div>
-                        <p>Santosa Retreat is a sanctuary perched on the edge of an ancient forest, where the mountains meet the Tasman Sea. For over a decade, we have welcomed retreat facilitators seeking a space that holds transformation.</p>
-                        <p>Our three practice spacesâ€”from an ocean-facing shala to an intimate garden studioâ€”offer the versatility to support any retreat format. Here, the only agenda is the one you bring.</p>
-                    </div>
-                </section>
-                
-                <!-- At a Glance -->
-                <section class="section section--white">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">At a Glance</p>
-                        </header>
-                        
-                        <div class="stats-grid">
-                            <div class="stat-item">
-                                <p class="stat-value">24</p>
-                                <p class="stat-label">Guests</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value">3</p>
-                                <p class="stat-label">Shalas</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value">12</p>
-                                <p class="stat-label">Acres</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value">2.5hr</p>
-                                <p class="stat-label">Airport</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value">$2,800</p>
-                                <p class="stat-label">From</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value">4.9</p>
-                                <p class="stat-label">Rating</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- The Experience -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <div class="feature-block">
-                            <div class="feature-image">
-                                <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80" alt="Yoga practice">
-                            </div>
-                            <div class="feature-content">
-                                <p class="feature-label">The Experience</p>
-                                <h2 class="feature-title">A Space for Transformation</h2>
-                                <p class="feature-text">Every element of Santosa has been considered with intention. The way morning light filters through the shala. The silence that settles over the land at dusk. The kitchen designed for nourishing large groups with ease.</p>
-                                <p class="feature-text">We believe the best retreats happen when facilitators can focus entirely on their participantsâ€”not logistics. That's why we handle the details, so you can hold space.</p>
-                                <div class="feature-tags">
-                                    <span class="tag">Yoga</span>
-                                    <span class="tag">Meditation</span>
-                                    <span class="tag">Breathwork</span>
-                                    <span class="tag">Sound Healing</span>
-                                    <span class="tag">Movement</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Retreat Spaces Preview -->
-                <section class="section section--white">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Retreat Spaces</p>
-                            <p class="section-subtitle">Three distinct spaces for your practice</p>
-                        </header>
-                        
-                        <div class="card-grid card-grid--3">
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=600&q=80" alt="Main Shala">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Main Shala</h3>
-                                    <p class="card-meta">24 mats Â· 120mÂ² Â· Ocean view</p>
-                                    <p class="card-description">An ocean-facing pavilion with floor-to-ceiling glass, timber floors, and soaring ceilings.</p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Garden Studio">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Garden Studio</h3>
-                                    <p class="card-meta">12 mats Â· 60mÂ² Â· Garden view</p>
-                                    <p class="card-description">Intimate space nestled in the gardens, perfect for smaller groups or breakout sessions.</p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Fire Circle">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Fire Circle</h3>
-                                    <p class="card-meta">25 seated Â· Outdoor Â· Ceremonies</p>
-                                    <p class="card-description">A sacred outdoor space for fire ceremonies, cacao circles, and stargazing.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="view-all">
-                            <a href="#" onclick="switchTab('spaces'); return false;">View All Spaces â†’</a>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Accommodation Preview -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Accommodation</p>
-                            <p class="section-subtitle">Rest well, rise restored</p>
-                        </header>
-                        
-                        <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 600px; margin: 0 auto 50px;">
-                            <div class="stat-item">
-                                <p class="stat-value">24</p>
-                                <p class="stat-label">Total Guests</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value">8</p>
-                                <p class="stat-label">Bedrooms</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value">4</p>
-                                <p class="stat-label">Bathrooms</p>
-                            </div>
-                        </div>
-                        
-                        <div class="card-grid card-grid--2">
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80" alt="Ocean Suite">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Ocean Suite</h3>
-                                    <p class="card-meta">Sleeps 2 Â· King bed Â· Ensuite</p>
-                                    <p class="card-description">Floor-to-ceiling windows, private terrace, and ocean views. Our most requested room.</p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80" alt="Garden Twin">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Garden Twin</h3>
-                                    <p class="card-meta">Sleeps 2 Â· Twin beds Â· Ensuite</p>
-                                    <p class="card-description">Peaceful garden outlook with direct shala access. Perfect for retreat participants.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="view-all">
-                            <a href="#" onclick="switchTab('accommodation'); return false;">View All Rooms â†’</a>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Signature Amenities -->
-                <section class="section section--white">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Signature Amenities</p>
-                        </header>
-                        
-                        <div class="icon-grid">
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                                </div>
-                                <p class="icon-label">Infinity Pool</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
-                                </div>
-                                <p class="icon-label">Sauna & Cold Plunge</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-                                </div>
-                                <p class="icon-label">Commercial Kitchen</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4"/></svg>
-                                </div>
-                                <p class="icon-label">Sound Equipment</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><path d="M3 12h4l3 9l4-18l3 9h4"/></svg>
-                                </div>
-                                <p class="icon-label">Private Beach</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg>
-                                </div>
-                                <p class="icon-label">Yoga Props</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                </div>
-                                <p class="icon-label">Gardens & Trails</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
-                                </div>
-                                <p class="icon-label">WiFi Throughout</p>
-                            </div>
-                        </div>
-                        
-                        <div class="view-all">
-                            <a href="#" onclick="switchTab('amenities'); return false;">View All Amenities â†’</a>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Host Introduction -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <div class="feature-block feature-block--reverse">
-                            <div class="feature-content">
-                                <p class="feature-label">Your Hosts</p>
-                                <h2 class="feature-title">Sarah & James</h2>
-                                <p class="feature-text">"We've been holding space for retreat facilitators for over 12 years. Every group that arrives teaches us something new about what this land can hold."</p>
-                                <p class="feature-text">Former yoga teachers themselves, Sarah and James created Santosa as the retreat venue they always wished existedâ€”a place where facilitators could focus entirely on their participants while every logistical detail was seamlessly handled.</p>
-                            </div>
-                            <div class="host-image">
-                                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=80" alt="Sarah & James">
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- CTA -->
-                <section class="section section--charcoal cta">
-                    <h2 class="cta-title">Ready to Hold Your Retreat Here?</h2>
-                    <p class="cta-text">Tell us about your vision and we'll be in touch within 24 hours to discuss availability.</p>
-                    <div class="cta-buttons">
-                        <a href="#" class="btn btn--primary">Enquire About This Venue</a>
-                        <a href="#" class="btn btn--secondary">Download Venue PDF</a>
-                    </div>
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 2: RETREAT SPACES
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content" id="spaces">
-                
-                <!-- Hero -->
-                <section class="tab-hero" style="background-image: url('https://images.unsplash.com/photo-1545389336-cf090694435e?w=1920&q=80');">
-                    <div class="tab-hero-content">
-                        <p class="tab-hero-label">Retreat Spaces</p>
-                        <h2 class="tab-hero-title">Spaces That Hold Whatever You Bring</h2>
-                        <p class="tab-hero-subtitle">Three distinct environments for practice, ceremony, and transformation</p>
-                    </div>
-                </section>
-                
-                <!-- Intro -->
-                <section class="section section--cream">
-                    <div class="intro-text">
-                        <div class="intro-line"></div>
-                        <p>Each of our practice spaces has been designed with intentionâ€”the way light moves through them, the quality of silence they hold, the connection to the land beyond. Whether you're leading dynamic vinyasa or holding space for deep meditation, you'll find a setting that supports your work.</p>
-                    </div>
-                </section>
-                
-                <!-- Featured Space -->
-                <section class="section section--white">
-                    <div class="container">
-                        <div class="feature-block">
-                            <div class="feature-image" style="aspect-ratio: 16/9;">
-                                <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=1200&q=80" alt="Main Shala">
-                            </div>
-                            <div class="feature-content">
-                                <p class="feature-label">Featured Space</p>
-                                <h2 class="feature-title">Main Shala</h2>
-                                <p class="feature-text">The heart of Santosa, our main shala is a soaring open-air pavilion facing directly east toward the Pacific. Floor-to-ceiling glass doors open completely, dissolving the boundary between inside and out.</p>
-                                <p class="feature-text">The space comfortably holds 24 yoga mats with room to move, or 40 seated for lectures and sound healing. Blackout blinds and a premium sound system give you complete control over the environment.</p>
-                                <div class="feature-tags">
-                                    <span class="tag">24 Mats</span>
-                                    <span class="tag">120mÂ²</span>
-                                    <span class="tag">Ocean View</span>
-                                    <span class="tag">Sound System</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- All Spaces -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">All Practice Spaces</p>
-                        </header>
-                        
-                        <div class="feature-block" style="margin-bottom: 60px;">
-                            <div class="feature-image">
-                                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Garden Studio">
-                            </div>
-                            <div class="feature-content">
-                                <h2 class="feature-title">Garden Studio</h2>
-                                <p class="feature-text">An intimate space nestled in the gardens, the Garden Studio is perfect for smaller groups, workshops, or breakout sessions. Skylights flood the space with natural light while maintaining privacy and focus.</p>
-                                <div class="feature-tags">
-                                    <span class="tag">12 Mats</span>
-                                    <span class="tag">60mÂ²</span>
-                                    <span class="tag">Garden View</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="feature-block feature-block--reverse">
-                            <div class="feature-content">
-                                <h2 class="feature-title">Fire Circle</h2>
-                                <p class="feature-text">A sacred outdoor space for fire ceremonies, cacao circles, and stargazing. Surrounded by native bush, the fire circle holds up to 25 people seated on timber benches arranged in concentric circles.</p>
-                                <div class="feature-tags">
-                                    <span class="tag">25 Seated</span>
-                                    <span class="tag">Outdoor</span>
-                                    <span class="tag">Ceremonies</span>
-                                </div>
-                            </div>
-                            <div class="feature-image">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" alt="Fire Circle">
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- CTA -->
-                <section class="section section--charcoal cta">
-                    <h2 class="cta-title">Questions About Our Spaces?</h2>
-                    <p class="cta-text">We're happy to arrange a video tour or answer any questions about how our spaces might work for your retreat format.</p>
-                    <div class="cta-buttons">
-                        <a href="#" class="btn btn--primary">Enquire About This Venue</a>
-                        <a href="#" class="btn btn--secondary">Download Venue PDF</a>
-                    </div>
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 3: ACCOMMODATION
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content" id="accommodation">
-                
-                <!-- Hero Image for Accommodation -->
-                <div style="width: 100%; height: 400px; background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1600&q=80') center/cover; margin-bottom: 0;"></div>
-                
-                <!-- Accommodation Overview -->
-                <section class="section section--white">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Stay With Us</p>
-                        </header>
-                        <div class="intro-text">
-                            <p>Sleep comes easily at Santosa. Our eco-conscious accommodations range from private suites to shared lodges, all designed to immerse guests in the natural environment while maintaining every comfort.</p>
-                            <p>Eight thoughtfully appointed rooms for 24 guests across 3 Private Suites, 2 Twin Rooms, and 1 Dormitory.</p>
-                        </div>
-                    </div>
-                </section>
-                
-                <section class="section section--cream">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Room Types</p>
-                            <p class="section-subtitle">Choose your sanctuary</p>
-                        </header>
-                        
-                        <div class="card-grid card-grid--2">
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80" alt="Ocean Suite">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Ocean Suite</h3>
-                                    <p class="card-description">Our most sought-after room with uninterrupted views of the Tasman Sea from floor-to-ceiling windows. Private terrace and deep soaking tub.</p>
-                                    <p class="card-meta" style="margin-top: 12px; margin-bottom: 0;">Sleeps 2 Â· King Bed Â· Ensuite Â· Ocean View</p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80" alt="Garden Twin">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Garden Twin</h3>
-                                    <p class="card-description">Peaceful rooms with garden outlooks and direct access to the main shala. Twin beds can be configured as a king.</p>
-                                    <p class="card-meta" style="margin-top: 12px; margin-bottom: 0;">Sleeps 2 Â· Twin Beds Â· Ensuite Â· Garden View</p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80" alt="Forest Cabin">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Forest Cabin</h3>
-                                    <p class="card-description">Standalone cabin tucked into native bush. Complete privacy with outdoor shower and meditation deck.</p>
-                                    <p class="card-meta" style="margin-top: 12px; margin-bottom: 0;">Sleeps 2 Â· Queen Bed Â· Ensuite Â· Forest View</p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&q=80" alt="Shared Dormitory">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Shared Dormitory</h3>
-                                    <p class="card-description">Community-focused accommodation with 10 single beds. Shared bathrooms and common lounge area.</p>
-                                    <p class="card-meta" style="margin-top: 12px; margin-bottom: 0;">Sleeps 10 Â· Single Beds Â· Shared Bathroom</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- In Every Room -->
-                <section class="section section--white">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">In Every Room</p>
-                            <p class="section-subtitle">Standard amenities across all rooms</p>
-                        </header>
-                        
-                        <div class="icon-grid" style="grid-template-columns: repeat(6, 1fr);">
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>
-                                </div>
-                                <p class="icon-label">Organic Toiletries</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-                                </div>
-                                <p class="icon-label">Robe & Slippers</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                </div>
-                                <p class="icon-label">Filtered Water</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
-                                </div>
-                                <p class="icon-label">Daily Cleaning</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg>
-                                </div>
-                                <p class="icon-label">Quality Linens</p>
-                            </div>
-                            <div class="icon-item">
-                                <div class="icon-wrapper">
-                                    <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/></svg>
-                                </div>
-                                <p class="icon-label">USB Charging</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 4: AMENITIES
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content" id="amenities">
-                
-                <!-- Hero -->
-                <section class="tab-hero" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1920&q=80');">
-                    <div class="tab-hero-content">
-                        <p class="tab-hero-label">Amenities</p>
-                        <h2 class="tab-hero-title">Everything Your Retreat Needs</h2>
-                        <p class="tab-hero-subtitle">Thoughtfully curated to support transformation</p>
-                    </div>
-                </section>
-                
-                <!-- Practice Equipment -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Supporting Your Practice</p>
-                            <p class="section-subtitle">Everything you need to hold transformative sessions</p>
-                        </header>
-                        
-                        <div class="amenity-columns">
-                            <div>
-                                <h3 class="amenity-column-title">Yoga & Movement</h3>
-                                <div class="amenity-item">
-                                    <p class="amenity-name">24 Premium Yoga Mats</p>
-                                    <p class="amenity-detail">Manduka PRO series, cleaned between each retreat</p>
-                                </div>
-                                <div class="amenity-item">
-                                    <p class="amenity-name">Props Collection</p>
-                                    <p class="amenity-detail">Blocks, straps, bolsters, blankets, eye pillows</p>
-                                </div>
-                                <div class="amenity-item">
-                                    <p class="amenity-name">Meditation Cushions</p>
-                                    <p class="amenity-detail">Zafus and zabutons for 24</p>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 class="amenity-column-title">Sound & Ceremony</h3>
-                                <div class="amenity-item">
-                                    <p class="amenity-name">Crystal Singing Bowls (7)</p>
-                                    <p class="amenity-detail">Full chakra set, mallets included</p>
-                                </div>
-                                <div class="amenity-item">
-                                    <p class="amenity-name">Tibetan Singing Bowls (12)</p>
-                                    <p class="amenity-detail">Various sizes, antique collection</p>
-                                </div>
-                                <div class="amenity-item">
-                                    <p class="amenity-name">Gong (36" Paiste)</p>
-                                    <p class="amenity-detail">With stand and mallet</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Image Break -->
-                <div class="image-break" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&q=80');"></div>
-                
-                <!-- Water & Healing -->
-                <section class="section section--white">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Water & Healing</p>
-                            <p class="section-subtitle">Restore through stillness and contrast</p>
-                        </header>
-                        
-                        <div class="card-grid card-grid--3">
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80" alt="Infinity Pool">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Infinity Pool</h3>
-                                    <p class="card-description">18-meter heated pool overlooking the ocean. Solar heated year-round.</p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="Finnish Sauna">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Finnish Sauna</h3>
-                                    <p class="card-description">Traditional wood-fired sauna for 8 people with ocean views.</p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Cold Plunge">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Cold Plunge</h3>
-                                    <p class="card-description">Dedicated cold immersion pool maintained at 10Â°C.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Good to Know -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Good to Know</p>
-                            <p class="section-subtitle">Policies and practical considerations</p>
-                        </header>
-                        
-                        <div class="card-grid card-grid--3">
-                            <div class="policy-card">
-                                <h3 class="policy-card-title">Connectivity</h3>
-                                <div class="policy-item">
-                                    <p class="policy-item-label">WiFi</p>
-                                    <p class="policy-item-value">Available throughout. Consider phone-free policy for retreats.</p>
-                                </div>
-                                <div class="policy-item">
-                                    <p class="policy-item-label">Mobile Coverage</p>
-                                    <p class="policy-item-value">Limited. Vodafone has best reception.</p>
-                                </div>
-                            </div>
-                            <div class="policy-card">
-                                <h3 class="policy-card-title">Accessibility</h3>
-                                <div class="policy-item">
-                                    <p class="policy-item-label">Wheelchair Access</p>
-                                    <p class="policy-item-value">Main shala and 2 ground-floor rooms are accessible.</p>
-                                </div>
-                                <div class="policy-item">
-                                    <p class="policy-item-label">Dietary Needs</p>
-                                    <p class="policy-item-value">Kitchen equipped for all dietary requirements.</p>
-                                </div>
-                            </div>
-                            <div class="policy-card">
-                                <h3 class="policy-card-title">Environment</h3>
-                                <div class="policy-item">
-                                    <p class="policy-item-label">Smoking</p>
-                                    <p class="policy-item-value">Designated outdoor area only.</p>
-                                </div>
-                                <div class="policy-item">
-                                    <p class="policy-item-label">Pets</p>
-                                    <p class="policy-item-value">Service animals only.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- CTA -->
-                <section class="section section--charcoal cta">
-                    <h2 class="cta-title">Need Something Specific?</h2>
-                    <p class="cta-text">If there's equipment or arrangements you need that you don't see listed, just ask. We're here to support your retreat.</p>
-                    <div class="cta-buttons">
-                        <a href="#" class="btn btn--primary">Enquire About This Venue</a>
-                        <a href="#" class="btn btn--secondary">Download Venue PDF</a>
-                    </div>
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 5: EXPERIENCES
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content" id="experiences">
-                
-                <!-- Hero -->
-                <section class="tab-hero" style="background-image: url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1920&q=80');">
-                    <div class="tab-hero-content">
-                        <p class="tab-hero-label">Experiences & Add-Ons</p>
-                        <h2 class="tab-hero-title">Enhance Your Retreat</h2>
-                        <p class="tab-hero-subtitle">Optional services to complement your programming</p>
-                    </div>
-                </section>
-                
-                <!-- Intro -->
-                <section class="section section--cream">
-                    <div class="intro-text">
-                        <div class="intro-line"></div>
-                        <p>Most facilitators bring their own programmingâ€”and we're here to support that fully. But if you'd like to weave in local practitioners, treatments, or excursions, we have a trusted network ready to enhance your offering.</p>
-                    </div>
-                </section>
-                
-                <!-- Practitioners -->
-                <section class="section section--white">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Resident Practitioners</p>
-                            <p class="section-subtitle">Local experts available for your retreat</p>
-                        </header>
-                        
-                        <div class="card-grid card-grid--3">
-                            <div class="card">
-                                <div class="card-image" style="aspect-ratio: 1;">
-                                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=80" alt="Maya Chen">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Maya Chen</h3>
-                                    <p class="card-meta">Bodywork & Energy Healing</p>
-                                    <p class="card-description">15 years experience in Thai massage, craniosacral therapy, and energy work.</p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-image" style="aspect-ratio: 1;">
-                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Te Koha Wiremu">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Te Koha Wiremu</h3>
-                                    <p class="card-meta">Sound & Ceremony</p>
-                                    <p class="card-description">MÄori elder offering traditional ceremony, sound healing, and cultural connection.</p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-image" style="aspect-ratio: 1;">
-                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&q=80" alt="Dr. Anna Patel">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Dr. Anna Patel</h3>
-                                    <p class="card-meta">Ayurveda & Nutrition</p>
-                                    <p class="card-description">Ayurvedic doctor offering consultations, cooking workshops, and wellness talks.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Excursions -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Local Excursions</p>
-                            <p class="section-subtitle">Curated experiences in the Coromandel</p>
-                        </header>
-                        
-                        <div class="card-grid card-grid--2">
-                            <div class="card" style="display: flex; flex-direction: row;">
-                                <div class="card-image" style="width: 200px; flex-shrink: 0; aspect-ratio: 1;">
-                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Cathedral Cove">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Cathedral Cove Walk</h3>
-                                    <p class="card-meta">3 hours Â· Easy Â· $45/person</p>
-                                    <p class="card-description">Guided coastal walk to the iconic sea arch and pristine beach.</p>
-                                </div>
-                            </div>
-                            <div class="card" style="display: flex; flex-direction: row;">
-                                <div class="card-image" style="width: 200px; flex-shrink: 0; aspect-ratio: 1;">
-                                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&q=80" alt="Hot Water Beach">
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="card-title">Hot Water Beach</h3>
-                                    <p class="card-meta">2 hours Â· Easy Â· $35/person</p>
-                                    <p class="card-description">Dig your own hot pool where geothermal springs meet the ocean.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- CTA -->
-                <section class="section section--charcoal cta">
-                    <h2 class="cta-title">Interested in Add-Ons?</h2>
-                    <p class="cta-text">Let us know what you're looking for and we'll include options in your proposal.</p>
-                    <div class="cta-buttons">
-                        <a href="#" class="btn btn--primary">Enquire About This Venue</a>
-                        <a href="#" class="btn btn--secondary">Download Venue PDF</a>
-                    </div>
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 6: LOCATION
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content" id="location">
-                
-                <!-- Hero -->
-                <section class="tab-hero" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&q=80');">
-                    <div class="tab-hero-content">
-                        <p class="tab-hero-label">Location & Getting Here</p>
-                        <h2 class="tab-hero-title">Where the Forest Meets the Sea</h2>
-                        <p class="tab-hero-subtitle">A world away from the everyday</p>
-                    </div>
-                </section>
-                
-                <!-- Intro -->
-                <section class="section section--cream">
-                    <div class="intro-text">
-                        <div class="intro-line"></div>
-                        <p>The journey here is part of the experience. As the highway gives way to winding coastal roads, as the bustle of Auckland fades into native bush, something shifts. By the time you arrive, the retreat has already begun.</p>
-                    </div>
-                </section>
-                
-                <!-- Distances -->
-                <section class="section section--white">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Distances & Travel Times</p>
-                        </header>
-                        
-                        <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
-                            <div class="stat-item">
-                                <p class="stat-value">2.5<span style="font-size: 20px;">hr</span></p>
-                                <p class="stat-label">Auckland Airport</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value">1.5<span style="font-size: 20px;">hr</span></p>
-                                <p class="stat-label">Tauranga Airport</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value">15<span style="font-size: 20px;">min</span></p>
-                                <p class="stat-label">Whitianga Village</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value">25<span style="font-size: 20px;">min</span></p>
-                                <p class="stat-label">Hospital</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Climate -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Climate & Best Time to Visit</p>
-                        </header>
-                        
-                        <div class="card-grid card-grid--4">
-                            <div class="card" style="text-align: center; padding: 30px;">
-                                <p style="font-family: var(--font-sans); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 8px;">Summer</p>
-                                <p style="font-family: var(--font-serif); font-size: 14px; color: var(--charcoal-light); margin-bottom: 16px;">Dec â€“ Feb</p>
-                                <p style="font-family: var(--font-serif); font-size: 28px; color: var(--charcoal); margin-bottom: 16px;">22â€“26Â°C</p>
-                                <p style="font-family: var(--font-serif); font-size: 14px; color: var(--charcoal-light);">Warm and settled. Peak season for beach activities.</p>
-                            </div>
-                            <div class="card" style="text-align: center; padding: 30px;">
-                                <p style="font-family: var(--font-sans); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 8px;">Autumn</p>
-                                <p style="font-family: var(--font-serif); font-size: 14px; color: var(--charcoal-light); margin-bottom: 16px;">Mar â€“ May</p>
-                                <p style="font-family: var(--font-serif); font-size: 28px; color: var(--charcoal); margin-bottom: 16px;">16â€“22Â°C</p>
-                                <p style="font-family: var(--font-serif); font-size: 14px; color: var(--charcoal-light);">Mild and golden. Fewer visitors, beautiful light.</p>
-                            </div>
-                            <div class="card" style="text-align: center; padding: 30px;">
-                                <p style="font-family: var(--font-sans); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 8px;">Winter</p>
-                                <p style="font-family: var(--font-serif); font-size: 14px; color: var(--charcoal-light); margin-bottom: 16px;">Jun â€“ Aug</p>
-                                <p style="font-family: var(--font-serif); font-size: 28px; color: var(--charcoal); margin-bottom: 16px;">10â€“16Â°C</p>
-                                <p style="font-family: var(--font-serif); font-size: 14px; color: var(--charcoal-light);">Cool and reflective. Ideal for inward-focused retreats.</p>
-                            </div>
-                            <div class="card" style="text-align: center; padding: 30px;">
-                                <p style="font-family: var(--font-sans); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-lighter); margin-bottom: 8px;">Spring</p>
-                                <p style="font-family: var(--font-serif); font-size: 14px; color: var(--charcoal-light); margin-bottom: 16px;">Sep â€“ Nov</p>
-                                <p style="font-family: var(--font-serif); font-size: 28px; color: var(--charcoal); margin-bottom: 16px;">14â€“20Â°C</p>
-                                <p style="font-family: var(--font-serif); font-size: 14px; color: var(--charcoal-light);">Fresh and renewing. Native birds nesting.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- CTA -->
-                <section class="section section--charcoal cta">
-                    <h2 class="cta-title">Questions About Getting Here?</h2>
-                    <p class="cta-text">We're happy to help coordinate logistics for you and your participants.</p>
-                    <div class="cta-buttons">
-                        <a href="#" class="btn btn--primary">Enquire About This Venue</a>
-                        <a href="#" class="btn btn--secondary">Download Venue PDF</a>
-                    </div>
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 7: REVIEWS
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content" id="reviews">
-                
-                <!-- Summary -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Facilitator Reviews</p>
-                        </header>
-                        
-                        <div style="text-align: center; margin-bottom: 50px;">
-                            <p style="font-size: 32px; color: #D4A853; margin-bottom: 16px;">â˜… â˜… â˜… â˜… â˜…</p>
-                            <p style="font-family: var(--font-serif); font-size: 64px; font-weight: 300; color: var(--charcoal);">4.9</p>
-                            <p style="font-family: var(--font-serif); font-size: 16px; color: var(--charcoal-lighter);">from 23 reviews</p>
-                        </div>
-                        
-                        <div class="stats-grid" style="grid-template-columns: repeat(5, 1fr); max-width: 800px; margin: 0 auto;">
-                            <div class="stat-item">
-                                <p class="stat-value" style="font-size: 28px;">5.0</p>
-                                <p class="stat-label">Communication</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value" style="font-size: 28px;">4.9</p>
-                                <p class="stat-label">Spaces</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value" style="font-size: 28px;">4.8</p>
-                                <p class="stat-label">Amenities</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value" style="font-size: 28px;">4.9</p>
-                                <p class="stat-label">Location</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value" style="font-size: 28px;">4.8</p>
-                                <p class="stat-label">Value</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Featured Review -->
-                <section class="section section--white">
-                    <div class="container">
-                        <div class="feature-block">
-                            <div class="feature-content">
-                                <p style="font-size: 18px; color: #D4A853; margin-bottom: 20px;">â˜… â˜… â˜… â˜… â˜…</p>
-                                <p style="font-family: var(--font-serif); font-size: 24px; font-style: italic; color: var(--charcoal); line-height: 1.6; margin-bottom: 30px;">"The shala was beyond anything we'd imagined. Every morning, watching the sun rise over the ocean while 20 women moved through their practice... it was transformative for all of us."</p>
-                                <div style="display: flex; align-items: center; gap: 16px;">
-                                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80" alt="Sarah Mitchell" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover;">
-                                    <div>
-                                        <p style="font-family: var(--font-serif); font-size: 17px; font-weight: 400; color: var(--charcoal);">Sarah Mitchell</p>
-                                        <p style="font-family: var(--font-sans); font-size: 12px; color: var(--charcoal-lighter);">Women's Wellness Retreat Â· October 2025</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="feature-image">
-                                <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=600&q=80" alt="Retreat moment">
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- All Reviews -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">All Reviews</p>
-                        </header>
-                        
-                        <div class="card-grid card-grid--2">
-                            <div class="card" style="padding: 40px;">
-                                <p style="font-size: 14px; color: #D4A853; margin-bottom: 16px;">â˜… â˜… â˜… â˜… â˜…</p>
-                                <p style="font-family: var(--font-serif); font-size: 18px; font-style: italic; color: var(--charcoal); line-height: 1.6; margin-bottom: 24px;">"Sarah and James anticipated every need before we even knew we had it. The attention to detail was extraordinary."</p>
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Reviewer" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-                                    <div>
-                                        <p style="font-family: var(--font-serif); font-size: 15px; color: var(--charcoal);">Mark Thompson</p>
-                                        <p style="font-family: var(--font-sans); font-size: 11px; color: var(--charcoal-lighter);">Yoga Teacher Training Â· Sep 2025</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" style="padding: 40px;">
-                                <p style="font-size: 14px; color: #D4A853; margin-bottom: 16px;">â˜… â˜… â˜… â˜… â˜…</p>
-                                <p style="font-family: var(--font-serif); font-size: 18px; font-style: italic; color: var(--charcoal); line-height: 1.6; margin-bottom: 24px;">"The kitchen was a dream to work in. Our chef said it was the best-equipped retreat kitchen she's encountered in 10 years."</p>
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Reviewer" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-                                    <div>
-                                        <p style="font-family: var(--font-serif); font-size: 15px; color: var(--charcoal);">Lisa Chen</p>
-                                        <p style="font-family: var(--font-sans); font-size: 11px; color: var(--charcoal-lighter);">Wellness Retreat Â· Aug 2025</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- CTA -->
-                <section class="section section--charcoal cta">
-                    <h2 class="cta-title">Ready to Create Your Own Story?</h2>
-                    <p class="cta-text">Join the facilitators who have found their retreat home at Santosa.</p>
-                    <div class="cta-buttons">
-                        <a href="#" class="btn btn--primary">Enquire About This Venue</a>
-                        <a href="#" class="btn btn--secondary">Download Venue PDF</a>
-                    </div>
-                </section>
-                
-            </div>
-            
-            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-                 TAB 8: BOOKING
-                 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-            
-            <div class="tab-content" id="booking">
-                
-                <!-- Hero -->
-                <section class="section section--cream" style="padding: 80px 40px;">
-                    <div style="text-align: center;">
-                        <p class="section-label">Booking & Terms</p>
-                        <h2 style="font-family: var(--font-serif); font-size: 42px; font-weight: 400; color: var(--charcoal); margin: 20px 0;">Plan Your Retreat</h2>
-                        <p style="font-family: var(--font-serif); font-size: 18px; font-weight: 300; color: var(--charcoal-light); max-width: 600px; margin: 0 auto;">Everything you need to know about rates, availability, and the booking process.</p>
-                    </div>
-                </section>
-                
-                <!-- Pricing -->
-                <section class="section section--white">
-                    <div class="container">
-                        <div class="pricing-hero">
-                            <p class="pricing-from">Exclusive Use From</p>
-                            <p class="pricing-amount"><span>$</span>2,800</p>
-                            <p class="pricing-period">per night</p>
-                        </div>
-                        
-                        <div class="pricing-grid">
-                            <div class="pricing-card">
-                                <p class="pricing-card-season">Low Season</p>
-                                <p class="pricing-card-dates">Jun â€“ Aug</p>
-                                <p class="pricing-card-amount"><span>$</span>2,800</p>
-                                <p class="pricing-card-unit">per night</p>
-                            </div>
-                            <div class="pricing-card pricing-card--featured">
-                                <span class="pricing-card-badge">Most Popular</span>
-                                <p class="pricing-card-season">Mid Season</p>
-                                <p class="pricing-card-dates">Mar â€“ May, Sep â€“ Nov</p>
-                                <p class="pricing-card-amount"><span>$</span>3,400</p>
-                                <p class="pricing-card-unit">per night</p>
-                            </div>
-                            <div class="pricing-card">
-                                <p class="pricing-card-season">High Season</p>
-                                <p class="pricing-card-dates">Dec â€“ Feb</p>
-                                <p class="pricing-card-amount"><span>$</span>4,200</p>
-                                <p class="pricing-card-unit">per night</p>
-                            </div>
-                        </div>
-                        
-                        <div class="quick-facts">
-                            <div class="quick-fact">
-                                <p class="quick-fact-value">3 nights</p>
-                                <p class="quick-fact-label">Minimum Stay</p>
-                            </div>
-                            <div class="quick-fact">
-                                <p class="quick-fact-value">24 guests</p>
-                                <p class="quick-fact-label">Maximum Capacity</p>
-                            </div>
-                            <div class="quick-fact">
-                                <p class="quick-fact-value">3:00 PM</p>
-                                <p class="quick-fact-label">Check-In</p>
-                            </div>
-                            <div class="quick-fact">
-                                <p class="quick-fact-value">11:00 AM</p>
-                                <p class="quick-fact-label">Check-Out</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Booking Process -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">How to Book</p>
-                            <p class="section-subtitle">A simple four-step process</p>
-                        </header>
-                        
-                        <div class="process-timeline">
-                            <div class="process-step">
-                                <div class="process-step-number">1</div>
-                                <div class="process-step-content">
-                                    <h3 class="process-step-title">Submit an Enquiry</h3>
-                                    <p class="process-step-text">Tell us about your retreatâ€”your dates, group size, and what you're looking to create. We'll respond within 24 hours.</p>
-                                </div>
-                            </div>
-                            <div class="process-step">
-                                <div class="process-step-number">2</div>
-                                <div class="process-step-content">
-                                    <h3 class="process-step-title">Receive Your Proposal</h3>
-                                    <p class="process-step-text">We'll send a detailed proposal including pricing, what's included, and any add-ons you've requested.</p>
-                                </div>
-                            </div>
-                            <div class="process-step">
-                                <div class="process-step-number">3</div>
-                                <div class="process-step-content">
-                                    <h3 class="process-step-title">Secure with Deposit</h3>
-                                    <p class="process-step-text">A 30% deposit secures your dates. We'll send a booking agreement and your dates will be held exclusively for you.</p>
-                                </div>
-                            </div>
-                            <div class="process-step">
-                                <div class="process-step-number">4</div>
-                                <div class="process-step-content">
-                                    <h3 class="process-step-title">Pre-Retreat Planning</h3>
-                                    <p class="process-step-text">We'll schedule a planning call to discuss logistics, dietary requirements, and any special requests.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Cancellation -->
-                <section class="section section--white">
-                    <div class="container container--narrow" style="max-width: 800px;">
-                        <header class="section-header">
-                            <p class="section-label">Cancellation Policy</p>
-                        </header>
-                        
-                        <table class="cancellation-table">
-                            <thead>
-                                <tr>
-                                    <th>Notice Period</th>
-                                    <th>What Happens</th>
-                                    <th>Refund</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>90+ days before</td>
-                                    <td>Full refund minus fee</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <td>60â€“89 days before</td>
-                                    <td>Deposit retained</td>
-                                    <td>70%</td>
-                                </tr>
-                                <tr>
-                                    <td>30â€“59 days before</td>
-                                    <td>50% retained</td>
-                                    <td>50%</td>
-                                </tr>
-                                <tr>
-                                    <td>Less than 30 days</td>
-                                    <td>Full amount retained</td>
-                                    <td>0%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-                
-                <!-- FAQ -->
-                <section class="section section--cream">
-                    <div class="container">
-                        <header class="section-header">
-                            <p class="section-label">Common Questions</p>
-                        </header>
-                        
-                        <div class="faq-list">
-                            <div class="faq-item active">
-                                <button class="faq-question">
-                                    <p class="faq-question-text">Can I book for fewer than 24 people?</p>
-                                    <div class="faq-icon"></div>
-                                </button>
-                                <div class="faq-answer">
-                                    <p class="faq-answer-text">Yes, absolutely. Our pricing is based on exclusive use of the property rather than per-person rates. Whether you bring 10 or 24 guests, the nightly rate remains the same.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question">
-                                    <p class="faq-question-text">What if my guest numbers change?</p>
-                                    <div class="faq-icon"></div>
-                                </button>
-                                <div class="faq-answer">
-                                    <p class="faq-answer-text">We understand retreat numbers can fluctuate. Final guest counts are confirmed 14 days before arrival.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question">
-                                    <p class="faq-question-text">Do you provide catering?</p>
-                                    <div class="faq-icon"></div>
-                                </button>
-                                <div class="faq-answer">
-                                    <p class="faq-answer-text">Catering is not included but can be arranged through our preferred caterers or you're welcome to bring your own chef.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- CTA -->
-                <section class="section section--charcoal cta">
-                    <h2 class="cta-title">Ready to Book Your Retreat?</h2>
-                    <p class="cta-text">Submit an enquiry and we'll send you a detailed proposal within 24 hours.</p>
-                    <div class="cta-buttons">
-                        <a href="#" class="btn btn--primary">Enquire About This Venue</a>
-                        <a href="#" class="btn btn--secondary">Download Venue PDF</a>
-                    </div>
-                </section>
-                
-            </div>
-            
-        </div>
-        
-        <!-- Floating Sidebar -->
-        <aside class="floating-sidebar">
-            <div class="sidebar-card">
-                <p class="sidebar-price-label">From</p>
-                <p class="sidebar-price">$2,800<span>/night</span></p>
-                <p class="sidebar-price-period">Exclusive use for up to 24 guests</p>
-                
-                <div class="sidebar-stats">
-                    <div class="sidebar-stat">
-                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        Sleeps 24 guests
-                    </div>
-                    <div class="sidebar-stat">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-                        3 Retreat spaces
-                    </div>
-                    <div class="sidebar-stat">
-                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        Exclusive use
-                    </div>
-                </div>
-                
-                <button class="sidebar-enquire">Enquire Now</button>
-                
-                <button class="sidebar-save">
-                    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    Save to Wishlist
-                </button>
-                
-                <p class="sidebar-response">Typically responds within 24 hours</p>
-            </div>
-        </aside>
-        
-    </div>
-    
-    <!-- Similar Venues -->
-    <section class="similar-venues">
-        <div class="container">
-            <header class="section-header">
-                <p class="section-label">You May Also Like</p>
-            </header>
-            
-            <div class="card-grid card-grid--3">
-                <div class="venue-card">
-                    <div class="venue-card-image">
-                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80" alt="Venue">
-                    </div>
-                    <div class="venue-card-content">
-                        <h3 class="venue-card-name">Awakening House</h3>
-                        <p class="venue-card-location">Bay of Islands, New Zealand</p>
-                        <p class="venue-card-price">From $2,400 <span>/ night</span></p>
-                    </div>
-                </div>
-                <div class="venue-card">
-                    <div class="venue-card-image">
-                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Venue">
-                    </div>
-                    <div class="venue-card-content">
-                        <h3 class="venue-card-name">Te Aroha Retreat</h3>
-                        <p class="venue-card-location">Waikato, New Zealand</p>
-                        <p class="venue-card-price">From $3,200 <span>/ night</span></p>
-                    </div>
-                </div>
-                <div class="venue-card">
-                    <div class="venue-card-image">
-                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="Venue">
-                    </div>
-                    <div class="venue-card-content">
-                        <h3 class="venue-card-name">Stillness Sanctuary</h3>
-                        <p class="venue-card-location">Northland, New Zealand</p>
-                        <p class="venue-card-price">From $2,600 <span>/ night</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    </main>
-    <!-- â•â•â• END MAIN CONTENT â•â•â• -->
-
-    <!-- â•â•â• FOOTER (standard pattern across all pages) â•â•â• -->
-    <footer class="footer">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <!-- â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-                     â”‚  LOGO GOES HERE                              â”‚
-                     â”‚  Image logo: Gold mandala on transparent bg  â”‚
-                     â”‚  Displays on dark (charcoal) background      â”‚
-                     â”‚  Recommended size: ~72px height              â”‚
-                     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ -->
-                <div class="footer-logo-placeholder">
-                    <span>Logo Goes Here</span>
-                </div>
-                <span class="footer-brand-name">The Global Sanctum</span>
-                <p class="footer-brand-text">Curated wellness venues and transformational retreat spaces for retreat hosts, wellness guests, and seekers worldwide.</p>
-                <p class="footer-brand-meta">Aurella Group Pty Ltd<br>ABN 70 649 742 423</p>
-            </div>
-            <div class="footer-col">
-                <h4 class="footer-col-title">Discover</h4>
-                <ul class="footer-links">
-                    <li><a href="tgs_venues_v3.html">Retreat Venues</a></li>
-                    <li><a href="tgs_venues_v3.html">Wellness Venues</a></li>
-                    <li><a href="tgs_wellness_experiences_v6.html">Wellness Experiences</a></li>
-                    <li><a href="tgs_how_it_works_v4 (2).html">How It Works</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 class="footer-col-title">Partner With Us</h4>
-                <ul class="footer-links">
-                    <li><a href="tgs_list_your_venue_v4.html">List Your Venue</a></li>
-                    <li><a href="tgs_list_your_venue_v4.html">Host A Retreat</a></li>
-                    <li><a href="tgs_contact_v4.html#press-media">Press &amp; Media</a></li>
-                    <li><a href="tgs_contact_v4.html">Contact Us</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4 class="footer-col-title">Resources</h4>
-                <ul class="footer-links">
-                    <li><a href="tgs_wellness_edit_v2 (1).html">The Wellness Edit</a></li>
-                    <li><a href="tgs_sanctum_journal_modal.html">Sanctum Journal</a></li>
+    </li>
                     <li><a href="tgs_about_v4.html">About Us</a></li>
                     <li><a href="tgs_about_v4.html">Our Story</a></li>
                 </ul>
@@ -3648,12 +2214,12 @@
                     <li><a href="tgs_legal_v5.html">Terms &amp; Conditions</a></li>
                     <li><a href="tgs_legal_v5.html">Privacy Policy</a></li>
                     <li><a href="tgs_legal_v5.html">Cookies Policy</a></li>
-                    <li><a href="tgs_legal_v5.html">All Legal &amp; Policies â†’</a></li>
+                    <li><a href="tgs_legal_v5.html">All Legal &amp; Policies →</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p class="footer-copyright">Â© 2026 The Global Sanctum. All rights reserved.</p>
+            <p class="footer-copyright">© 2026 The Global Sanctum. All rights reserved.</p>
             <div class="footer-social">
                 <a href="https://www.instagram.com/theglobalsanctum/" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
                 <a href="https://www.facebook.com/profile.php?id=61577706717526" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
@@ -3663,10 +2229,10 @@
     </footer>
 
     <script>
-        // â•â•â• EMAIL OBFUSCATION CONVERTER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // ═══ EMAIL OBFUSCATION CONVERTER ═══════════════════════════════════
         // Converts <a class="email-link" data-u="..." data-d="..."> elements
         // into real mailto: links on page load. Plain "hello@..." text is
-        // never present in raw HTML â€” harvester crawlers grepping for @ get
+        // never present in raw HTML — harvester crawlers grepping for @ get
         // nothing usable. JS-enabled humans see the real email and can click.
         (function() {
             document.querySelectorAll('.email-link').forEach(function(el) {
@@ -3693,7 +2259,7 @@
             }
         });
 
-        // â•â•â• DRAWER TOGGLE (standard ARIA-aware pattern) â•â•â•
+        // ═══ DRAWER TOGGLE (standard ARIA-aware pattern) ═══
         function toggleDrawer() {
             const hamburger = document.getElementById('navHamburger');
             const drawer = document.getElementById('navDrawer');
@@ -3758,13 +2324,13 @@
         });
     </script>
 
-    <!-- â•â•â• PAGE META EVENT â€” fires on page mount via tgsTrackOnce â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ═══ PAGE META EVENT — fires on page mount via tgsTrackOnce ═══════════
          Architecture doc Part 8 Standard Event: page_meta
          Payload: page_type=venue_detail, page_category=retreat-venues,
                   venue_slug={{venue.slug}}, page_path=/retreat-venues/{{venue.slug}}
          is_sample_listing flag is sent so analytics can segment real vs sample
          engagement during the pre-launch period.
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         ═══════════════════════════════════════════════════════════════════════ -->
     <script>
     (function() {
         if (typeof window.tgsTrackOnce !== 'function') return;
@@ -3781,4 +2347,5 @@
 
 </body>
 </html>
+
 
