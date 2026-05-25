@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Venues | The Global Sanctum</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --header-height: 72px;
+      --tabs-height: 49px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: 'Montserrat', sans-serif; color: #2f2f2a; background: #f5f4f0; line-height: 1.65; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+    p { margin: 0; }
+    h1,h2,h3,h4 { margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 500; }
+
+    /* ── HEADER ── */
+    .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 36px; height: 72px; background: transparent; transition: background 0.3s ease, box-shadow 0.3s ease; }
+    .site-header.solid { background: rgba(252,251,248,0.97); backdrop-filter: blur(14px); box-shadow: 0 1px 0 rgba(47,47,42,0.1); }
+    .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+    .hamburger-lines { display: flex; flex-direction: column; gap: 5px; }
+    .hamburger-lines span { width: 22px; height: 1.5px; background: #fff; display: block; transition: background 0.3s; }
+    .site-header.solid .hamburger-lines span { background: #2f2f2a; }
+    .header-nav-label { font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #fff; transition: color 0.3s; }
+    .site-header.solid .header-nav-label { color: #2f2f2a; }
+    .header-center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; }
+    .logo-icon { width: 30px; height: 30px; }
+    .logo-text { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #fff; transition: color 0.3s; white-space: nowrap; }
+    .site-header.solid .logo-text { color: #2f2f2a; }
+
+    /* ── MENU OVERLAY ── */
+    .menu-overlay { position: fixed; inset: 0; z-index: 1100; background: #fff; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; overflow: hidden; }
+    .menu-overlay.open { opacity: 1; pointer-events: auto; }
+    .menu-top { position: fixed; top: 0; left: 0; right: 0; padding: 20px 36px; display: flex; align-items: center; justify-content: space-between; z-index: 1101; border-bottom: 1px solid rgba(47,47,42,0.08); background: #fff; }
+    .menu-close { font-size: 22px; font-weight: 300; background: none; border: none; cursor: pointer; color: #2f2f2a; line-height: 1; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+    .menu-top-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: none; color: #6f685f; }
+    .menu-inner { padding: 90px 40px 28px; overflow-y: auto; height: 100vh; }
+    .menu-section { margin-bottom: 44px; }
+    .menu-section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #6f685f; margin-bottom: 14px; }
+    .menu-nav { list-style: none; padding: 0; margin: 0; }
+    .menu-nav li { border-bottom: 1px solid rgba(47,47,42,0.1); }
+    .menu-nav a { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; color: #2f2f2a; display: block; padding: 14px 0; line-height: 1.2; transition: opacity 0.2s; }
+    .menu-nav a:hover { opacity: 0.6; }
+    .menu-contact { margin-top: 12px; font-size: 13px; color: #6f685f; }
+    .menu-contact a { color: #2f2f2a; text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── HERO ── */
+    .venues-hero { position: relative; height: 56vh; min-height: 460px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .venues-hero-bg { position: absolute; inset: 0; background-image: url('images/Oriental%20Building%20Nordic%20Filter.png'); background-size: cover; background-position: center; }
+    .venues-hero-bg::after { content: ''; position: absolute; inset: 0; background: rgba(10,10,8,0.48); }
+    .venues-hero-content { position: relative; z-index: 2; text-align: center; padding: 0 24px; width: 100%; }
+    .venues-hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 14px; }
+    .venues-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 6.5vw, 76px); font-weight: 500; color: #fff; line-height: 1.06; letter-spacing: 0.01em; margin-bottom: 14px; }
+    .venues-hero-sub { font-size: 15px; color: rgba(255,255,255,0.78); max-width: 52ch; margin: 0 auto 28px; line-height: 1.75; }
+    .venues-search-bar { display: flex; align-items: center; width: min(620px, calc(100% - 40px)); margin: 0 auto; background: rgba(255,255,255,0.96); border-radius: 999px; padding: 6px 6px 6px 20px; gap: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.18); }
+    .venues-search-bar svg { color: #9a9490; flex-shrink: 0; }
+    .venues-search-bar input { flex: 1; border: none; outline: none; font-size: 14px; color: #2f2f2a; background: transparent; padding: 10px 0; }
+    .venues-search-bar input::placeholder { color: #b0a89e; }
+    .venues-search-btn { background: #2f2f2a; color: #fff; border: none; border-radius: 999px; padding: 12px 28px; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: opacity 0.2s; }
+    .venues-search-btn:hover { opacity: 0.82; }
+
+    /* ── TABS ── */
+    .venues-tabs-wrap { background: #fff; border-bottom: 1px solid rgba(47,47,42,0.1); position: sticky; top: var(--header-height); z-index: 100; }
+    .venues-tabs { display: flex; width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+    .venues-tab { padding: 16px 22px 14px; font-size: 13px; font-weight: 500; color: #9a9490; border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.2s, border-color 0.2s; display: flex; align-items: center; gap: 9px; white-space: nowrap; }
+    .venues-tab.active { color: #2f2f2a; border-bottom-color: #2f2f2a; }
+    .tab-count { background: #2f2f2a; color: #fff; border-radius: 999px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+    .venues-tab:not(.active) .tab-count { background: rgba(47,47,42,0.1); color: #6f685f; }
+
+    /* ── FILTERS ── */
+    .filters-wrap {
+      background: #fff;
+      border-bottom: 1px solid rgba(47,47,42,0.08);
+      padding: 12px 0;
+      position: sticky;
+      top: calc(var(--header-height) + var(--tabs-height));
+      z-index: 99;
+    }
+    .filters-inner { width: min(1180px, calc(100% - 48px)); margin: 0 auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .filter-btn { display: inline-flex; align-items: center; gap: 5px; padding: 8px 15px; border: 1px solid rgba(47,47,42,0.2); border-radius: 999px; background: #fff; font-size: 12px; font-weight: 500; color: #2f2f2a; cursor: pointer; white-space: nowrap; transition: border-color 0.2s, background 0.2s; }
+    .filter-btn:hover { border-color: #2f2f2a; }
+    .filter-btn.advanced { border-color: #2f2f2a; font-weight: 600; }
+    .filter-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ── RESULTS BAR ── */
+    .results-bar { width: min(1180px, calc(100% - 48px)); margin: 28px auto 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .results-count { font-size: 13px; color: #6f685f; }
+    .results-count strong { color: #2f2f2a; font-weight: 600; }
+    .results-controls { display: flex; align-items: center; gap: 10px; }
+    .sort-label { font-size: 11px; font-weight: 600; letter-spacing: 0.02em; text-transform: none; color: #6f685f; }
+    .sort-select { border: 1px solid rgba(47,47,42,0.2); border-radius: 4px; padding: 7px 10px; font-size: 13px; color: #2f2f2a; background: #fff; cursor: pointer; outline: none; }
+    .view-btn { width: 34px; height: 34px; border: 1px solid rgba(47,47,42,0.2); border-radius: 4px; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6f685f; transition: background 0.2s, color 0.2s; }
+    .view-btn.active, .view-btn:hover { background: #2f2f2a; color: #fff; border-color: #2f2f2a; }
+
+    /* ── VENUE CARDS ── */
+    .venues-grid-wrap { width: min(1180px, calc(100% - 48px)); margin: 0 auto 60px; }
+    .venues-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .venue-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid rgba(47,47,42,0.08); transition: box-shadow 0.2s; cursor: pointer; }
+    .venue-card:hover { box-shadow: 0 8px 32px rgba(47,47,42,0.12); }
+    .vc-img { position: relative; overflow: hidden; background: #d8d0c6; }
+    .vc-img img { width: 100%; aspect-ratio: 1.45; object-fit: cover; display: block; transition: transform 0.4s ease; }
+    .venue-card:hover .vc-img img { transform: scale(1.04); }
+    .badge-type { position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.92); color: #2f2f2a; border-radius: 999px; padding: 5px 12px; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; backdrop-filter: blur(6px); }
+    .badge-featured { position: absolute; top: 12px; right: 46px; background: #7a6245; color: #fff; border-radius: 999px; padding: 5px 12px; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+    .btn-heart { position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.88); border: 1px solid rgba(47,47,42,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(6px); transition: background 0.2s; }
+    .btn-heart:hover { background: #fff; }
+    .btn-heart svg { width: 14px; height: 14px; color: #6f685f; }
+    .vc-body { padding: 18px 20px 22px; }
+    .vc-location { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #9a9490; margin-bottom: 5px; }
+    .vc-name { font-family: 'Cormorant Garamond', serif; font-size: 27px; font-weight: 400; color: #2f2f2a; line-height: 1.15; margin-bottom: 4px; }
+    .vc-type { font-size: 12px; color: #9a9490; margin-bottom: 10px; }
+    .vc-desc { font-size: 13px; color: #6f685f; line-height: 1.7; margin-bottom: 12px; }
+    .vc-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .vc-tag { padding: 4px 11px; border: 1px solid rgba(47,47,42,0.14); border-radius: 999px; font-size: 11px; color: #6f685f; background: rgba(47,47,42,0.02); }
+    .vc-footer { border-top: 1px solid rgba(47,47,42,0.08); padding-top: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .vc-rating { font-size: 12px; color: #6f685f; display: flex; align-items: center; gap: 4px; }
+    .vc-rating .star { color: #c9a96e; font-size: 13px; }
+    .vc-rating .review-ct { color: #b0a89e; }
+    .vc-new { font-size: 11px; color: #b0a89e; }
+    .vc-price { font-size: 13px; color: #6f685f; }
+    .vc-price strong { color: #2f2f2a; font-size: 17px; font-weight: 600; font-family: 'Cormorant Garamond', serif; }
+
+    /* ── AUTH MODAL ── */
+    body.auth-open { overflow: hidden; }
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1300;
+      background: rgba(25, 24, 22, 0.56);
+      backdrop-filter: blur(5px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .auth-overlay.open { opacity: 1; pointer-events: auto; }
+    .auth-modal {
+      width: min(520px, calc(100vw - 28px));
+      background: #f4f4f4;
+      border: 1px solid rgba(47,47,42,0.18);
+      border-radius: 18px;
+      box-shadow: 0 34px 60px rgba(0,0,0,0.36);
+      padding: 52px 54px 54px;
+      position: relative;
+    }
+    .auth-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: none;
+      color: #b9b9b9;
+      font-size: 34px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .auth-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #6f685f;
+      margin-bottom: 8px;
+    }
+    .auth-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(44px, 5vw, 56px);
+      font-weight: 400;
+      color: #2f2f2a;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .auth-title em { font-style: italic; font-weight: 400; }
+    .auth-sub {
+      font-size: 16px;
+      color: #8f8f8f;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      max-width: 35ch;
+    }
+    .auth-tabs {
+      display: flex;
+      gap: 22px;
+      border-bottom: 1px solid #d8d8d8;
+      margin-bottom: 20px;
+    }
+    .auth-tab {
+      border: none;
+      background: none;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #b4b4b4;
+      font-weight: 600;
+      padding: 0 0 12px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -1px;
+    }
+    .auth-tab.active { color: #2f2f2a; border-bottom-color: #2f2f2a; }
+    .auth-form {
+      display: grid;
+      gap: 18px;
+    }
+    .auth-panel[hidden] { display: none; }
+    .auth-field {
+      display: grid;
+      gap: 8px;
+    }
+    .auth-field label {
+      font-size: 16px;
+      color: #2f2f2a;
+      font-weight: 500;
+    }
+    .auth-field input {
+      width: 100%;
+      height: 48px;
+      border: 1px solid #d9d9d9;
+      border-radius: 10px;
+      background: #f3f3f3;
+      padding: 0 16px;
+      font-size: 15px;
+      color: #2f2f2a;
+      outline: none;
+    }
+    .auth-field input::placeholder { color: #c0c0c0; }
+    .auth-submit {
+      margin-top: 10px;
+      width: 100%;
+      height: 46px;
+      border: none;
+      border-radius: 999px;
+      background: #2f2f2a;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    @media (max-width: 640px) {
+      .auth-modal { padding: 36px 22px 26px; border-radius: 14px; }
+      .auth-close { top: 12px; right: 12px; font-size: 28px; }
+      .auth-eyebrow { font-size: 10px; margin-bottom: 8px; }
+      .auth-title { font-size: 46px; margin-bottom: 8px; }
+      .auth-sub { font-size: 15px; margin-bottom: 16px; }
+      .auth-tab { font-size: 12px; padding-bottom: 10px; }
+      .auth-field label { font-size: 15px; }
+      .auth-field input { height: 46px; border-radius: 10px; padding: 0 14px; font-size: 14px; }
+      .auth-submit { height: 46px; font-size: 11px; }
+    }
+
+    /* ── PAGINATION ── */
+    .pagination-wrap { width: min(1180px, calc(100% - 48px)); margin: 0 auto 80px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .pg-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(47,47,42,0.15); background: transparent; cursor: pointer; font-size: 14px; color: #6f685f; display: flex; align-items: center; justify-content: center; transition: background 0.2s, color 0.2s; font-family: 'Montserrat', sans-serif; }
+    .pg-btn.active { background: #2f2f2a; color: #fff; border-color: #2f2f2a; }
+    .pg-btn:hover:not(.active) { background: rgba(47,47,42,0.06); }
+    .pg-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .pg-btn:disabled:hover { background: transparent; }
+
+    /* ── VENUE PARTNERS CTA ── */
+    .partners-cta { background: #ede9e1; padding: 90px 24px; text-align: center; }
+    .partners-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: #6f685f; margin-bottom: 20px; }
+    .partners-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 4.5vw, 58px); font-weight: 400; color: #2f2f2a; line-height: 1.1; margin-bottom: 18px; }
+    .partners-heading em { font-style: italic; color: #c9a96e; font-weight: 400; }
+    .partners-body { font-size: 14px; color: #6f685f; max-width: 56ch; margin: 0 auto 34px; line-height: 1.85; }
+    .partners-btn { display: inline-block; background: #2f2f2a; color: #fff; border-radius: 999px; padding: 16px 42px; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; border: none; }
+    .partners-btn:hover { opacity: 0.82; }
+
+    /* ── NEWSLETTER ── */
+    .newsletter { background: #f0ece6; padding: 90px 24px; text-align: center; }
+    .nl-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: #6f685f; margin-bottom: 18px; }
+    .nl-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 4.5vw, 58px); font-weight: 400; color: #2f2f2a; line-height: 1.1; margin-bottom: 16px; }
+    .nl-body { font-size: 14px; color: #6f685f; max-width: 54ch; margin: 0 auto 32px; line-height: 1.85; }
+    .nl-form { display: flex; width: min(580px, calc(100% - 40px)); margin: 0 auto; }
+    .nl-input { flex: 1; padding: 16px 20px; border: 1px solid rgba(47,47,42,0.15); border-right: none; font-size: 14px; color: #2f2f2a; background: #fff; outline: none; }
+    .nl-input::placeholder { color: #b0a89e; }
+    .nl-submit { padding: 16px 28px; background: #2f2f2a; color: #fff; border: none; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; white-space: nowrap; transition: opacity 0.2s; }
+    .nl-submit:hover { opacity: 0.85; }
+
+    /* ── FOOTER ── */
+    .site-footer { background: #2d2b27; padding: 64px 0 40px; }
+    .footer-grid { width: min(1180px, calc(100% - 48px)); margin: 0 auto 48px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr; gap: 32px; }
+    .footer-brand { display: flex; flex-direction: column; gap: 14px; }
+    .footer-logo { display: flex; align-items: center; gap: 10px; }
+    .footer-logo-text { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.85); }
+    .footer-tagline { font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.75; max-width: 26ch; }
+    .footer-social { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+    .footer-social a { width: 28px; height: 28px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.24); color: rgba(255,255,255,0.72); font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .footer-social a:hover { border-color: rgba(255,255,255,0.75); color: #fff; }
+    .footer-col-label { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; text-transform: none; color: rgba(255,255,255,0.45); margin-bottom: 14px; }
+    .footer-nav { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .footer-nav a { font-size: 13px; color: rgba(255,255,255,0.55); transition: color 0.2s; }
+    .footer-nav a:hover { color: rgba(255,255,255,0.85); }
+    .footer-bottom { width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); margin: 0; }
+
+    /* ── COOKIE BANNER ── */
+    .cookie-banner { position: fixed; bottom: 18px; right: 18px; z-index: 1200; width: min(500px, calc(100vw - 36px)); background: rgba(35,34,31,0.96); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 16px 40px rgba(0,0,0,0.32); border-radius: 12px; padding: 14px 14px 12px; color: rgba(255,255,255,0.88); }
+    .cookie-text { font-size: 12px; line-height: 1.55; color: rgba(255,255,255,0.75); margin-bottom: 10px; }
+    .cookie-text a { color: #fff; text-decoration: underline; }
+    .cookie-actions { display: flex; gap: 8px; justify-content: flex-end; }
+    .cookie-btn { border: 1px solid rgba(255,255,255,0.24); background: transparent; color: rgba(255,255,255,0.9); border-radius: 8px; padding: 7px 11px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; }
+    .cookie-btn.accept { background: #fff; color: #2f2f2a; border-color: #fff; }
+    .cookie-btn:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="site-header" id="site-header">
+  <div class="header-left" id="menu-toggle" aria-label="Open navigation menu" role="button" tabindex="0">
+    <div class="hamburger-lines"><span></span><span></span><span></span></div>
+    <span class="header-nav-label">MENU</span>
+  </div>
+  <div class="header-center">
+    <a href="tgs_home_v7.html" style="display:flex;align-items:center;gap:10px;">
+      <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="1"/>
+        <path d="M20 6L20 34M6 20L34 20M9 9L31 31M31 9L9 31" stroke="currentColor" stroke-width="0.8"/>
+        <circle cx="20" cy="20" r="5" stroke="currentColor" stroke-width="0.8"/>
+      </svg>
+      <span class="logo-text">The Global Sanctum</span>
+    </a>
+  </div>
+</header>
+
+<!-- ═══════════ MENU OVERLAY ═══════════ -->
+<div class="menu-overlay" id="menu-overlay" aria-hidden="true">
+  <div class="menu-top">
+    <button class="menu-close" id="menu-close" aria-label="Close menu">&times;</button>
+    <span class="menu-top-label">MENU</span>
+    <div style="width:24px;"></div>
+  </div>
+  <div class="menu-inner">
+    <div class="menu-section">
+      <div class="menu-section-label">DISCOVER</div>
+      <ul class="menu-nav">
+        <li><a href="tgs_venues_v3.html">Retreat Venues</a></li>
+        <li><a href="tgs_venues_v3.html">Wellness Venues</a></li>
+        <li><a href="tgs_wellness_experiences_v6.html">Wellness Experiences</a></li>
+      </ul>
+    </div>
+    <div class="menu-section">
+      <div class="menu-section-label">LEARN</div>
+      <ul class="menu-nav">
+        <li><a href="tgs_about_v4.html">About Us</a></li>
+        <li><a href="tgs_how_it_works_v4 (2).html">How It Works</a></li>
+        <li><a href="tgs_wellness_edit_v2 (1).html">The Wellness Edit</a></li>
+      </ul>
+    </div>
+    <div class="menu-section">
+      <div class="menu-section-label">CONNECT</div>
+      <ul class="menu-nav">
+        <li><a href="tgs_contact_v4.html">Contact Us</a></li>
+        <li><a href="tgs_list_your_venue_v4.html">List Your Venue</a></li>
+      </ul>
+    </div>
+    <p class="menu-contact">Questions? Reach us at <a href="mailto:hello@theglobalsanctum.com">hello@theglobalsanctum.com</a></p>
+  </div>
+</div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="venues-hero">
+  <div class="venues-hero-bg"></div>
+  <div class="venues-hero-content">
+    <p class="venues-hero-eyebrow">DISCOVER</p>
+    <h1>Explore Our Venues</h1>
+    <p class="venues-hero-sub">Retreat centres, wellness resorts, thermal sanctuaries, and sacred spaces — curated from around the world.</p>
+    <div class="venues-search-bar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search by location, venue name, or experience..." aria-label="Search by location, venue name, or experience...">
+      <button class="venues-search-btn">Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TABS ═══════════ -->
+<div class="venues-tabs-wrap">
+  <div class="venues-tabs">
+    <button class="venues-tab active" data-tab="all">All Venues <span class="tab-count">26</span></button>
+    <button class="venues-tab" data-tab="retreat">Retreat Venues <span class="tab-count">15</span></button>
+    <button class="venues-tab" data-tab="wellness">Wellness Venues <span class="tab-count">11</span></button>
+  </div>
+</div>
+
+<!-- ═══════════ FILTERS ═══════════ -->
+<div class="filters-wrap">
+  <div class="filters-inner">
+    <button class="filter-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      All Locations ▾
+    </button>
+    <button class="filter-btn">Venue Type ▾</button>
+    <button class="filter-btn">Capacity ▾</button>
+    <button class="filter-btn">Retreat Style ▾</button>
+    <button class="filter-btn">Price Range ▾</button>
+    <button class="filter-btn">Rating ▾</button>
+    <button class="filter-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="2"/><path d="M12 7v6m0 0-3 5m3-5 3 5M8 12H5m14 0h-3"/></svg>
+      Accessible
+    </button>
+    <button class="filter-btn advanced">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      Advanced
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════ RESULTS BAR ═══════════ -->
+<div class="results-bar">
+  <p class="results-count">Showing <strong>26</strong> venues worldwide</p>
+  <div class="results-controls">
+    <span class="sort-label">Sort by</span>
+    <select class="sort-select">
+      <option>Recommended</option>
+      <option>Highest Rated</option>
+      <option>Price: Low to High</option>
+      <option>Price: High to Low</option>
+      <option>Newest Listed</option>
+    </select>
+    <button class="view-btn active" id="view-grid" title="Grid view" aria-label="Grid view">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><rect x="0" y="0" width="6" height="6" rx="1"/><rect x="10" y="0" width="6" height="6" rx="1"/><rect x="0" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>
+    </button>
+    <button class="view-btn" id="view-list" title="List view" aria-label="List view">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><rect x="0" y="1" width="16" height="2" rx="1"/><rect x="0" y="7" width="16" height="2" rx="1"/><rect x="0" y="13" width="16" height="2" rx="1"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════ VENUE GRID ═══════════ -->
+<div class="venues-grid-wrap">
+  <div class="venues-grid" id="venues-grid">
+
+    <!-- Card 1 -->
+    <article class="venue-card">
+      <div class="vc-img">
+        <img src="images/Beach%20With%20Boat%20Rainforest%20Aerial%20Nordic%20Filter.png" alt="Coral Coast Bay" loading="lazy">
+        <span class="badge-type">RETREAT VENUE</span>
+        <span class="badge-featured">FEATURED</span>
+        <button class="btn-heart" aria-label="Save Coral Coast Bay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="vc-body">
+        <p class="vc-location">CORAL BAY, WA</p>
+        <h3 class="vc-name">Coral Coast Bay</h3>
+        <p class="vc-type">Wellness Retreat</p>
+        <p class="vc-desc">Barefoot luxury eco-retreat on WA's Coral Coast with ocean wellness and indigenous healing.</p>
+        <div class="vc-tags"><span class="vc-tag">Yoga</span><span class="vc-tag">Surf Therapy</span><span class="vc-tag">Ocean Breathwork</span></div>
+        <div class="vc-footer"><span class="vc-new">New</span><span class="vc-price">From <strong>POA</strong>/night</span></div>
+      </div>
+    </article>
+
+    <!-- Card 2 -->
+    <article class="venue-card">
+      <div class="vc-img">
+        <img src="images/Moroccan%20Pool%20Scandi%20Filter.png" alt="Kyoto Onsen" loading="lazy">
+        <span class="badge-type">RETREAT VENUE</span>
+        <span class="badge-featured">FEATURED</span>
+        <button class="btn-heart" aria-label="Save Kyoto Onsen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="vc-body">
+        <p class="vc-location">HAHNDORF, SA</p>
+        <h3 class="vc-name">Kyoto Onsen</h3>
+        <p class="vc-type">Wellness Retreat</p>
+        <p class="vc-desc">Japanese-inspired onsen retreat in the Adelaide Hills with mineral springs and zen gardens.</p>
+        <div class="vc-tags"><span class="vc-tag">Meditation</span><span class="vc-tag">Shiatsu</span><span class="vc-tag">Forest Bathing</span></div>
+        <div class="vc-footer"><span class="vc-new">New</span><span class="vc-price">From <strong>POA</strong>/night</span></div>
+      </div>
+    </article>
+
+    <!-- Card 3 -->
+    <article class="venue-card">
+      <div class="vc-img">
+        <img src="images/Sauna%20Modern%20Nordic%20Filter.png" alt="Serenity Springs" loading="lazy">
+        <span class="badge-type">RETREAT VENUE</span>
+        <span class="badge-featured">FEATURED</span>
+        <button class="btn-heart" aria-label="Save Serenity Springs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="vc-body">
+        <p class="vc-location">KATOOMBA, NSW</p>
+        <h3 class="vc-name">Serenity Springs</h3>
+        <p class="vc-type">Wellness Retreat</p>
+        <p class="vc-desc">Natural hot spring retreat in the Blue Mountains with mineral pools and forest meditation.</p>
+        <div class="vc-tags"><span class="vc-tag">Yoga</span><span class="vc-tag">Meditation</span><span class="vc-tag">Sound Healing</span></div>
+        <div class="vc-footer"><span class="vc-new">New</span><span class="vc-price">From <strong>POA</strong>/night</span></div>
+      </div>
+    </article>
+
+    <!-- Card 4 -->
+    <article class="venue-card">
+      <div class="vc-img">
+        <img src="images/Meditation%20Room%20Nordic%20Filter.png" alt="Urban Oasis" loading="lazy">
+        <span class="badge-type">RETREAT VENUE</span>
+        <span class="badge-featured">FEATURED</span>
+        <button class="btn-heart" aria-label="Save Urban Oasis">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="vc-body">
+        <p class="vc-location">MELBOURNE, VIC</p>
+        <h3 class="vc-name">Urban Oasis</h3>
+        <p class="vc-type">Wellness Retreat</p>
+        <p class="vc-desc">Heritage warehouse retreat in Melbourne combining industrial architecture with zen wellness.</p>
+        <div class="vc-tags"><span class="vc-tag">Yoga</span><span class="vc-tag">Breathwork</span><span class="vc-tag">Sound Bath</span></div>
+        <div class="vc-footer"><span class="vc-new">New</span><span class="vc-price">From <strong>POA</strong>/night</span></div>
+      </div>
+    </article>
+
+    <!-- Card 5 -->
+    <article class="venue-card">
+      <div class="vc-img">
+        <img src="images/Misty%20Forest%20Nordic%20Filter.png" alt="Mountain Terrace" loading="lazy">
+        <span class="badge-type">RETREAT VENUE</span>
+        <span class="badge-featured">FEATURED</span>
+        <button class="btn-heart" aria-label="Save Mountain Terrace">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="vc-body">
+        <p class="vc-location">OLINDA, VIC</p>
+        <h3 class="vc-name">Mountain Terrace</h3>
+        <p class="vc-type">Wellness Retreat</p>
+        <p class="vc-desc">Terraced hillside retreat in the Dandenong Ranges with tiered wellness spaces and forest views.</p>
+        <div class="vc-tags"><span class="vc-tag">Forest Bathing</span><span class="vc-tag">Yoga</span><span class="vc-tag">Qi Gong</span></div>
+        <div class="vc-footer"><span class="vc-new">New</span><span class="vc-price">From <strong>POA</strong>/night</span></div>
+      </div>
+    </article>
+
+    <!-- Card 6 -->
+    <article class="venue-card">
+      <div class="vc-img">
+        <img src="images/Bali%20Pool%20Nordic%20Filter.png" alt="Horizon Wellness Retreat" loading="lazy">
+        <span class="badge-type">RETREAT VENUE</span>
+        <span class="badge-featured">FEATURED</span>
+        <button class="btn-heart" aria-label="Save Horizon Wellness Retreat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="vc-body">
+        <p class="vc-location">BYRON BAY, NSW</p>
+        <h3 class="vc-name">Horizon Wellness Retreat</h3>
+        <p class="vc-type">Wellness Retreat</p>
+        <p class="vc-desc">Clifftop retreat in Byron Bay hinterland with panoramic ocean views and Balinese-inspired design.</p>
+        <div class="vc-tags"><span class="vc-tag">Meditation</span><span class="vc-tag">Yoga</span><span class="vc-tag">Ayurveda</span></div>
+        <div class="vc-footer"><span class="vc-new">New</span><span class="vc-price">From <strong>POA</strong>/night</span></div>
+      </div>
+    </article>
+
+    <!-- Card 7 -->
+    <article class="venue-card">
+      <div class="vc-img">
+        <img src="images/Misty%20Jungle%20Forest%20Nordic%20Filter.png" alt="Float and Flow" loading="lazy">
+        <span class="badge-type">RETREAT VENUE</span>
+        <span class="badge-featured">FEATURED</span>
+        <button class="btn-heart" aria-label="Save Float and Flow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="vc-body">
+        <p class="vc-location">BROOKLYN, NSW</p>
+        <h3 class="vc-name">Float &amp; Flow</h3>
+        <p class="vc-type">Wellness Retreat</p>
+        <p class="vc-desc">Floating river retreat on the Hawkesbury with purpose-built pavilions on water.</p>
+        <div class="vc-tags"><span class="vc-tag">Yoga</span><span class="vc-tag">Meditation</span><span class="vc-tag">Float Therapy</span></div>
+        <div class="vc-footer"><span class="vc-new">New</span><span class="vc-price">From <strong>POA</strong>/night</span></div>
+      </div>
+    </article>
+
+    <!-- Card 8 -->
+    <article class="venue-card">
+      <div class="vc-img">
+        <img src="images/Onsen%203%20Nordic%20Filter.png" alt="Sample Venue" loading="lazy">
+        <span class="badge-type">RETREAT VENUE</span>
+        <span class="badge-featured">FEATURED</span>
+        <button class="btn-heart" aria-label="Save Sample Venue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="vc-body">
+        <p class="vc-location">SAN JUAN, BATANGAS</p>
+        <h3 class="vc-name">Sample Venue</h3>
+        <p class="vc-type">Dedicated Retreat Centre</p>
+        <p class="vc-desc">This is sample description of retreat venues lore ipsum.</p>
+        <div class="vc-tags"><span class="vc-tag">Pilates</span><span class="vc-tag">Mindfulness</span><span class="vc-tag">Naturopathy</span></div>
+        <div class="vc-footer">
+          <span class="vc-rating"><span class="star">★</span> 3.3 <span class="review-ct">(3 reviews)</span></span>
+          <span class="vc-price">From <strong>A$200</strong>/night</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 9 -->
+    <article class="venue-card">
+      <div class="vc-img">
+        <img src="images/Jungle%20Cabin%20Nordic%20Filter.png" alt="Moraca Farm" loading="lazy">
+        <span class="badge-type">RETREAT VENUE</span>
+        <span class="badge-featured">FEATURED</span>
+        <button class="btn-heart" aria-label="Save Moraca Farm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="vc-body">
+        <p class="vc-location">BERRY, NSW</p>
+        <h3 class="vc-name">Moraca Farm</h3>
+        <p class="vc-type">Dedicated Retreat Centre</p>
+        <p class="vc-desc">Testing Short Description</p>
+        <div class="vc-tags"><span class="vc-tag">Meditation</span><span class="vc-tag">Yoga</span><span class="vc-tag">Breathwork</span></div>
+        <div class="vc-footer">
+          <span class="vc-rating"><span class="star">★</span> 5 <span class="review-ct">(1 review)</span></span>
+          <span class="vc-price">From <strong>POA</strong>/night</span>
+        </div>
+      </div>
+    </article>
+
+  </div><!-- /venues-grid -->
+</div>
+
+<!-- ═══════════ PAGINATION ═══════════ -->
+<div class="pagination-wrap">
+  <button class="pg-btn" aria-label="Previous page">&#8249;</button>
+  <button class="pg-btn active">1</button>
+  <button class="pg-btn">2</button>
+  <button class="pg-btn">3</button>
+  <button class="pg-btn" aria-label="Next page">&#8250;</button>
+</div>
+
+<!-- ═══════════ VENUE PARTNERS CTA ═══════════ -->
+<section class="partners-cta">
+  <p class="partners-eyebrow">VENUE PARTNERS</p>
+  <h2 class="partners-heading">Your space deserves to be <em>discovered</em></h2>
+  <p class="partners-body">Join a curated collection of the world's most exceptional retreat and wellness venues. Transparent pricing, editorial-quality presentation, and a community of facilitators seeking spaces like yours.</p>
+  <a class="partners-btn" href="tgs_list_your_venue_v4.html">LIST YOUR VENUE</a>
+</section>
+
+<!-- ═══════════ NEWSLETTER ═══════════ -->
+<section class="newsletter" id="newsletter">
+  <p class="nl-eyebrow">STAY CONNECTED</p>
+  <h2 class="nl-heading">Join The Community</h2>
+  <p class="nl-body">Featured venues, practitioner spotlights, wellness discoveries, and our global calendar of retreats.<br>Curated for the Sanctum community, delivered weekly.</p>
+  <form class="nl-form" onsubmit="return false;">
+    <input class="nl-input" type="email" placeholder="Your email address" aria-label="Email address">
+    <button class="nl-submit" type="submit">SUBSCRIBE</button>
+  </form>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:rgba(201,169,110,0.85)"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="1"/><path d="M20 6L20 34M6 20L34 20M9 9L31 31M31 9L9 31" stroke="currentColor" stroke-width="0.8"/><circle cx="20" cy="20" r="5" stroke="currentColor" stroke-width="0.8"/></svg>
+        <span class="footer-logo-text">THE GLOBAL SANCTUM</span>
+      </div>
+      <p class="footer-tagline">Extraordinary retreat spaces, wellness venues, and the experiences they hold — curated and connected worldwide.</p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/profile.php?id=61577706717526" target="_blank" rel="noopener" aria-label="Facebook">Fb</a>
+        <a href="https://www.instagram.com/theglobalsanctum/" target="_blank" rel="noopener" aria-label="Instagram">Ig</a>
+        <a href="https://www.linkedin.com/company/the-global-sanctum/?viewAsMember=true" target="_blank" rel="noopener" aria-label="LinkedIn">In</a>
+      </div>
+    </div>
+    <div>
+      <p class="footer-col-label">ABOUT TGS</p>
+      <ul class="footer-nav"><li><a href="tgs_about_v4.html">About Us</a></li><li><a href="tgs_how_it_works_v4 (2).html">How It Works</a></li></ul>
+    </div>
+    <div>
+      <p class="footer-col-label">DISCOVER</p>
+      <ul class="footer-nav"><li><a href="tgs_venues_v3.html">Retreat Venues</a></li><li><a href="tgs_venues_v3.html">Wellness Venues</a></li><li><a href="tgs_wellness_experiences_v6.html">Wellness Experiences</a></li></ul>
+    </div>
+    <div>
+      <p class="footer-col-label">PARTNER WITH US</p>
+      <ul class="footer-nav"><li><a href="tgs_list_your_venue_v4.html">List Your Venue</a></li><li><a href="tgs_contact_v4.html#press-media">Press &amp; Media</a></li></ul>
+    </div>
+    <div>
+      <p class="footer-col-label">RESOURCES</p>
+      <ul class="footer-nav"><li><a href="tgs_wellness_edit_v2 (1).html">The Wellness Edit</a></li><li><a href="#newsletter">Join the Journal</a></li></ul>
+    </div>
+    <div>
+      <p class="footer-col-label">LEGAL</p>
+      <ul class="footer-nav"><li><a href="tgs_legal_v5.html#terms">Terms &amp; Conditions</a></li><li><a href="tgs_legal_v5.html#privacy">Privacy Policy</a></li><li><a href="tgs_legal_v5.html#cookies">Cookies Policy</a></li></ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">&copy; 2026 The Global Sanctum. All rights reserved.</p>
+  </div>
+</footer>
+
+<div class="cookie-banner" id="cookie-banner" role="region" aria-label="Cookie notice">
+  <p class="cookie-text">We use cookies to improve your experience on The Global Sanctum. By continuing to browse, you agree to our use of cookies as outlined in our <a href="tgs_legal_v5.html#terms">Terms &amp; Conditions</a>.</p>
+  <div class="cookie-actions">
+    <button class="cookie-btn accept" id="cookie-accept" type="button">Accept All</button>
+    <button class="cookie-btn" id="cookie-decline" type="button">Decline</button>
+  </div>
+</div>
+
+<!-- ═══════════ AUTH MODAL ═══════════ -->
+<div class="auth-overlay" id="auth-overlay" aria-hidden="true">
+  <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <button class="auth-close" id="auth-close" aria-label="Close sign in">&times;</button>
+    <p class="auth-eyebrow">WELCOME</p>
+    <h2 class="auth-title" id="auth-title">Sign in to <em>continue</em></h2>
+    <p class="auth-sub">Sign in to save venues to your wishlist and access personalized features.</p>
+
+    <div class="auth-tabs" role="tablist" aria-label="Authentication tabs">
+      <button class="auth-tab active" id="tab-signin" type="button" role="tab" aria-selected="true" aria-controls="panel-signin" data-auth-mode="signin">Sign In</button>
+      <button class="auth-tab" id="tab-create" type="button" role="tab" aria-selected="false" aria-controls="panel-create" data-auth-mode="create">Create Account</button>
+    </div>
+
+    <form class="auth-form auth-panel" id="panel-signin" role="tabpanel" aria-labelledby="tab-signin" onsubmit="return false;">
+      <div class="auth-field">
+        <label for="auth-email">Email</label>
+        <input id="auth-email" type="email" placeholder="you@email.com">
+      </div>
+      <div class="auth-field">
+        <label for="auth-password">Password</label>
+        <input id="auth-password" type="password" placeholder="Your password">
+      </div>
+      <button class="auth-submit" type="submit">Sign In</button>
+    </form>
+
+    <form class="auth-form auth-panel" id="panel-create" role="tabpanel" aria-labelledby="tab-create" hidden onsubmit="return false;">
+      <div class="auth-field">
+        <label for="auth-name-create">Full Name</label>
+        <input id="auth-name-create" type="text" placeholder="Your full name">
+      </div>
+      <div class="auth-field">
+        <label for="auth-email-create">Email</label>
+        <input id="auth-email-create" type="email" placeholder="you@email.com">
+      </div>
+      <div class="auth-field">
+        <label for="auth-password-create">Password</label>
+        <input id="auth-password-create" type="password" placeholder="Create password">
+      </div>
+      <button class="auth-submit" type="submit">Create Account</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Header: transparent over hero, solid on scroll
+  const header = document.getElementById('site-header');
+  function updateHeader() {
+    header.classList.toggle('solid', window.scrollY > 50);
+  }
+  window.addEventListener('scroll', updateHeader, { passive: true });
+  updateHeader();
+
+  // Menu toggle
+  const overlay = document.getElementById('menu-overlay');
+  const menuToggle = document.getElementById('menu-toggle');
+  const menuClose = document.getElementById('menu-close');
+
+  function setMenuState(isOpen) {
+    overlay.classList.toggle('open', isOpen);
+    overlay.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  function closeMenu() {
+    setMenuState(false);
+  }
+
+  function toggleMenu() {
+    setMenuState(!overlay.classList.contains('open'));
+  }
+
+  menuToggle.addEventListener('click', toggleMenu);
+  menuToggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleMenu();
+    }
+  });
+
+  menuClose.addEventListener('click', closeMenu);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeMenu();
+  });
+
+  overlay.querySelectorAll('a[href]').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) {
+      closeMenu();
+    }
+  });
+
+  // Reset menu state after bfcache restores to keep hamburger behavior consistent.
+  window.addEventListener('pageshow', closeMenu);
+  closeMenu();
+
+  // Tabs
+  const venueTabs = Array.from(document.querySelectorAll('.venues-tab'));
+  const resultsCountStrong = document.querySelector('.results-count strong');
+
+  // Keep sticky filter offset aligned under tabs on resize
+  const tabsWrap = document.querySelector('.venues-tabs-wrap');
+  function syncStickyOffsets() {
+    const tabsHeight = tabsWrap ? tabsWrap.offsetHeight : 49;
+    document.documentElement.style.setProperty('--tabs-height', `${tabsHeight}px`);
+  }
+  window.addEventListener('resize', syncStickyOffsets);
+  window.addEventListener('load', syncStickyOffsets);
+  syncStickyOffsets();
+
+  // View toggle (grid / list)
+  document.getElementById('view-grid').addEventListener('click', () => {
+    document.getElementById('view-grid').classList.add('active');
+    document.getElementById('view-list').classList.remove('active');
+    document.getElementById('venues-grid').style.gridTemplateColumns = 'repeat(3, 1fr)';
+  });
+  document.getElementById('view-list').addEventListener('click', () => {
+    document.getElementById('view-list').classList.add('active');
+    document.getElementById('view-grid').classList.remove('active');
+    document.getElementById('venues-grid').style.gridTemplateColumns = '1fr';
+  });
+
+  // Sign in modal for favorite actions
+  const authOverlay = document.getElementById('auth-overlay');
+  const authClose = document.getElementById('auth-close');
+  const authTitle = document.getElementById('auth-title');
+  const authSub = document.querySelector('.auth-sub');
+  const authTabSignIn = document.getElementById('tab-signin');
+  const authTabCreate = document.getElementById('tab-create');
+  const authPanelSignIn = document.getElementById('panel-signin');
+  const authPanelCreate = document.getElementById('panel-create');
+
+  function setAuthMode(mode) {
+    const isSignIn = mode === 'signin';
+
+    authTabSignIn.classList.toggle('active', isSignIn);
+    authTabCreate.classList.toggle('active', !isSignIn);
+    authTabSignIn.setAttribute('aria-selected', isSignIn ? 'true' : 'false');
+    authTabCreate.setAttribute('aria-selected', isSignIn ? 'false' : 'true');
+
+    authPanelSignIn.hidden = !isSignIn;
+    authPanelCreate.hidden = isSignIn;
+
+    if (isSignIn) {
+      authTitle.innerHTML = 'Sign in to <em>continue</em>';
+      authSub.textContent = 'Sign in to save venues to your wishlist and access personalized features.';
+    } else {
+      authTitle.innerHTML = 'Create an <em>account</em>';
+      authSub.textContent = 'Create your account to save favorites, track venues, and unlock personalized recommendations.';
+    }
+  }
+
+  function openAuthModal() {
+    setAuthMode('signin');
+    authOverlay.classList.add('open');
+    authOverlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('auth-open');
+  }
+
+  function closeAuthModal() {
+    authOverlay.classList.remove('open');
+    authOverlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('auth-open');
+  }
+
+  authClose.addEventListener('click', closeAuthModal);
+  authOverlay.addEventListener('click', e => {
+    if (e.target === authOverlay) closeAuthModal();
+  });
+  authTabSignIn.addEventListener('click', () => setAuthMode('signin'));
+  authTabCreate.addEventListener('click', () => setAuthMode('create'));
+
+  // Functional pagination with unique venue sets per page
+  const venuesGrid = document.getElementById('venues-grid');
+  const pageOneCards = Array.from(venuesGrid.children).map(card => card.outerHTML);
+  const pageButtons = Array.from(document.querySelectorAll('.pagination-wrap .pg-btn'));
+  const prevBtn = pageButtons[0];
+  const nextBtn = pageButtons[pageButtons.length - 1];
+  const numberButtons = pageButtons.slice(1, -1);
+
+  function buildVenueCard(venue) {
+    const featuredBadge = venue.featured ? '<span class="badge-featured">FEATURED</span>' : '';
+    const footerHtml = venue.rating
+      ? `<span class="vc-rating"><span class="star">★</span> ${venue.rating} <span class="review-ct">(${venue.reviews})</span></span><span class="vc-price">From <strong>${venue.price}</strong>/night</span>`
+      : `<span class="vc-new">New</span><span class="vc-price">From <strong>${venue.price}</strong>/night</span>`;
+
+    return `<article class="venue-card">
+      <div class="vc-img">
+        <img src="${venue.image}" alt="${venue.name}" loading="lazy">
+        <span class="badge-type">${venue.badge}</span>
+        ${featuredBadge}
+        <button class="btn-heart" aria-label="Save ${venue.name}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="vc-body">
+        <p class="vc-location">${venue.location}</p>
+        <h3 class="vc-name">${venue.name}</h3>
+        <p class="vc-type">${venue.type}</p>
+        <p class="vc-desc">${venue.description}</p>
+        <div class="vc-tags">${venue.tags.map(tag => `<span class="vc-tag">${tag}</span>`).join('')}</div>
+        <div class="vc-footer">${footerHtml}</div>
+      </div>
+    </article>`;
+  }
+
+  const pageTwoVenues = [
+    { image: 'images/Woman%20In%20Bath%20Nordic%20Filter.png', name: 'Thermal Reverie', badge: 'WELLNESS VENUE', featured: true, location: 'HEPBURN SPRINGS, VIC', type: 'Wellness Retreat', description: 'Mineral bath sanctuary with hydrotherapy circuits and woodland restoration rituals.', tags: ['Hydrotherapy', 'Sauna', 'Recovery'], price: 'POA' },
+    { image: 'images/Japan%20Temple%20Red%20Nordic%20Filter.png', name: 'Temple Passage', badge: 'RETREAT VENUE', featured: true, location: 'KYOTO, JP', type: 'Retreat Venue', description: 'Traditional temple grounds with contemplative gardens and seasonal tea ceremonies.', tags: ['Meditation', 'Tea Ritual', 'Zen'], price: 'POA' },
+    { image: 'images/India%20Building%20Nordic%20Filter.png', name: 'Ayur Estate', badge: 'RETREAT VENUE', featured: false, location: 'KERALA, IN', type: 'Retreat Venue', description: 'Purpose-built ayurvedic residence offering panchakarma and physician-led programs.', tags: ['Ayurveda', 'Detox', 'Massage'], price: 'A$320' },
+    { image: 'images/Rice%20Terraces%20Nordic%20Filter.jpg', name: 'Emerald Terraces', badge: 'RETREAT VENUE', featured: true, location: 'UBUD, ID', type: 'Wellness Retreat', description: 'Hillside eco-sanctuary overlooking rice terraces with sunrise movement decks.', tags: ['Yoga', 'Breathwork', 'Nature'], price: 'POA' },
+    { image: 'images/Sunset%20Desert%20Nordic%20Filter.png', name: 'Dune Quietude', badge: 'RETREAT VENUE', featured: false, location: 'AL ULA, SA', type: 'Retreat Venue', description: 'Desert lodge designed for silence retreats and stargazing integration practices.', tags: ['Silence', 'Sound Healing', 'Desert'], price: 'A$410' },
+    { image: 'images/City%20Wet%20Pavement%20Nordic%20Filter.png', name: 'Urban Monastery', badge: 'WELLNESS VENUE', featured: false, location: 'SYDNEY, NSW', type: 'Wellness Studio', description: 'City-based wellness house blending recovery technologies with mindful programming.', tags: ['Recovery', 'Breathwork', 'Contrast'], price: 'A$180' },
+    { image: 'images/Woman%20Stretching%20Back%20Yoga%20Nordic%20Filter.png', name: 'Arc Studio', badge: 'WELLNESS VENUE', featured: true, location: 'NOOSA, QLD', type: 'Wellness Studio', description: 'Movement-forward studio with small-group mobility sessions and nervous system reset.', tags: ['Mobility', 'Yoga', 'Pilates'], price: 'POA' },
+    { image: 'images/Raw%20Salad%20Bowl%20Nordic%20Filter.png', name: 'Nourish House', badge: 'RETREAT VENUE', featured: false, location: 'MARGARET RIVER, WA', type: 'Retreat Venue', description: 'Food-first sanctuary focused on seasonal nourishment and integrative nutrition.', tags: ['Nutrition', 'Detox', 'Cooking'], price: 'A$250' },
+    { image: 'images/Meditation%20Black%20%26%20White%20Mountain.jpg', name: 'Cliff Horizon', badge: 'RETREAT VENUE', featured: true, location: 'JERVIS BAY, NSW', type: 'Retreat Venue', description: 'Ocean cliff sanctuary with minimalist cabins, sunrise sessions, and quiet restoration.', tags: ['Meditation', 'Breathwork', 'Nature'], price: 'POA' }
+  ];
+
+  const pageThreeVenues = [
+    { image: 'images/Gold%20Sound%20Bowl%20Nordic%20Filter.jpg', name: 'Resonance Hall', badge: 'WELLNESS VENUE', featured: true, location: 'HOBART, TAS', type: 'Wellness Venue', description: 'Sound-led healing venue for immersive sessions, group journeys, and private therapy.', tags: ['Sound Healing', 'Meditation', 'Recovery'], price: 'POA' },
+    { image: 'images/Shaman%20With%20Flute%20Nordic%20Filter.png', name: 'Sacred Wind Lodge', badge: 'RETREAT VENUE', featured: false, location: 'CUSCO, PE', type: 'Retreat Venue', description: 'Andean retreat environment for ceremony, reflection, and landscape-based restoration.', tags: ['Ceremony', 'Breathwork', 'Nature'], price: 'A$380' },
+    { image: 'images/Man%20Walking%20Through%20Forest%20Nordic%20Filter.png', name: 'Cedar Path', badge: 'RETREAT VENUE', featured: true, location: 'TASMAN PENINSULA, TAS', type: 'Retreat Venue', description: 'Forest immersion campus with guided trail practices and mindful wilderness programs.', tags: ['Forest Bathing', 'Hiking', 'Mindfulness'], price: 'POA' },
+    { image: 'images/Woman%20With%20Sound%20Bowl%20Nordic%20Filter.png', name: 'Lumen Space', badge: 'WELLNESS VENUE', featured: false, location: 'ADELAIDE, SA', type: 'Wellness Venue', description: 'Boutique studio for vibrational therapy, restorative bodywork, and deep rest.', tags: ['Restorative', 'Bodywork', 'Sound'], price: 'A$190' },
+    { image: 'images/Herbs%20On%20Timber%20Nordic%20Filter.png', name: 'Herbal Hearth', badge: 'RETREAT VENUE', featured: false, location: 'YARRA VALLEY, VIC', type: 'Retreat Venue', description: 'Plant-based retreat home with herbal medicine workshops and seasonal rituals.', tags: ['Herbalism', 'Detox', 'Workshops'], price: 'A$260' },
+    { image: 'images/Onsen%203%20Nordic%20Filter.png', name: 'Stonewater Onsen', badge: 'RETREAT VENUE', featured: true, location: 'QUEENSTOWN, NZ', type: 'Retreat Venue', description: 'Alpine onsen estate combining thermal bathing, mountain air, and breath-led programs.', tags: ['Onsen', 'Alpine', 'Meditation'], price: 'POA', rating: '4.8', reviews: '24 reviews' },
+    { image: 'images/Group%20Of%20Hands%20Together%20Nordic%20Filter.png', name: 'Collective Ground', badge: 'WELLNESS VENUE', featured: false, location: 'BYRON SHIRE, NSW', type: 'Wellness Hub', description: 'Community-led venue built for circles, facilitation training, and group retreats.', tags: ['Community', 'Workshops', 'Facilitation'], price: 'A$140' },
+    { image: 'images/Halotherapy%20Nordic%20Filter.png', name: 'Salt Chamber', badge: 'WELLNESS VENUE', featured: true, location: 'PERTH, WA', type: 'Wellness Venue', description: 'Halotherapy-focused wellness environment with respiratory support and deep calm spaces.', tags: ['Halotherapy', 'Breath', 'Recovery'], price: 'A$160' }
+  ];
+
+  const pagedVenues = [
+    pageOneCards,
+    pageTwoVenues.map(buildVenueCard),
+    pageThreeVenues.map(buildVenueCard)
+  ];
+
+  const PAGE_SIZE = 9;
+  const allVenueCards = pagedVenues.flat();
+  let activePagedVenues = pagedVenues;
+  let currentFilter = 'all';
+  let currentPage = 0;
+
+  function getCardCategory(cardHtml) {
+    return cardHtml.includes('WELLNESS VENUE') ? 'wellness' : 'retreat';
+  }
+
+  function splitIntoPages(cards, pageSize) {
+    const pages = [];
+    for (let i = 0; i < cards.length; i += pageSize) {
+      pages.push(cards.slice(i, i + pageSize));
+    }
+    return pages;
+  }
+
+  function getFilteredCards(filter) {
+    if (filter === 'all') return allVenueCards;
+    return allVenueCards.filter(card => getCardCategory(card) === filter);
+  }
+
+  function updateTabCounts() {
+    const retreatCount = allVenueCards.filter(card => getCardCategory(card) === 'retreat').length;
+    const wellnessCount = allVenueCards.filter(card => getCardCategory(card) === 'wellness').length;
+    const allCount = allVenueCards.length;
+
+    venueTabs.forEach(tab => {
+      const countEl = tab.querySelector('.tab-count');
+      if (!countEl) return;
+      if (tab.dataset.tab === 'all') countEl.textContent = String(allCount);
+      if (tab.dataset.tab === 'retreat') countEl.textContent = String(retreatCount);
+      if (tab.dataset.tab === 'wellness') countEl.textContent = String(wellnessCount);
+    });
+  }
+
+  function updateResultsCount() {
+    const currentTotal = getFilteredCards(currentFilter).length;
+    if (resultsCountStrong) {
+      resultsCountStrong.textContent = String(currentTotal);
+    }
+  }
+
+  function applyTabFilter(filter) {
+    currentFilter = filter;
+    const filteredCards = getFilteredCards(filter);
+    activePagedVenues = splitIntoPages(filteredCards, PAGE_SIZE);
+    if (!activePagedVenues.length) {
+      activePagedVenues = [[]];
+    }
+    currentPage = 0;
+    updateResultsCount();
+    renderPage(0);
+  }
+
+  function updatePaginationButtons() {
+    numberButtons.forEach((btn, idx) => {
+      const isVisible = idx < activePagedVenues.length;
+      btn.style.display = isVisible ? '' : 'none';
+      btn.classList.toggle('active', isVisible && idx === currentPage);
+    });
+    prevBtn.disabled = currentPage === 0;
+    nextBtn.disabled = currentPage === activePagedVenues.length - 1;
+  }
+
+  function renderPage(pageIndex) {
+    currentPage = Math.max(0, Math.min(pageIndex, activePagedVenues.length - 1));
+    const currentCards = activePagedVenues[currentPage] || [];
+    venuesGrid.innerHTML = currentCards.join('');
+
+    if (!currentCards.length) {
+      venuesGrid.innerHTML = '<p class="results-count" style="grid-column:1/-1;text-align:center;padding:40px 0;">No venues found for this category.</p>';
+    }
+
+    updatePaginationButtons();
+    window.scrollTo({ top: document.querySelector('.results-bar').offsetTop - 90, behavior: 'smooth' });
+  }
+
+  numberButtons.forEach((btn, idx) => {
+    btn.addEventListener('click', () => renderPage(idx));
+  });
+
+  prevBtn.addEventListener('click', () => {
+    if (currentPage > 0) renderPage(currentPage - 1);
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (currentPage < activePagedVenues.length - 1) renderPage(currentPage + 1);
+  });
+
+  venueTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      venueTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      applyTabFilter(tab.dataset.tab || 'all');
+    });
+  });
+
+  // Favorite click opens sign-in modal
+  venuesGrid.addEventListener('click', e => {
+    const btn = e.target.closest('.btn-heart');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    openAuthModal();
+  });
+
+  // Card click opens detail page similar to production behavior
+  venuesGrid.addEventListener('click', e => {
+    if (e.target.closest('.btn-heart')) return;
+    const card = e.target.closest('.venue-card');
+    if (!card) return;
+    const badge = card.querySelector('.badge-type');
+    const isWellness = badge && badge.textContent.includes('WELLNESS');
+    const targetPage = isWellness ? 'tgs_wellness_venue_detail_v2 (4).html' : 'tgs_retreat_venue_detail_v2_sample_venue.html';
+    window.location.href = targetPage;
+  });
+
+  // Cookie banner actions
+  const cookieBanner = document.getElementById('cookie-banner');
+  const cookieAccept = document.getElementById('cookie-accept');
+  const cookieDecline = document.getElementById('cookie-decline');
+
+  function closeCookieBanner() {
+    cookieBanner.style.display = 'none';
+  }
+
+  cookieAccept.addEventListener('click', closeCookieBanner);
+  cookieDecline.addEventListener('click', closeCookieBanner);
+
+  updateTabCounts();
+  applyTabFilter('all');
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && authOverlay.classList.contains('open')) {
+      closeAuthModal();
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TGS Internal Portal - Moraea Farm - Retreat Facilities</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-bg: #FDFCF9;
+      --secondary-bg: #F7F5F1;
+      --accent: #B8B8B8;
+      --text: #313131;
+      --white: #FFFFFF;
+      --success: #4A7C59;
+      --warning: #D4A853;
+      --error: #C45C5C;
+      --info: #6B8EC9;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--primary-bg);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background-color: var(--text);
+      color: var(--white);
+      padding: 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 32px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .sidebar-subtitle {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .sidebar-nav {
+      padding: 24px 0;
+    }
+
+    .nav-section {
+      margin-bottom: 8px;
+    }
+
+    .nav-section-title {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 8px 24px;
+      margin-bottom: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background-color: rgba(255,255,255,0.05);
+      color: var(--white);
+    }
+
+    .nav-item.active {
+      background-color: rgba(255,255,255,0.1);
+      color: var(--white);
+      border-left: 3px solid var(--white);
+      padding-left: 21px;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 12px;
+      opacity: 0.7;
+    }
+
+    .nav-item.active .nav-icon {
+      opacity: 1;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background-color: var(--warning);
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      padding: 0;
+      background-color: var(--primary-bg);
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      padding: 16px 48px;
+      background-color: var(--secondary-bg);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--text);
+    }
+
+    .breadcrumb span {
+      color: var(--accent);
+    }
+
+    .breadcrumb .current {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Venue Header */
+    .venue-header {
+      padding: 32px 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .venue-header-left {
+      display: flex;
+      gap: 24px;
+    }
+
+    .venue-thumbnail {
+      width: 120px;
+      height: 90px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>');
+      background-size: 40px;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
+    .venue-header-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .venue-title-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .venue-title {
+      font-size: 28px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .venue-type-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .venue-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .venue-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .venue-meta-item svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .venue-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-indicator.active {
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+
+    .venue-header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--text);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background-color: #4a4a4a;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text);
+      border: 1px solid var(--accent);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--secondary-bg);
+    }
+
+    .btn-icon {
+      padding: 10px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon:hover {
+      background-color: #E8E5E0;
+    }
+
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 12px;
+      border-radius: 16px;
+    }
+
+    /* Venue Tabs */
+    .venue-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      overflow-x: auto;
+    }
+
+    .venue-tab {
+      padding: 16px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .venue-tab:hover {
+      color: var(--text);
+    }
+
+    .venue-tab.active {
+      color: var(--text);
+      border-bottom-color: var(--text);
+    }
+
+    /* Content Area */
+    .content-area {
+      padding: 32px 48px;
+    }
+
+    /* Form Sections */
+    .form-section {
+      background-color: var(--white);
+      border-radius: 12px;
+      border: 1px solid rgba(184, 184, 184, 0.2);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .form-section-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-section-title {
+      font-size: 18px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .form-section-body {
+      padding: 24px;
+    }
+
+    /* Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .form-grid.three-col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .form-grid.four-col {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-group.full-width-3 {
+      grid-column: span 3;
+    }
+
+    .form-group.full-width-4 {
+      grid-column: span 4;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-label .required {
+      color: var(--error);
+    }
+
+    .form-input {
+      padding: 12px 16px;
+      border: 1px solid rgba(184, 184, 184, 0.3);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background-color: var(--white);
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--text);
+    }
+
+    .form-input::placeholder {
+      color: var(--accent);
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    /* Toggle Switch */
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      background-color: var(--accent);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .toggle.active {
+      background-color: var(--success);
+    }
+
+    .toggle-knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--white);
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+    }
+
+    .toggle.active .toggle-knob {
+      transform: translateX(22px);
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* Multi-Select Tags */
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+      border: 1px solid rgba(184, 184, 184, 0.3);
+      border-radius: 8px;
+      min-height: 48px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background-color: var(--secondary-bg);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .tag-remove {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+
+    .tag-remove:hover {
+      opacity: 1;
+    }
+
+    /* Summary Stats */
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .summary-stat {
+      background-color: var(--secondary-bg);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .summary-stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .summary-stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+    }
+
+    /* Facility Cards */
+    .facility-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .facility-card {
+      background-color: var(--secondary-bg);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .facility-card.full-width {
+      grid-column: span 2;
+    }
+
+    .facility-card-header {
+      padding: 16px 20px;
+      background-color: rgba(49, 49, 49, 0.03);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.15);
+    }
+
+    .facility-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .facility-icon {
+      width: 32px;
+      height: 32px;
+      background-color: var(--white);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .facility-card-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .facility-status {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--success);
+      font-weight: 500;
+    }
+
+    .facility-status.inactive {
+      color: var(--accent);
+    }
+
+    .facility-card-body {
+      padding: 20px;
+    }
+
+    .facility-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .facility-grid.two-col {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .facility-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .facility-field.span-2 {
+      grid-column: span 2;
+    }
+
+    .facility-field.span-3 {
+      grid-column: span 3;
+    }
+
+    .facility-field-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+    }
+
+    .facility-field-value {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .facility-field .form-input {
+      background-color: var(--white);
+    }
+
+    .facility-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .facility-feature {
+      padding: 4px 10px;
+      background-color: var(--white);
+      border-radius: 12px;
+      font-size: 11px;
+      color: var(--text);
+    }
+
+    /* Add Facility Button */
+    .add-facility-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 24px;
+      border: 2px dashed var(--accent);
+      border-radius: 12px;
+      background-color: transparent;
+      color: var(--accent);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      grid-column: span 2;
+    }
+
+    .add-facility-btn:hover {
+      border-color: var(--text);
+      color: var(--text);
+      background-color: var(--secondary-bg);
+    }
+
+    /* Checkbox Grid */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background-color: var(--secondary-bg);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .checkbox-item:hover {
+      background-color: #E8E5E0;
+    }
+
+    .checkbox-item.checked {
+      background-color: rgba(75, 124, 89, 0.1);
+      border: 1px solid var(--success);
+    }
+
+    .checkbox-box {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .checkbox-item.checked .checkbox-box {
+      background-color: var(--success);
+      border-color: var(--success);
+    }
+
+    .checkbox-label {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* User Menu */
+    .user-menu {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    /* Icons */
+    .icon {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .icon-small {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1400px) {
+      .summary-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .facility-cards {
+        grid-template-columns: 1fr;
+      }
+      .facility-card.full-width {
+        grid-column: span 1;
+      }
+      .add-facility-btn {
+        grid-column: span 1;
+      }
+      .checkbox-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 1000px) {
+      .facility-grid {
+        grid-template-columns: 1fr;
+      }
+      .facility-field.span-2,
+      .facility-field.span-3 {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">The Global Sanctum</div>
+        <div class="sidebar-subtitle">Internal Portal</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Content</div>
+          </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Insights</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            Analytics
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Team</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            Users
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+            </svg>
+            Settings
+          </a>
+        </div>
+      </nav>
+
+      <div class="user-menu">
+        <div class="user-avatar">K</div>
+        <div class="user-info">
+          <div class="user-name">Kate</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="#">Dashboard</a>
+        <span>/</span>
+        <a href="#">Venues</a>
+        <span>/</span>
+        <span class="current">Moraea Farm</span>
+      </nav>
+
+      <!-- Venue Header -->
+      <header class="venue-header">
+        <div class="venue-header-left">
+          <div class="venue-thumbnail"></div>
+          <div class="venue-header-info">
+            <div class="venue-title-row">
+              <h1 class="venue-title">Moraea Farm</h1>
+              <span class="venue-type-badge">Retreat Venue</span>
+            </div>
+            <div class="venue-meta">
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                Berry, NSW, Australia
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                </svg>
+                Max 12 guests
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Added Feb 8, 2026
+              </div>
+            </div>
+            <div class="venue-status">
+              <span class="status-indicator active">
+                <span class="status-dot"></span>
+                Active
+              </span>
+              <span style="color: var(--accent); font-size: 12px;">• Featured Plan</span>
+            </div>
+          </div>
+        </div>
+        <div class="venue-header-actions">
+          <button class="btn-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+          <button class="btn btn-secondary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="3,6 5,6 21,6"/>
+              <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+            </svg>
+            Delete
+          </button>
+          <button class="btn btn-primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+              <polyline points="17,21 17,13 7,13 7,21"/>
+              <polyline points="7,3 7,8 15,8"/>
+            </svg>
+            Save Changes
+          </button>
+        </div>
+      </header>
+
+      <!-- Venue Tabs -->
+      <nav class="venue-tabs">
+        <div class="venue-tab">Overview</div>
+        <div class="venue-tab">Accommodation</div>
+        <div class="venue-tab">Amenities</div>
+        <div class="venue-tab">Wellness Services</div>
+        <div class="venue-tab">Wellness Facilities</div>
+        <div class="venue-tab active">Retreat Facilities</div>
+        <div class="venue-tab">Pricing & Booking</div>
+        <div class="venue-tab">Media</div>
+        <div class="venue-tab">Internal</div>
+        <div class="venue-tab">Owner/Manager</div>
+        <div class="venue-tab">Bookings</div>
+      </nav>
+
+      <!-- Content Area -->
+      <div class="content-area">
+
+        <!-- Tab Images -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Tab Images</h3>
+              <p class="form-section-subtitle">Hero image displayed on the Retreat Spaces tab of your public listing</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Retreat Spaces Tab Hero Image</label>
+                <div class="image-upload-area" style="border: 2px dashed rgba(184, 184, 184, 0.4); border-radius: 12px; padding: 40px; text-align: center; background-color: var(--secondary-bg);">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5" style="margin-bottom: 16px;">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21,15 16,10 5,21"/>
+                  </svg>
+                  <p style="color: var(--text); font-weight: 500; margin-bottom: 4px;">Click to upload or drag and drop</p>
+                  <p style="color: var(--accent); font-size: 12px;">Recommended: 1920×600px, JPG or PNG</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab Content -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Tab Content</h3>
+              <p class="form-section-subtitle">Intro text displayed on the Retreat Spaces tab of your public listing</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Section Label</label>
+                <input type="text" class="form-input" value="Retreat Spaces" placeholder="e.g. Retreat Spaces, Practice Spaces">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Section Title</label>
+                <input type="text" class="form-input" value="Spaces That Hold Whatever You Bring" placeholder="e.g. Spaces for Practice and Transformation">
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Section Subtitle</label>
+                <input type="text" class="form-input" value="Three distinct environments for practice, ceremony, and transformation" placeholder="Brief subtitle...">
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Intro Paragraph</label>
+                <textarea class="form-input form-textarea" rows="3" placeholder="A paragraph introducing your retreat spaces...">Each of our practice spaces has been designed with intention—the way light moves through them, the quality of silence they hold, the connection to the land beyond. Whether you're leading dynamic vinyasa or holding space for deep meditation, you'll find a setting that supports your work.</textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Retreat Facilities Summary -->
+        <div class="summary-stats">
+          <div class="summary-stat">
+            <div class="summary-stat-value">3</div>
+            <div class="summary-stat-label">Practice Spaces</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-value">2</div>
+            <div class="summary-stat-label">Meeting Rooms</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-value">30</div>
+            <div class="summary-stat-label">Workshop Capacity</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-value">4</div>
+            <div class="summary-stat-label">Outdoor Areas</div>
+          </div>
+        </div>
+
+        <!-- Individual Facility Cards -->
+        <div class="facility-cards">
+          
+          <!-- Yoga Shala -->
+          <div class="facility-card">
+            <div class="facility-card-header">
+              <div class="facility-card-title">
+                <div class="facility-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#313131" stroke-width="1.5">
+                    <circle cx="12" cy="5" r="2"/>
+                    <path d="M12 7v5m0 0l-3 4m3-4l3 4m-6-4h6"/>
+                  </svg>
+                </div>
+                Yoga Shala
+              </div>
+              <div class="facility-card-toggle">
+                <span class="facility-status" style="margin-right: 12px; background: rgba(212, 168, 83, 0.1); color: #D4A853; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Featured</span>
+                <span class="facility-status">Available</span>
+                <div class="toggle active">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </div>
+            <div class="facility-card-body">
+              <!-- Space Image -->
+              <div class="facility-grid" style="margin-bottom: 20px;">
+                <div class="facility-field span-2">
+                  <div class="facility-field-label">Space Image</div>
+                  <div style="display: flex; gap: 16px; align-items: start;">
+                    <div style="width: 200px; height: 140px; border-radius: 8px; background: var(--secondary-bg); display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(184, 184, 184, 0.4);">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21,15 16,10 5,21"/>
+                      </svg>
+                    </div>
+                    <div style="flex: 1;">
+                      <button class="btn btn-secondary btn-small" style="margin-bottom: 8px;">Upload Image</button>
+                      <p style="font-size: 11px; color: var(--accent);">Recommended: 800×600px, JPG or PNG</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Featured Space</div>
+                  <div class="toggle-container">
+                    <div class="toggle active">
+                      <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-label">Yes - Highlight on listing</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="facility-grid" style="margin-bottom: 20px;">
+                <div class="facility-field span-3">
+                  <div class="facility-field-label">Space Description</div>
+                  <textarea class="form-input form-textarea" rows="3" placeholder="Describe this space for your public listing...">The heart of Moraea Farm, our main shala is a soaring open-air pavilion facing directly east toward the mountains. Floor-to-ceiling glass doors open completely, dissolving the boundary between inside and out. The space comfortably holds 20 yoga mats with room to move, or 30 seated for lectures and sound healing.</textarea>
+                </div>
+              </div>
+
+              <div class="facility-grid">
+                <div class="facility-field">
+                  <div class="facility-field-label">Space Type</div>
+                  <select class="form-input form-select">
+                    <option selected>Dedicated Yoga Studio</option>
+                    <option>Multipurpose Space</option>
+                    <option>Outdoor Platform</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Setting</div>
+                  <select class="form-input form-select">
+                    <option>Indoor</option>
+                    <option selected>Indoor/Outdoor</option>
+                    <option>Outdoor</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">View Type</div>
+                  <select class="form-input form-select">
+                    <option>No Specific View</option>
+                    <option>Ocean View</option>
+                    <option selected>Mountain View</option>
+                    <option>Garden View</option>
+                    <option>Forest View</option>
+                    <option>Lake View</option>
+                    <option>Valley View</option>
+                    <option>Countryside View</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Capacity</div>
+                  <input type="number" class="form-input" value="20">
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Size (sqm)</div>
+                  <input type="number" class="form-input" value="85">
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Flooring</div>
+                  <select class="form-input form-select">
+                    <option selected>Timber</option>
+                    <option>Concrete</option>
+                    <option>Carpet</option>
+                    <option>Sprung Floor</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Climate Control</div>
+                  <select class="form-input form-select">
+                    <option selected>Heated & Air-conditioned</option>
+                    <option>Heated Only</option>
+                    <option>Air-conditioned Only</option>
+                    <option>Fans Only</option>
+                    <option>None</option>
+                  </select>
+                </div>
+                <div class="facility-field span-3">
+                  <div class="facility-field-label">Equipment Provided</div>
+                  <div class="facility-features">
+                    <span class="facility-feature">Yoga Mats (20)</span>
+                    <span class="facility-feature">Bolsters (20)</span>
+                    <span class="facility-feature">Blocks (40)</span>
+                    <span class="facility-feature">Straps (20)</span>
+                    <span class="facility-feature">Blankets (20)</span>
+                    <span class="facility-feature">Sound System</span>
+                    <span class="facility-feature">Projector</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Meditation Space -->
+          <div class="facility-card">
+            <div class="facility-card-header">
+              <div class="facility-card-title">
+                <div class="facility-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#313131" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <circle cx="12" cy="12" r="1"/>
+                  </svg>
+                </div>
+                Meditation Space
+              </div>
+              <div class="facility-card-toggle">
+                <span class="facility-status">Available</span>
+                <div class="toggle active">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </div>
+            <div class="facility-card-body">
+              <!-- Space Image -->
+              <div class="facility-grid" style="margin-bottom: 20px;">
+                <div class="facility-field span-2">
+                  <div class="facility-field-label">Space Image</div>
+                  <div style="display: flex; gap: 16px; align-items: start;">
+                    <div style="width: 200px; height: 140px; border-radius: 8px; background: var(--secondary-bg); display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(184, 184, 184, 0.4);">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21,15 16,10 5,21"/>
+                      </svg>
+                    </div>
+                    <div style="flex: 1;">
+                      <button class="btn btn-secondary btn-small" style="margin-bottom: 8px;">Upload Image</button>
+                      <p style="font-size: 11px; color: var(--accent);">Recommended: 800×600px, JPG or PNG</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Featured Space</div>
+                  <div class="toggle-container">
+                    <div class="toggle">
+                      <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-label">No</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="facility-grid" style="margin-bottom: 20px;">
+                <div class="facility-field span-3">
+                  <div class="facility-field-label">Space Description</div>
+                  <textarea class="form-input form-textarea" rows="3" placeholder="Describe this space for your public listing...">An intimate space nestled in a quiet wing of the house, the meditation room offers a sanctuary for stillness. Skylights flood the space with natural light while maintaining privacy and focus. Perfect for smaller groups, workshops, or individual practice.</textarea>
+                </div>
+              </div>
+
+              <div class="facility-grid">
+                <div class="facility-field">
+                  <div class="facility-field-label">Space Type</div>
+                  <select class="form-input form-select">
+                    <option selected>Dedicated Meditation Room</option>
+                    <option>Garden Sanctuary</option>
+                    <option>Shared Space</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Setting</div>
+                  <select class="form-input form-select">
+                    <option selected>Indoor</option>
+                    <option>Outdoor</option>
+                    <option>Indoor/Outdoor</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">View Type</div>
+                  <select class="form-input form-select">
+                    <option>No Specific View</option>
+                    <option>Ocean View</option>
+                    <option>Mountain View</option>
+                    <option selected>Garden View</option>
+                    <option>Forest View</option>
+                    <option>Lake View</option>
+                    <option>Valley View</option>
+                    <option>Countryside View</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Capacity</div>
+                  <input type="number" class="form-input" value="12">
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Size (sqm)</div>
+                  <input type="number" class="form-input" value="40">
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Lighting</div>
+                  <select class="form-input form-select">
+                    <option selected>Dimmable</option>
+                    <option>Natural Only</option>
+                    <option>Standard</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Acoustics</div>
+                  <select class="form-input form-select">
+                    <option selected>Sound Insulated</option>
+                    <option>Natural Sounds</option>
+                    <option>Standard</option>
+                  </select>
+                </div>
+                <div class="facility-field span-3">
+                  <div class="facility-field-label">Equipment Provided</div>
+                  <div class="facility-features">
+                    <span class="facility-feature">Meditation Cushions (15)</span>
+                    <span class="facility-feature">Zafu & Zabuton Sets</span>
+                    <span class="facility-feature">Singing Bowls</span>
+                    <span class="facility-feature">Ambient Sound System</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Workshop / Meeting Room -->
+          <div class="facility-card">
+            <div class="facility-card-header">
+              <div class="facility-card-title">
+                <div class="facility-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#313131" stroke-width="1.5">
+                    <rect x="2" y="3" width="20" height="14" rx="2"/>
+                    <line x1="8" y1="21" x2="16" y2="21"/>
+                    <line x1="12" y1="17" x2="12" y2="21"/>
+                  </svg>
+                </div>
+                Workshop / Meeting Room
+              </div>
+              <div class="facility-card-toggle">
+                <span class="facility-status">Available</span>
+                <div class="toggle active">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </div>
+            <div class="facility-card-body">
+              <!-- Space Image -->
+              <div class="facility-grid" style="margin-bottom: 20px;">
+                <div class="facility-field span-2">
+                  <div class="facility-field-label">Space Image</div>
+                  <div style="display: flex; gap: 16px; align-items: start;">
+                    <div style="width: 200px; height: 140px; border-radius: 8px; background: var(--secondary-bg); display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(184, 184, 184, 0.4);">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21,15 16,10 5,21"/>
+                      </svg>
+                    </div>
+                    <div style="flex: 1;">
+                      <button class="btn btn-secondary btn-small" style="margin-bottom: 8px;">Upload Image</button>
+                      <p style="font-size: 11px; color: var(--accent);">Recommended: 800×600px, JPG or PNG</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Featured Space</div>
+                  <div class="toggle-container">
+                    <div class="toggle">
+                      <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-label">No</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="facility-grid" style="margin-bottom: 20px;">
+                <div class="facility-field span-3">
+                  <div class="facility-field-label">Space Description</div>
+                  <textarea class="form-input form-textarea" rows="3" placeholder="Describe this space for your public listing...">A versatile workshop space that adapts to your needs. Large windows provide natural light while blackout blinds allow for presentations. Flexible seating arrangements from boardroom to theatre style.</textarea>
+                </div>
+              </div>
+
+              <div class="facility-grid">
+                <div class="facility-field">
+                  <div class="facility-field-label">Space Type</div>
+                  <select class="form-input form-select">
+                    <option selected>Conference Room</option>
+                    <option>Multipurpose Hall</option>
+                    <option>Boardroom</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Setting</div>
+                  <select class="form-input form-select">
+                    <option selected>Indoor</option>
+                    <option>Outdoor</option>
+                    <option>Indoor/Outdoor</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">View Type</div>
+                  <select class="form-input form-select">
+                    <option>No Specific View</option>
+                    <option>Ocean View</option>
+                    <option>Mountain View</option>
+                    <option selected>Garden View</option>
+                    <option>Forest View</option>
+                    <option>Lake View</option>
+                    <option>Valley View</option>
+                    <option>Countryside View</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Theatre Capacity</div>
+                  <input type="number" class="form-input" value="30">
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Boardroom Capacity</div>
+                  <input type="number" class="form-input" value="16">
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Classroom Capacity</div>
+                  <input type="number" class="form-input" value="20">
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Size (sqm)</div>
+                  <input type="number" class="form-input" value="65">
+                </div>
+                <div class="facility-field span-3">
+                  <div class="facility-field-label">Equipment & Features</div>
+                  <div class="facility-features">
+                    <span class="facility-feature">Projector & Screen</span>
+                    <span class="facility-feature">Whiteboard</span>
+                    <span class="facility-feature">Flip Charts</span>
+                    <span class="facility-feature">Conference Phone</span>
+                    <span class="facility-feature">WiFi</span>
+                    <span class="facility-feature">Natural Light</span>
+                    <span class="facility-feature">Air Conditioning</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ceremony Space -->
+          <div class="facility-card">
+            <div class="facility-card-header">
+              <div class="facility-card-title">
+                <div class="facility-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#313131" stroke-width="1.5">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                </div>
+                Ceremony Space
+              </div>
+              <div class="facility-card-toggle">
+                <span class="facility-status">Available</span>
+                <div class="toggle active">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </div>
+            <div class="facility-card-body">
+              <!-- Space Image -->
+              <div class="facility-grid" style="margin-bottom: 20px;">
+                <div class="facility-field span-2">
+                  <div class="facility-field-label">Space Image</div>
+                  <div style="display: flex; gap: 16px; align-items: start;">
+                    <div style="width: 200px; height: 140px; border-radius: 8px; background: var(--secondary-bg); display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(184, 184, 184, 0.4);">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21,15 16,10 5,21"/>
+                      </svg>
+                    </div>
+                    <div style="flex: 1;">
+                      <button class="btn btn-secondary btn-small" style="margin-bottom: 8px;">Upload Image</button>
+                      <p style="font-size: 11px; color: var(--accent);">Recommended: 800×600px, JPG or PNG</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Featured Space</div>
+                  <div class="toggle-container">
+                    <div class="toggle">
+                      <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-label">No</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="facility-grid" style="margin-bottom: 20px;">
+                <div class="facility-field span-3">
+                  <div class="facility-field-label">Space Description</div>
+                  <textarea class="form-input form-textarea" rows="3" placeholder="Describe this space for your public listing...">A sacred outdoor space for fire ceremonies, cacao circles, and stargazing. Surrounded by native bush, the ceremony space holds up to 15 people seated on timber benches arranged in concentric circles. Perfect for opening and closing ceremonies.</textarea>
+                </div>
+              </div>
+
+              <div class="facility-grid">
+                <div class="facility-field">
+                  <div class="facility-field-label">Space Type</div>
+                  <select class="form-input form-select">
+                    <option>Sacred Circle</option>
+                    <option selected>Garden Sanctuary</option>
+                    <option>Dedicated Temple</option>
+                    <option>Multipurpose</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Setting</div>
+                  <select class="form-input form-select">
+                    <option>Indoor</option>
+                    <option selected>Outdoor</option>
+                    <option>Indoor/Outdoor</option>
+                  </select>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Capacity</div>
+                  <input type="number" class="form-input" value="15">
+                </div>
+                <div class="facility-field span-3">
+                  <div class="facility-field-label">Suitable For</div>
+                  <div class="facility-features">
+                    <span class="facility-feature">Cacao Ceremony</span>
+                    <span class="facility-feature">Sound Healing</span>
+                    <span class="facility-feature">Breathwork</span>
+                    <span class="facility-feature">Women's Circles</span>
+                    <span class="facility-feature">Opening/Closing Ceremonies</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Outdoor Practice Area -->
+          <div class="facility-card full-width">
+            <div class="facility-card-header">
+              <div class="facility-card-title">
+                <div class="facility-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#313131" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                  </svg>
+                </div>
+                Outdoor Practice Areas
+              </div>
+              <div class="facility-card-toggle">
+                <span class="facility-status">Available</span>
+                <div class="toggle active">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </div>
+            <div class="facility-card-body">
+              <!-- Space Image -->
+              <div class="facility-grid" style="margin-bottom: 20px;">
+                <div class="facility-field span-2">
+                  <div class="facility-field-label">Outdoor Areas Image</div>
+                  <div style="display: flex; gap: 16px; align-items: start;">
+                    <div style="width: 200px; height: 140px; border-radius: 8px; background: var(--secondary-bg); display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(184, 184, 184, 0.4);">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21,15 16,10 5,21"/>
+                      </svg>
+                    </div>
+                    <div style="flex: 1;">
+                      <button class="btn btn-secondary btn-small" style="margin-bottom: 8px;">Upload Image</button>
+                      <p style="font-size: 11px; color: var(--accent);">Recommended: 800×600px, JPG or PNG</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Featured Space</div>
+                  <div class="toggle-container">
+                    <div class="toggle">
+                      <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-label">No</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="facility-grid" style="margin-bottom: 20px;">
+                <div class="facility-field span-3">
+                  <div class="facility-field-label">Outdoor Areas Description</div>
+                  <textarea class="form-input form-textarea" rows="3" placeholder="Describe the outdoor practice areas...">The property offers multiple outdoor spaces for practice and gathering. A flat lawn area perfect for morning yoga, covered verandah for weather protection, fire pit for evening ceremonies, and walking trails through the working farm.</textarea>
+                </div>
+              </div>
+
+              <div class="facility-grid">
+                <div class="facility-field">
+                  <div class="facility-field-label">Lawn Area</div>
+                  <div class="toggle-container">
+                    <div class="toggle active">
+                      <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-label">Yes - Flat lawn for yoga/movement</span>
+                  </div>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Covered Outdoor Space</div>
+                  <div class="toggle-container">
+                    <div class="toggle active">
+                      <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-label">Yes - Verandah / Pavilion</span>
+                  </div>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Fire Pit / Circle</div>
+                  <div class="toggle-container">
+                    <div class="toggle active">
+                      <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-label">Yes</span>
+                  </div>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Walking Trails</div>
+                  <div class="toggle-container">
+                    <div class="toggle active">
+                      <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-label">Yes - Farm walking paths</span>
+                  </div>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Labyrinth</div>
+                  <div class="toggle-container">
+                    <div class="toggle">
+                      <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-label">No</span>
+                  </div>
+                </div>
+                <div class="facility-field">
+                  <div class="facility-field-label">Outdoor Seating Capacity</div>
+                  <input type="number" class="form-input" value="25">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Facility Button -->
+          <button class="add-facility-btn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Add Another Facility
+          </button>
+
+        </div>
+
+        <!-- Retreat Types Suitable For -->
+        <section class="form-section" style="margin-top: 24px;">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Retreat Types This Venue Supports</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="checkbox-grid">
+              <div class="checkbox-item checked">
+                <div class="checkbox-box">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checkbox-label">Yoga Retreats</span>
+              </div>
+              <div class="checkbox-item checked">
+                <div class="checkbox-box">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checkbox-label">Meditation Retreats</span>
+              </div>
+              <div class="checkbox-item checked">
+                <div class="checkbox-box">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checkbox-label">Nutrition / Detox</span>
+              </div>
+              <div class="checkbox-item checked">
+                <div class="checkbox-box">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checkbox-label">Women's Retreats</span>
+              </div>
+              <div class="checkbox-item checked">
+                <div class="checkbox-box">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checkbox-label">Corporate Wellness</span>
+              </div>
+              <div class="checkbox-item checked">
+                <div class="checkbox-box">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checkbox-label">Mindfulness</span>
+              </div>
+              <div class="checkbox-item checked">
+                <div class="checkbox-box">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checkbox-label">Sound Healing</span>
+              </div>
+              <div class="checkbox-item">
+                <div class="checkbox-box"></div>
+                <span class="checkbox-label">Silent Retreats</span>
+              </div>
+              <div class="checkbox-item checked">
+                <div class="checkbox-box">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checkbox-label">Breathwork</span>
+              </div>
+              <div class="checkbox-item">
+                <div class="checkbox-box"></div>
+                <span class="checkbox-label">Ayahuasca / Plant Medicine</span>
+              </div>
+              <div class="checkbox-item checked">
+                <div class="checkbox-box">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checkbox-label">Creative / Art</span>
+              </div>
+              <div class="checkbox-item checked">
+                <div class="checkbox-box">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="checkbox-label">Leadership / Coaching</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Additional Notes -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Additional Facility Notes</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="form-group">
+              <label class="form-label">Notes for Retreat Hosts</label>
+              <textarea class="form-input form-textarea" placeholder="Any additional information about facilities that retreat hosts should know...">The yoga shala opens onto the garden via bi-fold doors, creating a beautiful indoor-outdoor flow. Morning sun fills the space. The meditation room is located in a quiet wing of the house away from kitchen activity. Fire pit ceremonies are popular at sunset - BYO facilitator supplies. Walking trails loop through the working farm - approximately 2km total.</textarea>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>

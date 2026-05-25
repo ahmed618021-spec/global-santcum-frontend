@@ -1,0 +1,11 @@
+﻿source_file,target_route,platform,priority
+web-pages/tgs_home_v7.html,/web,web,P0
+web-pages/tgs_contact_v4.html,/web/contact,web,P0
+web-pages/tgs_list_your_venue_v4.html,/web/list-your-venue,web,P0
+web-pages/tgs_about_v4.html,/web/about,web,P1
+web-pages/tgs_how_it_works_v4 (2).html,/web/how-it-works,web,P1
+web-pages/tgs_venues_v3.html,/web/venues,web,P1
+web-pages/tgs_venues.html,/web/venues-legacy,web,P2
+web-pages/tgs_wellness_experiences_v6.html,/web/wellness-experiences,web,P1
+web-pages/tgs_wellness_edit_v2 (1).html,/web/the-wellness-edit,web,P1
+web-pages/tgs_legal_v5.html,/web/legal,web,P1

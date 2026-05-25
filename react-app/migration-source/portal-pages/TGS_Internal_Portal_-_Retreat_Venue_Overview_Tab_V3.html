@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TGS Internal Portal - Moraea Farm</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-bg: #FDFCF9;
+      --secondary-bg: #F7F5F1;
+      --accent: #B8B8B8;
+      --text: #313131;
+      --white: #FFFFFF;
+      --success: #4A7C59;
+      --warning: #D4A853;
+      --error: #C45C5C;
+      --info: #6B8EC9;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--primary-bg);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background-color: var(--text);
+      color: var(--white);
+      padding: 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 32px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .sidebar-subtitle {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .sidebar-nav {
+      padding: 24px 0;
+    }
+
+    .nav-section {
+      margin-bottom: 8px;
+    }
+
+    .nav-section-title {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 8px 24px;
+      margin-bottom: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background-color: rgba(255,255,255,0.05);
+      color: var(--white);
+    }
+
+    .nav-item.active {
+      background-color: rgba(255,255,255,0.1);
+      color: var(--white);
+      border-left: 3px solid var(--white);
+      padding-left: 21px;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 12px;
+      opacity: 0.7;
+    }
+
+    .nav-item.active .nav-icon {
+      opacity: 1;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background-color: var(--warning);
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      padding: 0;
+      background-color: var(--primary-bg);
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      padding: 16px 48px;
+      background-color: var(--secondary-bg);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--text);
+    }
+
+    .breadcrumb span {
+      color: var(--accent);
+    }
+
+    .breadcrumb .current {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Venue Header */
+    .venue-header {
+      padding: 32px 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .venue-header-left {
+      display: flex;
+      gap: 24px;
+    }
+
+    .venue-thumbnail {
+      width: 120px;
+      height: 90px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>');
+      background-size: 40px;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
+    .venue-header-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .venue-title-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .venue-title {
+      font-size: 28px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .venue-type-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .venue-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .venue-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .venue-meta-item svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .venue-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-indicator.active {
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .status-indicator.draft {
+      background-color: rgba(212, 168, 83, 0.15);
+      color: #9A7B3C;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+
+    .venue-header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--text);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background-color: #4a4a4a;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text);
+      border: 1px solid var(--accent);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--secondary-bg);
+    }
+
+    .btn-icon {
+      padding: 10px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon:hover {
+      background-color: #E8E5E0;
+    }
+
+    /* Venue Tabs */
+    .venue-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      overflow-x: auto;
+    }
+
+    .venue-tab {
+      padding: 16px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .venue-tab:hover {
+      color: var(--text);
+    }
+
+    .venue-tab.active {
+      color: var(--text);
+      border-bottom-color: var(--text);
+    }
+
+    /* Content Area */
+    .content-area {
+      padding: 32px 48px;
+    }
+
+    /* Form Sections */
+    .form-section {
+      background-color: var(--white);
+      border-radius: 12px;
+      border: 1px solid rgba(184, 184, 184, 0.2);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .form-section-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-section-title {
+      font-size: 18px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .form-section-body {
+      padding: 24px;
+    }
+
+    /* Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .form-grid.three-col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-group.full-width-3 {
+      grid-column: span 3;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-label .required {
+      color: var(--error);
+    }
+
+    .form-input {
+      padding: 12px 16px;
+      border: 1px solid rgba(184, 184, 184, 0.3);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background-color: var(--white);
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--text);
+    }
+
+    .form-input::placeholder {
+      color: var(--accent);
+    }
+
+    .form-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    .form-value {
+      font-size: 14px;
+      color: var(--text);
+      padding: 12px 0;
+    }
+
+    /* Toggle Switch */
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      background-color: var(--accent);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .toggle.active {
+      background-color: var(--success);
+    }
+
+    .toggle-knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--white);
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+    }
+
+    .toggle.active .toggle-knob {
+      transform: translateX(22px);
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* Multi-Select Tags */
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+      border: 1px solid rgba(184, 184, 184, 0.3);
+      border-radius: 8px;
+      min-height: 48px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background-color: var(--secondary-bg);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .tag-remove {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+
+    .tag-remove:hover {
+      opacity: 1;
+    }
+
+    /* Image Gallery */
+    .image-gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .image-item {
+      aspect-ratio: 4/3;
+      background-color: var(--secondary-bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .image-item:hover {
+      transform: scale(1.02);
+    }
+
+    .image-item.add-new {
+      border: 2px dashed var(--accent);
+      background-color: transparent;
+    }
+
+    .image-item.add-new:hover {
+      border-color: var(--text);
+      background-color: var(--secondary-bg);
+    }
+
+    .image-placeholder {
+      color: var(--accent);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .stat-item {
+      background-color: var(--secondary-bg);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+    }
+
+    /* User Menu */
+    .user-menu {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    /* Icons */
+    .icon {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-group.full-width {
+        grid-column: span 1;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .image-gallery {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">The Global Sanctum</div>
+        <div class="sidebar-subtitle">Internal Portal</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Content</div>
+          </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Insights</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            Analytics
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Team</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            Users
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+            </svg>
+            Settings
+          </a>
+        </div>
+      </nav>
+
+      <div class="user-menu">
+        <div class="user-avatar">K</div>
+        <div class="user-info">
+          <div class="user-name">Kate</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="#">Dashboard</a>
+        <span>/</span>
+        <a href="#">Venues</a>
+        <span>/</span>
+        <span class="current">Moraea Farm</span>
+      </nav>
+
+      <!-- Venue Header -->
+      <header class="venue-header">
+        <div class="venue-header-left">
+          <div class="venue-thumbnail"></div>
+          <div class="venue-header-info">
+            <div class="venue-title-row">
+              <h1 class="venue-title">Moraea Farm</h1>
+              <span class="venue-type-badge">Retreat Venue</span>
+            </div>
+            <div class="venue-meta">
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                Berry, NSW, Australia
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                </svg>
+                Max 12 guests
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Added Feb 8, 2026
+              </div>
+            </div>
+            <div class="venue-status">
+              <span class="status-indicator active">
+                <span class="status-dot"></span>
+                Active
+              </span>
+              <span style="color: var(--accent); font-size: 12px;">• Featured Plan</span>
+            </div>
+          </div>
+        </div>
+        <div class="venue-header-actions">
+          <button class="btn-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+          <button class="btn btn-secondary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="3,6 5,6 21,6"/>
+              <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+            </svg>
+            Delete
+          </button>
+          <button class="btn btn-primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+              <polyline points="17,21 17,13 7,13 7,21"/>
+              <polyline points="7,3 7,8 15,8"/>
+            </svg>
+            Save Changes
+          </button>
+        </div>
+      </header>
+
+      <!-- Venue Tabs -->
+      <nav class="venue-tabs">
+        <div class="venue-tab active">Overview</div>
+        <div class="venue-tab">Accommodation</div>
+        <div class="venue-tab">Amenities</div>
+        <div class="venue-tab">Wellness Services</div>
+        <div class="venue-tab">Wellness Facilities</div>
+        <div class="venue-tab">Retreat Facilities</div>
+        <div class="venue-tab">Pricing & Booking</div>
+        <div class="venue-tab">Media</div>
+        <div class="venue-tab">Internal</div>
+        <div class="venue-tab">Owner/Manager</div>
+        <div class="venue-tab">Bookings</div>
+      </nav>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Quick Stats -->
+        <div class="stats-grid" style="margin-bottom: 24px;">
+          <div class="stat-item">
+            <div class="stat-value">12</div>
+            <div class="stat-label">Max Capacity</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">5</div>
+            <div class="stat-label">Bedrooms</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$8,000</div>
+            <div class="stat-label">Per 2 Nights</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">4</div>
+            <div class="stat-label">Total Bookings</div>
+          </div>
+        </div>
+
+        <!-- Tab Images -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Tab Images</h3>
+              <p class="form-section-subtitle">Hero and feature images for the Overview tab on the public listing</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Overview Hero Image</label>
+                <div class="image-upload-placeholder" style="width: 100%; height: 160px; border: 2px dashed rgba(184, 184, 184, 0.4); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: var(--secondary-bg); cursor: pointer;">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21,15 16,10 5,21"/>
+                  </svg>
+                  <span style="font-size: 12px; color: var(--accent); margin-top: 8px;">Click to upload hero image</span>
+                  <span style="font-size: 11px; color: var(--accent);">Recommended: 1920 x 800px</span>
+                </div>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Large hero banner at the top of the Overview tab with the venue quote overlay.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Experience Feature Image</label>
+                <div class="image-upload-placeholder" style="width: 100%; height: 160px; border: 2px dashed rgba(184, 184, 184, 0.4); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: var(--secondary-bg); cursor: pointer;">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21,15 16,10 5,21"/>
+                  </svg>
+                  <span style="font-size: 12px; color: var(--accent); margin-top: 8px;">Click to upload feature image</span>
+                  <span style="font-size: 11px; color: var(--accent);">Recommended: 800 x 600px</span>
+                </div>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Image displayed alongside "The Experience" content block.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Basic Information Section -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Basic Information</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Venue Name <span class="required">*</span></label>
+                <input type="text" class="form-input" value="Moraea Farm">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Primary Venue Type <span class="required">*</span></label>
+                <select class="form-input form-select">
+                  <option selected>Retreat Venue</option>
+                  <option>Wellness Venue</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Retreat Venue Type</label>
+                <div class="tag-container">
+                  <span class="tag">Luxury Estate <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Working Farm <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Rural Retreat <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Hire Type</label>
+                <select class="form-input form-select">
+                  <option selected>Exclusive Use</option>
+                  <option>Shared Use</option>
+                  <option>Room Only</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Property Description <span class="required">*</span></label>
+                <textarea class="form-input form-textarea">Moraea Farm is a luxury rural estate nestled in the heart of Berry, NSW. This stunning working farm offers exclusive-use accommodation for up to 12 guests across 5 beautifully appointed king suites. With a commercial kitchen featuring premium Smeg appliances, heated pool, sauna, and hot-cold plunge facilities, it's the perfect setting for intimate nutrition retreats, wellness escapes, and transformational gatherings. Just 5 minutes from Berry village and 1hr 45min from Sydney Airport.</textarea>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Short Description</label>
+                <input type="text" class="form-input" value="Luxury working farm estate with commercial kitchen, wellness facilities, and 5 king suites.">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Editorial Content -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Editorial Content</h3>
+              <p class="form-section-subtitle">Storytelling content for the Overview tab - this is the editorial voice of the listing</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label class="form-label">Hero Quote</label>
+                <input type="text" class="form-input" value="A place where transformation happens as naturally as breathing" placeholder="A compelling one-line quote that captures the essence of this venue...">
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Displayed as an overlay on the Overview hero image. Keep it evocative and concise.</p>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Introduction Text</label>
+                <textarea class="form-input form-textarea" rows="5" placeholder="Editorial storytelling introduction (2-3 paragraphs)...">Moraea Farm is a sanctuary nestled in the rolling hills of Berry, where the art of slow living meets purposeful gathering. For those seeking a space that holds transformation, this working farm offers something rare—a place where the land itself seems to participate in the retreat experience.
+
+Our thoughtfully designed spaces—from a sun-drenched commercial kitchen to intimate wellness facilities—offer the versatility to support any retreat format. Here, the rhythm of farm life sets the pace, and every detail has been considered with intention.</textarea>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">This is the editorial introduction on the Overview tab. Write in an evocative, magazine-style voice. Different from Property Description which is more factual.</p>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Editor Note</label>
+                <textarea class="form-input form-textarea" rows="3" maxlength="600" placeholder="A 60-80 word TGS-written editorial note that appears in gold italic on the Premium-tier card...">A purpose-built sanctuary where every architectural choice serves the retreat experience. Two yoga shalas open to rice terraces; meals are grown on-site.</textarea>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Powers the Premium-tier card editor note (gold italic). Aim for 60–80 words, written in TGS editorial voice. Empty for Standard/Featured/Essentials tiers — only displays on Premium cards.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Editorial Curation (NEW v3 — drives the Editor's Pick / Trending / etc badge on cards) -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Editorial Curation</h3>
+              <p class="form-section-subtitle">Editorial badge controls — overrides standard tier display when active</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Editorial Feature</label>
+                <div class="toggle-container">
+                  <div class="toggle">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Show editorial badge on card</span>
+                </div>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">When on, displays the curated badge below — auto-removes after the date set in "Until".</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Editorial Feature Reason</label>
+                <select class="form-input form-select">
+                  <option>—</option>
+                  <option selected>Curator's Pick</option>
+                  <option>Seasonal</option>
+                  <option>Trend</option>
+                  <option>New</option>
+                  <option>Popular</option>
+                  <option>Press</option>
+                </select>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Internal categorisation for sorting and reporting on featured selections.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Editorial Feature Title</label>
+                <input type="text" class="form-input" maxlength="30" value="Editor's Pick" placeholder="Editor's Pick, Trending Now, Just Listed...">
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">The actual badge text shown on the card. Keep under 30 characters.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Editorial Feature Until</label>
+                <input type="date" class="form-input" value="2026-08-31">
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Auto-removes the badge after this date. Leave empty to show indefinitely (not recommended).</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Property Details -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Property Details</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid three-col">
+              <div class="form-group">
+                <label class="form-label">Property Size</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="number" class="form-input" value="25" style="width: 80px;">
+                  <select class="form-input form-select" style="width: 120px;">
+                    <option selected>Acres</option>
+                    <option>Hectares</option>
+                    <option>Square Metres</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Year Established</label>
+                <input type="number" class="form-input" value="2018" placeholder="e.g. 2018">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Architecture Style</label>
+                <select class="form-input form-select">
+                  <option>Select style...</option>
+                  <option selected>Contemporary Rural</option>
+                  <option>Traditional</option>
+                  <option>Minimalist</option>
+                  <option>Balinese</option>
+                  <option>Japanese</option>
+                  <option>Mediterranean</option>
+                  <option>Colonial</option>
+                  <option>Eco/Sustainable</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- The Experience -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">The Experience</h3>
+              <p class="form-section-subtitle">Featured content block on the Overview tab</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Experience Title</label>
+                <input type="text" class="form-input" value="A Space for Transformation" placeholder="e.g. A Space for Transformation">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Experience Subtitle</label>
+                <input type="text" class="form-input" value="The Experience" placeholder="e.g. The Experience">
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Experience Description</label>
+                <textarea class="form-input form-textarea" rows="4" placeholder="Describe what makes this venue's experience unique...">Every element of Moraea Farm has been considered with intention. The way morning light filters through the kitchen windows. The silence that settles over the land at dusk. The spaces designed for nourishing large groups with ease.
+
+We believe the best retreats happen when facilitators can focus entirely on their participants—not logistics. That's why we handle the details, so you can hold space.</textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Retreat Specialties -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Retreat Specialties</h3>
+              <p class="form-section-subtitle">What types of retreats is this venue best suited for?</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label class="form-label">Modalities & Practices</label>
+                <div class="tag-container">
+                  <span class="tag">Yoga <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Meditation <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Nutrition <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Wellness <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Cooking <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                </div>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">These tags appear on the Overview tab and are used for search filtering.</p>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Ideal Retreat Types</label>
+                <div class="tag-container">
+                  <span class="tag">Nutrition Retreats <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Wellness Escapes <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Corporate Wellness <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Small Group Gatherings <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Location Section -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Location</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid three-col">
+              <div class="form-group">
+                <label class="form-label">Street Address <span class="required">*</span></label>
+                <input type="text" class="form-input" value="123 Moraea Lane">
+              </div>
+              <div class="form-group">
+                <label class="form-label">City/Suburb <span class="required">*</span></label>
+                <input type="text" class="form-input" value="Berry">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Postcode/ZIP <span class="required">*</span></label>
+                <input type="text" class="form-input" value="2535">
+              </div>
+              <div class="form-group">
+                <label class="form-label">State/Province <span class="required">*</span></label>
+                <select class="form-input form-select">
+                  <option selected>New South Wales</option>
+                  <option>Queensland</option>
+                  <option>Victoria</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Country <span class="required">*</span></label>
+                <select class="form-input form-select">
+                  <option selected>Australia</option>
+                  <option>New Zealand</option>
+                  <option>Japan</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Climate</label>
+                <select class="form-input form-select">
+                  <option selected>Temperate</option>
+                  <option>Tropical</option>
+                  <option>Arid</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Location Type</label>
+                <div class="tag-container">
+                  <span class="tag">Rural <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Countryside <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">GPS Coordinates</label>
+                <input type="text" class="form-input" value="-34.7754, 150.6989" placeholder="-34.7754, 150.6989">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nearest Airport</label>
+                <input type="text" class="form-input" value="Sydney (SYD) - 130km / 1hr 45min">
+              </div>
+              <div class="form-group full-width-3">
+                <label class="form-label">Transport Access</label>
+                <div class="tag-container">
+                  <span class="tag">Car Recommended <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                  <span class="tag">Airport Transfers Available <svg class="tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Status & Listing Section -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Status & Listing</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Listing Status <span class="required">*</span></label>
+                <select class="form-input form-select">
+                  <option selected>Active</option>
+                  <option>Draft</option>
+                  <option>Inactive</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Property Status</label>
+                <select class="form-input form-select">
+                  <option selected>Operational</option>
+                  <option>Under Construction</option>
+                  <option>Seasonal</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subscription Level</label>
+                <select class="form-input form-select">
+                  <option>Essentials</option>
+                  <option>Standard</option>
+                  <option selected>Featured</option>
+                  <option>Premium</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Sanctum Vetted</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes - Verified by TGS</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Featured Listing</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Show in featured section</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Instant Booking Available</label>
+                <div class="toggle-container">
+                  <div class="toggle">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">No - Enquiry required</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card Display Settings (NEW v3 — controls how the listing renders on /venues cards) -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Card Display Settings</h3>
+              <p class="form-section-subtitle">How this listing presents on public venue cards across the site</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Tier Override</label>
+                <select class="form-input form-select">
+                  <option selected>None</option>
+                  <option>Force Featured</option>
+                  <option>Force Premium</option>
+                </select>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Editorial override of the auto-tier from Subscription Level. Use sparingly — for major press moments, seasonal campaigns, or Founding Partner exclusives.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Highlight Amenities <span style="font-size: 11px; font-weight: 400; color: var(--accent); margin-left: 4px;">(top 5 only)</span></label>
+                <select class="form-input form-select" multiple style="height: 110px;">
+                  <option selected>Yoga Shala ×2</option>
+                  <option selected>Meditation Pavilion</option>
+                  <option selected>Farm-to-Table</option>
+                  <option selected>Ceremony Space</option>
+                  <option selected>Exclusive Use</option>
+                  <option>Ocean Access</option>
+                  <option>Heated Pool</option>
+                  <option>Sauna (Wood-Fired)</option>
+                  <option>Cold Plunge</option>
+                  <option>Hot Tub / Outdoor Bath</option>
+                  <option>Treatment Rooms</option>
+                  <option>Wellness Spa</option>
+                  <option>Private Chef</option>
+                  <option>On-Site Restaurant</option>
+                  <option>Mountain Views</option>
+                  <option>Forest Setting</option>
+                  <option>Hammam / Steam Room</option>
+                  <option>Hiking Trails</option>
+                  <option>Library</option>
+                  <option>Working Space</option>
+                  <option>EV Charging</option>
+                </select>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Powers the chip tags on Premium-tier cards. Choose exactly 5 — the most distinctive amenities for this venue.</p>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Featured Highlights</label>
+                <textarea class="form-input form-textarea" rows="3" maxlength="200" placeholder="Two or three short lines summarising what makes this venue distinctive...">Working farm setting · Two yoga shalas · Farm-to-table dining</textarea>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Powers the Featured-tier card. 2–3 short lines, separated by " · ". Distinct from Editor Note (which is Premium-only).</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reviews & Performance (NEW v3 — read-only aggregates from Reviews table) -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Reviews &amp; Performance</h3>
+              <p class="form-section-subtitle">Computed from approved, published reviews — auto-updates as new reviews come in</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Review Count <span style="font-size: 10px; font-weight: 400; color: var(--accent); margin-left: 4px;">(auto)</span></label>
+                <input type="text" class="form-input" value="142" readonly style="background: #FAF8F4; color: #7A644F; cursor: default; font-weight: 600;">
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Counts Reviews where Is Published = TRUE AND Approval Status = Approved.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Average Rating <span style="font-size: 10px; font-weight: 400; color: var(--accent); margin-left: 4px;">(auto)</span></label>
+                <div class="form-input" style="background: #FAF8F4; color: #7A644F; cursor: default; display: flex; align-items: center; gap: 8px;">
+                  <span style="color: #C4A265; font-size: 16px;">★ ★ ★ ★ ★</span>
+                  <strong style="font-size: 16px;">4.9</strong>
+                  <span style="font-size: 12px; color: var(--accent);">/ 5.0</span>
+                </div>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">AVERAGE of Reviews #8 Overall Rating with the same conditions. Blank if no reviews yet.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Venue Images Preview -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Venue Images</h3>
+            <span style="font-size: 13px; color: var(--accent);">Go to Media tab to manage all images</span>
+          </div>
+          <div class="form-section-body">
+            <div class="image-gallery">
+              <div class="image-item">
+                <svg class="image-placeholder" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <path d="M21 15l-5-5L5 21"/>
+                </svg>
+              </div>
+              <div class="image-item">
+                <svg class="image-placeholder" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <path d="M21 15l-5-5L5 21"/>
+                </svg>
+              </div>
+              <div class="image-item">
+                <svg class="image-placeholder" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <path d="M21 15l-5-5L5 21"/>
+                </svg>
+              </div>
+              <div class="image-item add-new">
+                <svg class="image-placeholder" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

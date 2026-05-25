@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TGS Internal Portal - Moraea Farm - Pricing & Booking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-bg: #FDFCF9;
+      --secondary-bg: #F7F5F1;
+      --accent: #B8B8B8;
+      --text: #313131;
+      --white: #FFFFFF;
+      --success: #4A7C59;
+      --warning: #D4A853;
+      --error: #C45C5C;
+      --info: #6B8EC9;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--primary-bg);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background-color: var(--text);
+      color: var(--white);
+      padding: 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 32px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .sidebar-subtitle {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .sidebar-nav {
+      padding: 24px 0;
+    }
+
+    .nav-section {
+      margin-bottom: 8px;
+    }
+
+    .nav-section-title {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 8px 24px;
+      margin-bottom: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background-color: rgba(255,255,255,0.05);
+      color: var(--white);
+    }
+
+    .nav-item.active {
+      background-color: rgba(255,255,255,0.1);
+      color: var(--white);
+      border-left: 3px solid var(--white);
+      padding-left: 21px;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 12px;
+      opacity: 0.7;
+    }
+
+    .nav-item.active .nav-icon {
+      opacity: 1;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background-color: var(--warning);
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      padding: 0;
+      background-color: var(--primary-bg);
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      padding: 16px 48px;
+      background-color: var(--secondary-bg);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--text);
+    }
+
+    .breadcrumb span {
+      color: var(--accent);
+    }
+
+    .breadcrumb .current {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Venue Header */
+    .venue-header {
+      padding: 32px 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .venue-header-left {
+      display: flex;
+      gap: 24px;
+    }
+
+    .venue-thumbnail {
+      width: 120px;
+      height: 90px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>');
+      background-size: 40px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .venue-header-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .venue-title-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .venue-title {
+      font-size: 28px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .venue-type-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .venue-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .venue-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .venue-meta-item svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .venue-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-indicator.active {
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+
+    .venue-header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--text);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background-color: #4a4a4a;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text);
+      border: 1px solid var(--accent);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--secondary-bg);
+    }
+
+    .btn-icon {
+      padding: 10px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon:hover {
+      background-color: #E8E5E0;
+    }
+
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 12px;
+      border-radius: 16px;
+    }
+
+    /* Venue Tabs */
+    .venue-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      overflow-x: auto;
+    }
+
+    .venue-tab {
+      padding: 16px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .venue-tab:hover {
+      color: var(--text);
+    }
+
+    .venue-tab.active {
+      color: var(--text);
+      border-bottom-color: var(--text);
+    }
+
+    /* Content Area */
+    .content-area {
+      padding: 32px 48px;
+    }
+
+    /* Form Sections */
+    .form-section {
+      background-color: var(--white);
+      border-radius: 12px;
+      border: 1px solid rgba(184, 184, 184, 0.2);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .form-section-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-section-title {
+      font-size: 18px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .form-section-subtitle {
+      font-size: 12px;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .form-section-body {
+      padding: 24px;
+    }
+
+    /* Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .form-grid.three-col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .form-grid.four-col {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-group.full-width-3 {
+      grid-column: span 3;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-label .required {
+      color: var(--error);
+    }
+
+    .form-input {
+      padding: 12px 16px;
+      border: 1px solid rgba(184, 184, 184, 0.3);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background-color: var(--white);
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--text);
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    /* Toggle Switch */
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      background-color: var(--accent);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .toggle.active {
+      background-color: var(--success);
+    }
+
+    .toggle-knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--white);
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+    }
+
+    .toggle.active .toggle-knob {
+      transform: translateX(22px);
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* Price Input */
+    .price-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .price-currency {
+      position: absolute;
+      left: 16px;
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .price-input {
+      padding-left: 36px;
+    }
+
+    .price-suffix {
+      position: absolute;
+      right: 16px;
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    /* Pricing Cards */
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .pricing-card {
+      background-color: var(--secondary-bg);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--success);
+      background-color: rgba(75, 124, 89, 0.05);
+    }
+
+    .pricing-card-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .pricing-card.featured .pricing-card-label {
+      color: var(--success);
+    }
+
+    .pricing-card-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .pricing-card-period {
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    /* Season Pricing Table */
+    .season-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .season-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      font-weight: 500;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+    }
+
+    .season-table td {
+      padding: 16px;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.1);
+      vertical-align: middle;
+    }
+
+    .season-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .season-name {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .season-dates {
+      font-size: 12px;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    .season-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .season-badge.peak {
+      background-color: rgba(196, 92, 92, 0.1);
+      color: var(--error);
+    }
+
+    .season-badge.high {
+      background-color: rgba(212, 168, 83, 0.1);
+      color: var(--warning);
+    }
+
+    .season-badge.standard {
+      background-color: var(--secondary-bg);
+      color: var(--text);
+    }
+
+    .season-badge.low {
+      background-color: rgba(107, 142, 201, 0.1);
+      color: var(--info);
+    }
+
+    .season-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .season-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    /* Policy Cards */
+    .policy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .policy-card {
+      background-color: var(--secondary-bg);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .policy-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .policy-icon {
+      width: 40px;
+      height: 40px;
+      background-color: var(--white);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .policy-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .policy-content {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .policy-highlight {
+      display: inline-block;
+      padding: 4px 10px;
+      background-color: var(--white);
+      border-radius: 8px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    /* Add Button */
+    .add-row-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px;
+      border: 2px dashed var(--accent);
+      border-radius: 8px;
+      background-color: transparent;
+      color: var(--accent);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    .add-row-btn:hover {
+      border-color: var(--text);
+      color: var(--text);
+      background-color: var(--secondary-bg);
+    }
+
+    /* User Menu */
+    .user-menu {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    /* Icons */
+    .icon {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .icon-small {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Included Items List */
+    .included-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .included-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background-color: var(--secondary-bg);
+      border-radius: 8px;
+    }
+
+    .included-check {
+      width: 20px;
+      height: 20px;
+      background-color: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .included-label {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* Responsive */
+    @media (max-width: 1400px) {
+      .pricing-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .policy-grid {
+        grid-template-columns: 1fr;
+      }
+      .included-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .pricing-cards {
+        grid-template-columns: 1fr;
+      }
+      .form-grid.three-col,
+      .form-grid.four-col {
+        grid-template-columns: 1fr;
+      }
+      .included-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">The Global Sanctum</div>
+        <div class="sidebar-subtitle">Internal Portal</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Content</div>
+          </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Insights</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            Analytics
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Team</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            Users
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+            </svg>
+            Settings
+          </a>
+        </div>
+      </nav>
+
+      <div class="user-menu">
+        <div class="user-avatar">K</div>
+        <div class="user-info">
+          <div class="user-name">Kate</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="#">Dashboard</a>
+        <span>/</span>
+        <a href="#">Venues</a>
+        <span>/</span>
+        <span class="current">Moraea Farm</span>
+      </nav>
+
+      <!-- Venue Header -->
+      <header class="venue-header">
+        <div class="venue-header-left">
+          <div class="venue-thumbnail"></div>
+          <div class="venue-header-info">
+            <div class="venue-title-row">
+              <h1 class="venue-title">Moraea Farm</h1>
+              <span class="venue-type-badge">Retreat Venue</span>
+            </div>
+            <div class="venue-meta">
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                Berry, NSW, Australia
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                </svg>
+                Max 12 guests
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Added Feb 8, 2026
+              </div>
+            </div>
+            <div class="venue-status">
+              <span class="status-indicator active">
+                <span class="status-dot"></span>
+                Active
+              </span>
+              <span style="color: var(--accent); font-size: 12px;">• Featured Plan</span>
+            </div>
+          </div>
+        </div>
+        <div class="venue-header-actions">
+          <button class="btn-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+          <button class="btn btn-secondary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="3,6 5,6 21,6"/>
+              <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+            </svg>
+            Delete
+          </button>
+          <button class="btn btn-primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+              <polyline points="17,21 17,13 7,13 7,21"/>
+              <polyline points="7,3 7,8 15,8"/>
+            </svg>
+            Save Changes
+          </button>
+        </div>
+      </header>
+
+      <!-- Venue Tabs -->
+      <nav class="venue-tabs">
+        <div class="venue-tab">Overview</div>
+        <div class="venue-tab">Accommodation</div>
+        <div class="venue-tab">Amenities</div>
+        <div class="venue-tab">Wellness Services</div>
+        <div class="venue-tab">Wellness Facilities</div>
+        <div class="venue-tab">Retreat Facilities</div>
+        <div class="venue-tab active">Pricing & Booking</div>
+        <div class="venue-tab">Media</div>
+        <div class="venue-tab">Internal</div>
+        <div class="venue-tab">Owner/Manager</div>
+        <div class="venue-tab">Bookings</div>
+      </nav>
+
+      <!-- Content Area -->
+      <div class="content-area">
+
+        <!-- Tab Images -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Tab Images</h3>
+              <p class="form-section-subtitle">Hero image displayed on the Booking tab of your public listing</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Booking Tab Hero Image</label>
+                <div class="image-upload-area" style="border: 2px dashed rgba(184, 184, 184, 0.4); border-radius: 12px; padding: 40px; text-align: center; background-color: var(--secondary-bg);">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5" style="margin-bottom: 16px;">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21,15 16,10 5,21"/>
+                  </svg>
+                  <p style="color: var(--text); font-weight: 500; margin-bottom: 4px;">Click to upload or drag and drop</p>
+                  <p style="color: var(--accent); font-size: 12px;">Recommended: 1920×600px, JPG or PNG</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Booking Tab Content -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Booking Tab Content</h3>
+              <p class="form-section-subtitle">Intro text displayed on the Booking tab of your public listing</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Section Label</label>
+                <input type="text" class="form-input" value="Booking & Terms" placeholder="e.g. Booking & Terms, Rates & Availability">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Section Title</label>
+                <input type="text" class="form-input" value="Plan Your Retreat" placeholder="e.g. Plan Your Retreat, Reserve Your Experience">
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Section Subtitle</label>
+                <input type="text" class="form-input" value="Everything you need to know about rates, availability, and the booking process." placeholder="Brief intro text for the booking section...">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pricing Overview Cards -->
+        <div class="pricing-cards">
+          <div class="pricing-card">
+            <div class="pricing-card-label">Starting From</div>
+            <div class="pricing-card-value">$4,000</div>
+            <div class="pricing-card-period">per night (low season)</div>
+          </div>
+          <div class="pricing-card featured">
+            <div class="pricing-card-label">Standard Rate</div>
+            <div class="pricing-card-value">$4,500</div>
+            <div class="pricing-card-period">per night</div>
+          </div>
+          <div class="pricing-card">
+            <div class="pricing-card-label">Peak Season</div>
+            <div class="pricing-card-value">$5,500</div>
+            <div class="pricing-card-period">per night</div>
+          </div>
+        </div>
+
+        <!-- Base Pricing -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Base Pricing</h3>
+              <p class="form-section-subtitle">Primary venue hire rates</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid three-col">
+              <div class="form-group">
+                <label class="form-label">Currency <span class="required">*</span></label>
+                <select class="form-input form-select">
+                  <option selected>AUD - Australian Dollar</option>
+                  <option>USD - US Dollar</option>
+                  <option>EUR - Euro</option>
+                  <option>GBP - British Pound</option>
+                  <option>NZD - New Zealand Dollar</option>
+                  <option>JPY - Japanese Yen</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Pricing Model <span class="required">*</span></label>
+                <select class="form-input form-select">
+                  <option selected>Per Night (Whole Property)</option>
+                  <option>Per Person Per Night</option>
+                  <option>Per Room Per Night</option>
+                  <option>Flat Rate (Multi-day Package)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Price Range Category</label>
+                <select class="form-input form-select">
+                  <option>Budget</option>
+                  <option>Mid-Range</option>
+                  <option selected>Upscale</option>
+                  <option>Luxury</option>
+                  <option>Ultra-Luxury</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Base Nightly Rate <span class="required">*</span></label>
+                <div class="price-input-wrapper">
+                  <span class="price-currency">$</span>
+                  <input type="text" class="form-input price-input" value="4,500">
+                  <span class="price-suffix">/ night</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Weekend Rate</label>
+                <div class="price-input-wrapper">
+                  <span class="price-currency">$</span>
+                  <input type="text" class="form-input price-input" value="5,000">
+                  <span class="price-suffix">/ night</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Weekly Rate (7+ nights)</label>
+                <div class="price-input-wrapper">
+                  <span class="price-currency">$</span>
+                  <input type="text" class="form-input price-input" value="28,000">
+                  <span class="price-suffix">/ week</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Cleaning Fee</label>
+                <div class="price-input-wrapper">
+                  <span class="price-currency">$</span>
+                  <input type="text" class="form-input price-input" value="500">
+                  <span class="price-suffix">one-time</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Group Discounts -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Group Discounts</h3>
+              <p class="form-section-subtitle">Volume discounts for larger or longer bookings</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid three-col">
+              <div class="form-group">
+                <label class="form-label">Group Discounts Available</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Discount Percentage</label>
+                <div class="price-input-wrapper">
+                  <input type="text" class="form-input price-input" value="10" style="text-align: right;">
+                  <span class="price-suffix">%</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Minimum Nights for Discount</label>
+                <select class="form-input form-select">
+                  <option>3 nights</option>
+                  <option>5 nights</option>
+                  <option selected>7 nights</option>
+                  <option>10 nights</option>
+                  <option>14 nights</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Group Discount Details (Optional)</label>
+                <textarea class="form-input form-textarea" rows="2" placeholder="Describe any additional discount structures...">10% discount for bookings of 7+ nights. 15% discount for bookings of 14+ nights. Contact us for extended stay pricing.</textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Seasonal Pricing -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Seasonal Pricing</h3>
+              <p class="form-section-subtitle">Rate variations by season</p>
+            </div>
+            <button class="btn btn-secondary btn-small">
+              <svg class="icon icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add Season
+            </button>
+          </div>
+          <div class="form-section-body">
+            <table class="season-table">
+              <thead>
+                <tr>
+                  <th>Season</th>
+                  <th>Date Range</th>
+                  <th>Type</th>
+                  <th>Nightly Rate</th>
+                  <th>Min. Stay</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="season-name">Peak Season</div>
+                    <div class="season-dates">Christmas / New Year</div>
+                  </td>
+                  <td>Dec 20 - Jan 10</td>
+                  <td><span class="season-badge peak">Peak</span></td>
+                  <td><span class="season-price">$5,500</span></td>
+                  <td>3 nights</td>
+                  <td class="season-actions">
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="season-name">High Season</div>
+                    <div class="season-dates">School Holidays</div>
+                  </td>
+                  <td>Apr 5 - Apr 25, Jul 1 - Jul 21, Sep 20 - Oct 10</td>
+                  <td><span class="season-badge high">High</span></td>
+                  <td><span class="season-price">$5,000</span></td>
+                  <td>2 nights</td>
+                  <td class="season-actions">
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="season-name">Standard Season</div>
+                    <div class="season-dates">Default Rate</div>
+                  </td>
+                  <td>All other dates</td>
+                  <td><span class="season-badge standard">Standard</span></td>
+                  <td><span class="season-price">$4,500</span></td>
+                  <td>2 nights</td>
+                  <td class="season-actions">
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="season-name">Low Season</div>
+                    <div class="season-dates">Winter Midweek</div>
+                  </td>
+                  <td>Jun 1 - Aug 31 (Mon-Thu only)</td>
+                  <td><span class="season-badge low">Low</span></td>
+                  <td><span class="season-price">$4,000</span></td>
+                  <td>2 nights</td>
+                  <td class="season-actions">
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="form-grid three-col" style="margin-top: 24px;">
+              <div class="form-group">
+                <label class="form-label">Holiday Surcharge</label>
+                <div class="price-input-wrapper">
+                  <input type="text" class="form-input price-input" value="20" style="text-align: right;">
+                  <span class="price-suffix">%</span>
+                </div>
+                <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Additional charge for public holidays (Easter, Christmas Day, etc.)</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Booking Rules -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Booking Rules</h3>
+              <p class="form-section-subtitle">Minimum stays, lead times, and booking windows</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid four-col">
+              <div class="form-group">
+                <label class="form-label">Minimum Stay (Default)</label>
+                <select class="form-input form-select">
+                  <option>1 night</option>
+                  <option selected>2 nights</option>
+                  <option>3 nights</option>
+                  <option>4 nights</option>
+                  <option>5 nights</option>
+                  <option>7 nights</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Minimum Stay (Weekends)</label>
+                <select class="form-input form-select">
+                  <option>1 night</option>
+                  <option selected>2 nights</option>
+                  <option>3 nights</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Maximum Stay</label>
+                <select class="form-input form-select">
+                  <option>7 nights</option>
+                  <option>14 nights</option>
+                  <option>21 nights</option>
+                  <option selected>28 nights</option>
+                  <option>No limit</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Advance Booking Required</label>
+                <select class="form-input form-select">
+                  <option>None</option>
+                  <option>24 hours</option>
+                  <option>48 hours</option>
+                  <option selected>7 days</option>
+                  <option>14 days</option>
+                  <option>30 days</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Booking Window Opens</label>
+                <select class="form-input form-select">
+                  <option>3 months ahead</option>
+                  <option>6 months ahead</option>
+                  <option selected>12 months ahead</option>
+                  <option>18 months ahead</option>
+                  <option>24 months ahead</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Check-in Day Restrictions</label>
+                <select class="form-input form-select">
+                  <option selected>Any day</option>
+                  <option>Friday/Saturday only</option>
+                  <option>Weekdays only</option>
+                  <option>Monday only</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Check-in Time</label>
+                <input type="text" class="form-input" value="3:00 PM">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Check-out Time</label>
+                <input type="text" class="form-input" value="10:00 AM">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Deposit & Payment -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Deposit & Payment</h3>
+              <p class="form-section-subtitle">Payment terms and security deposits</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid three-col">
+              <div class="form-group">
+                <label class="form-label">Booking Deposit</label>
+                <select class="form-input form-select">
+                  <option>No deposit required</option>
+                  <option>25% of total</option>
+                  <option selected>50% of total</option>
+                  <option>Full payment</option>
+                  <option>Fixed amount</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Deposit Due</label>
+                <select class="form-input form-select">
+                  <option selected>At time of booking</option>
+                  <option>Within 48 hours</option>
+                  <option>Within 7 days</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Balance Due</label>
+                <select class="form-input form-select">
+                  <option>At check-in</option>
+                  <option>7 days before arrival</option>
+                  <option selected>14 days before arrival</option>
+                  <option>30 days before arrival</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Security Bond</label>
+                <div class="price-input-wrapper">
+                  <span class="price-currency">$</span>
+                  <input type="text" class="form-input price-input" value="2,000">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Bond Collection Method</label>
+                <select class="form-input form-select">
+                  <option>Pre-authorisation only</option>
+                  <option selected>Held & refunded post-stay</option>
+                  <option>Insurance-backed (no charge)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Accepted Payment Methods</label>
+                <select class="form-input form-select">
+                  <option selected>Credit Card, Bank Transfer</option>
+                  <option>Credit Card only</option>
+                  <option>Bank Transfer only</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Cancellation Policy -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Cancellation Policy</h3>
+              <p class="form-section-subtitle">Refund terms for cancelled bookings</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Cancellation Policy Type</label>
+                <select class="form-input form-select">
+                  <option>Flexible (Full refund 24hrs before)</option>
+                  <option>Moderate (Full refund 7 days before)</option>
+                  <option selected>Firm (Full refund 30 days before)</option>
+                  <option>Strict (50% refund 30 days before)</option>
+                  <option>Super Strict (No refunds)</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Grace Period</label>
+                <select class="form-input form-select">
+                  <option>None</option>
+                  <option selected>48 hours after booking</option>
+                  <option>7 days after booking</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group full-width" style="margin-top: 16px; margin-bottom: 24px;">
+              <label class="form-label">Refund Policy Details</label>
+              <textarea class="form-input form-textarea" rows="3" placeholder="Provide full refund policy details...">Cancellations must be submitted in writing via email. Refunds are processed within 14 business days. Service fees are non-refundable. For cancellations due to extenuating circumstances, please contact us directly to discuss options.</textarea>
+              <p class="form-hint" style="font-size: 11px; font-style: italic; color: var(--accent); margin-top: 6px;">Detailed refund terms displayed on your booking page</p>
+            </div>
+
+            <div class="policy-grid" style="margin-top: 24px;">
+              <div class="policy-card">
+                <div class="policy-card-header">
+                  <div class="policy-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A7C59" stroke-width="1.5">
+                      <polyline points="20,6 9,17 4,12"/>
+                    </svg>
+                  </div>
+                  <div class="policy-title">Full Refund</div>
+                </div>
+                <div class="policy-content">
+                  Cancel more than <strong>30 days</strong> before check-in for a full refund minus service fees.
+                  <div class="policy-highlight">100% refund</div>
+                </div>
+              </div>
+
+              <div class="policy-card">
+                <div class="policy-card-header">
+                  <div class="policy-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A853" stroke-width="1.5">
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="12" y1="8" x2="12" y2="12"/>
+                      <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                  </div>
+                  <div class="policy-title">Partial Refund</div>
+                </div>
+                <div class="policy-content">
+                  Cancel <strong>14-30 days</strong> before check-in to receive 50% of the booking total.
+                  <div class="policy-highlight">50% refund</div>
+                </div>
+              </div>
+
+              <div class="policy-card">
+                <div class="policy-card-header">
+                  <div class="policy-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C45C5C" stroke-width="1.5">
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="15" y1="9" x2="9" y2="15"/>
+                      <line x1="9" y1="9" x2="15" y2="15"/>
+                    </svg>
+                  </div>
+                  <div class="policy-title">No Refund</div>
+                </div>
+                <div class="policy-content">
+                  Cancellations within <strong>14 days</strong> of check-in are non-refundable.
+                  <div class="policy-highlight">0% refund</div>
+                </div>
+              </div>
+
+              <div class="policy-card">
+                <div class="policy-card-header">
+                  <div class="policy-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B8EC9" stroke-width="1.5">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                  </div>
+                  <div class="policy-title">Extenuating Circumstances</div>
+                </div>
+                <div class="policy-content">
+                  Refunds may be available for documented emergencies, natural disasters, or government restrictions.
+                  <div class="policy-highlight">Case by case</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- What's Included -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">What's Included in Venue Hire</h3>
+              <p class="form-section-subtitle">Items and services included in the base rate</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="included-list">
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">Exclusive use of property</span>
+              </div>
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">All bedrooms & suites</span>
+              </div>
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">Yoga shala & meditation room</span>
+              </div>
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">Swimming pool & spa</span>
+              </div>
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">Sauna & cold plunge</span>
+              </div>
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">Treatment rooms</span>
+              </div>
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">Commercial kitchen</span>
+              </div>
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">Yoga equipment (mats, props)</span>
+              </div>
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">Linens & towels</span>
+              </div>
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">WiFi & AV equipment</span>
+              </div>
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">Fire pit & outdoor areas</span>
+              </div>
+              <div class="included-item">
+                <div class="included-check">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="included-label">Parking for 15 vehicles</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Additional Fees / Add-ons -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Additional Fees & Add-ons</h3>
+              <p class="form-section-subtitle">Optional extras and services at additional cost</p>
+            </div>
+            <button class="btn btn-secondary btn-small">
+              <svg class="icon icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add Fee
+            </button>
+          </div>
+          <div class="form-section-body">
+            <table class="season-table">
+              <thead>
+                <tr>
+                  <th>Item / Service</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Per</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Catering - Chef Service</strong></td>
+                  <td>Private chef for retreat meals</td>
+                  <td><span class="season-price">$800</span></td>
+                  <td>per day</td>
+                  <td class="season-actions">
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Catering - Meal Packages</strong></td>
+                  <td>Pre-prepared organic meals delivered</td>
+                  <td><span class="season-price">$120</span></td>
+                  <td>per person/day</td>
+                  <td class="season-actions">
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Airport Transfers</strong></td>
+                  <td>Sydney Airport pickup/dropoff (up to 6 pax)</td>
+                  <td><span class="season-price">$400</span></td>
+                  <td>per trip</td>
+                  <td class="season-actions">
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Early Check-in</strong></td>
+                  <td>Check-in from 12pm (subject to availability)</td>
+                  <td><span class="season-price">$500</span></td>
+                  <td>one-time</td>
+                  <td class="season-actions">
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Late Check-out</strong></td>
+                  <td>Check-out by 2pm (subject to availability)</td>
+                  <td><span class="season-price">$500</span></td>
+                  <td>one-time</td>
+                  <td class="season-actions">
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Mid-stay Housekeeping</strong></td>
+                  <td>Full property clean for stays 5+ nights</td>
+                  <td><span class="season-price">$350</span></td>
+                  <td>per clean</td>
+                  <td class="season-actions">
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="add-row-btn">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add Another Fee or Add-on
+            </button>
+          </div>
+        </section>
+
+        <!-- Booking Settings -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Booking Settings</h3>
+              <p class="form-section-subtitle">Instant booking and enquiry preferences</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid three-col">
+              <div class="form-group">
+                <label class="form-label">Instant Book Enabled</label>
+                <div class="toggle-container">
+                  <div class="toggle">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">No - Enquiry required</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Requires Owner Approval</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes - Review each enquiry</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Require Retreat Details</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Auto-confirm Repeat Guests</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Response Time Target</label>
+                <select class="form-input form-select">
+                  <option>Within 1 hour</option>
+                  <option selected>Within 24 hours</option>
+                  <option>Within 48 hours</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Enquiry Expiry</label>
+                <select class="form-input form-select">
+                  <option>24 hours</option>
+                  <option selected>48 hours</option>
+                  <option>72 hours</option>
+                  <option>7 days</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Calendar Sync</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Enabled - iCal</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Booking FAQ -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Booking FAQ</h3>
+              <p class="form-section-subtitle">Common questions displayed on the Booking tab of your public listing</p>
+            </div>
+            <button class="btn btn-secondary btn-small">
+              <svg class="icon icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add FAQ
+            </button>
+          </div>
+          <div class="form-section-body">
+            <div class="faq-list" style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="faq-item" style="background-color: var(--secondary-bg); border-radius: 8px; padding: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: start; gap: 16px;">
+                  <div style="flex: 1;">
+                    <label class="form-label" style="margin-bottom: 8px;">Question</label>
+                    <input type="text" class="form-input" value="Can I book for fewer than 24 people?">
+                  </div>
+                  <button class="btn btn-secondary btn-small" style="margin-top: 24px;">Remove</button>
+                </div>
+                <div style="margin-top: 12px;">
+                  <label class="form-label" style="margin-bottom: 8px;">Answer</label>
+                  <textarea class="form-input form-textarea" rows="2">Yes, absolutely. Our pricing is based on exclusive use of the property rather than per-person rates. Whether you bring 10 or 24 guests, the nightly rate remains the same.</textarea>
+                </div>
+              </div>
+              <div class="faq-item" style="background-color: var(--secondary-bg); border-radius: 8px; padding: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: start; gap: 16px;">
+                  <div style="flex: 1;">
+                    <label class="form-label" style="margin-bottom: 8px;">Question</label>
+                    <input type="text" class="form-input" value="What if my guest numbers change?">
+                  </div>
+                  <button class="btn btn-secondary btn-small" style="margin-top: 24px;">Remove</button>
+                </div>
+                <div style="margin-top: 12px;">
+                  <label class="form-label" style="margin-bottom: 8px;">Answer</label>
+                  <textarea class="form-input form-textarea" rows="2">We understand retreat numbers can fluctuate. Final guest counts are confirmed 14 days before arrival.</textarea>
+                </div>
+              </div>
+              <div class="faq-item" style="background-color: var(--secondary-bg); border-radius: 8px; padding: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: start; gap: 16px;">
+                  <div style="flex: 1;">
+                    <label class="form-label" style="margin-bottom: 8px;">Question</label>
+                    <input type="text" class="form-input" value="Do you provide catering?">
+                  </div>
+                  <button class="btn btn-secondary btn-small" style="margin-top: 24px;">Remove</button>
+                </div>
+                <div style="margin-top: 12px;">
+                  <label class="form-label" style="margin-bottom: 8px;">Answer</label>
+                  <textarea class="form-input form-textarea" rows="2">Catering is not included but can be arranged through our preferred caterers or you're welcome to bring your own chef.</textarea>
+                </div>
+              </div>
+            </div>
+            <button class="add-btn" style="margin-top: 16px;">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add Another FAQ
+            </button>
+          </div>
+        </section>
+
+        <!-- Pricing Notes -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Pricing Notes</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="form-group">
+              <label class="form-label">Internal Notes (Not visible to guests)</label>
+              <textarea class="form-input form-textarea" placeholder="Any additional pricing notes...">Owner prefers minimum 2-night bookings but will consider single nights midweek in low season at $5,000. Negotiable for repeat bookers or longer stays (10+ nights). Wedding/event pricing is different - refer to owner directly.</textarea>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>

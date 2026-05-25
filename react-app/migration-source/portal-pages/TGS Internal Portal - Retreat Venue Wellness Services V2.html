@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TGS Internal Portal - Moraea Farm - Wellness Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-bg: #FDFCF9;
+      --secondary-bg: #F7F5F1;
+      --accent: #B8B8B8;
+      --text: #313131;
+      --white: #FFFFFF;
+      --success: #4A7C59;
+      --warning: #D4A853;
+      --error: #C45C5C;
+      --info: #6B8EC9;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--primary-bg);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background-color: var(--text);
+      color: var(--white);
+      padding: 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 32px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .sidebar-subtitle {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .sidebar-nav {
+      padding: 24px 0;
+    }
+
+    .nav-section {
+      margin-bottom: 8px;
+    }
+
+    .nav-section-title {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 8px 24px;
+      margin-bottom: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background-color: rgba(255,255,255,0.05);
+      color: var(--white);
+    }
+
+    .nav-item.active {
+      background-color: rgba(255,255,255,0.1);
+      color: var(--white);
+      border-left: 3px solid var(--white);
+      padding-left: 21px;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 12px;
+      opacity: 0.7;
+    }
+
+    .nav-item.active .nav-icon {
+      opacity: 1;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background-color: var(--warning);
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      padding: 0;
+      background-color: var(--primary-bg);
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      padding: 16px 48px;
+      background-color: var(--secondary-bg);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--text);
+    }
+
+    .breadcrumb span {
+      color: var(--accent);
+    }
+
+    .breadcrumb .current {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Venue Header */
+    .venue-header {
+      padding: 32px 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .venue-header-left {
+      display: flex;
+      gap: 24px;
+    }
+
+    .venue-thumbnail {
+      width: 120px;
+      height: 90px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>');
+      background-size: 40px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .venue-header-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .venue-title-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .venue-title {
+      font-size: 28px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .venue-type-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .venue-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .venue-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .venue-meta-item svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .venue-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-indicator.active {
+      background-color: rgba(75, 124, 89, 0.1);
+      color: var(--success);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+
+    .venue-header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--text);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background-color: #4a4a4a;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text);
+      border: 1px solid var(--accent);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--secondary-bg);
+    }
+
+    .btn-icon {
+      padding: 10px;
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon:hover {
+      background-color: #E8E5E0;
+    }
+
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 12px;
+      border-radius: 16px;
+    }
+
+    /* Venue Tabs */
+    .venue-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 48px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(184, 184, 184, 0.2);
+      overflow-x: auto;
+    }
+
+    .venue-tab {
+      padding: 16px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .venue-tab:hover {
+      color: var(--text);
+    }
+
+    .venue-tab.active {
+      color: var(--text);
+      border-bottom-color: var(--text);
+    }
+
+    /* Content Area */
+    .content-area {
+      padding: 32px 48px;
+    }
+
+    /* Form Sections */
+    .form-section {
+      background-color: var(--white);
+      border-radius: 12px;
+      border: 1px solid rgba(184, 184, 184, 0.2);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .form-section-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-section-title {
+      font-size: 18px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .form-section-subtitle {
+      font-size: 12px;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .form-section-body {
+      padding: 24px;
+    }
+
+    /* Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .form-grid.three-col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input {
+      padding: 12px 16px;
+      border: 1px solid rgba(184, 184, 184, 0.3);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background-color: var(--white);
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--text);
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23B8B8B8" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    /* Toggle Switch */
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      background-color: var(--accent);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .toggle.active {
+      background-color: var(--success);
+    }
+
+    .toggle-knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--white);
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+    }
+
+    .toggle.active .toggle-knob {
+      transform: translateX(22px);
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* Info Banner */
+    .info-banner {
+      background-color: rgba(107, 142, 201, 0.1);
+      border: 1px solid rgba(107, 142, 201, 0.3);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .info-banner-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--info);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .info-banner-text {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* Service Category Grid */
+    .service-category-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .service-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background-color: var(--secondary-bg);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .service-item:hover {
+      background-color: #E8E5E0;
+    }
+
+    .service-item.checked {
+      background-color: rgba(75, 124, 89, 0.08);
+      border-color: var(--success);
+    }
+
+    .service-checkbox {
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .service-item.checked .service-checkbox {
+      background-color: var(--success);
+      border-color: var(--success);
+    }
+
+    .service-label {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Service Cards (for detailed services) */
+    .service-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .service-card {
+      background-color: var(--secondary-bg);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .service-card-header {
+      padding: 16px 20px;
+      background-color: rgba(49, 49, 49, 0.03);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.15);
+    }
+
+    .service-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .service-card-icon {
+      width: 32px;
+      height: 32px;
+      background-color: var(--white);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .service-card-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .service-status {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+
+    .service-status.available {
+      color: var(--success);
+    }
+
+    .service-status.unavailable {
+      color: var(--accent);
+    }
+
+    .service-card-body {
+      padding: 20px;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .service-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .service-field.span-2 {
+      grid-column: span 2;
+    }
+
+    .service-field.span-3 {
+      grid-column: span 3;
+    }
+
+    .service-field-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+    }
+
+    .service-field-value {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .service-field .form-input {
+      background-color: var(--white);
+    }
+
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .service-tag {
+      padding: 4px 10px;
+      background-color: var(--white);
+      border-radius: 12px;
+      font-size: 11px;
+      color: var(--text);
+    }
+
+    /* Add Service Button */
+    .add-service-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 20px;
+      border: 2px dashed var(--accent);
+      border-radius: 12px;
+      background-color: transparent;
+      color: var(--accent);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .add-service-btn:hover {
+      border-color: var(--text);
+      color: var(--text);
+      background-color: var(--secondary-bg);
+    }
+
+    /* Practitioner Cards */
+    .practitioner-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .practitioner-card {
+      background-color: var(--secondary-bg);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      gap: 16px;
+    }
+
+    .practitioner-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .practitioner-info {
+      flex: 1;
+    }
+
+    .practitioner-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .practitioner-title {
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .practitioner-services {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .practitioner-service-tag {
+      padding: 4px 10px;
+      background-color: var(--white);
+      border-radius: 12px;
+      font-size: 11px;
+      color: var(--text);
+    }
+
+    .practitioner-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* User Menu */
+    .user-menu {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    /* Icons */
+    .icon {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .icon-small {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1400px) {
+      .service-category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .practitioner-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .service-category-grid {
+        grid-template-columns: 1fr;
+      }
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+      .service-field.span-2,
+      .service-field.span-3 {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">The Global Sanctum</div>
+        <div class="sidebar-subtitle">Internal Portal</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Content</div>
+          </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Insights</div>
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            Analytics
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <a class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+            </svg>
+            Settings
+          </a>
+        </div>
+      </nav>
+
+      <div class="user-menu">
+        <div class="user-avatar">K</div>
+        <div class="user-info">
+          <div class="user-name">Kate</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="#">Dashboard</a>
+        <span>/</span>
+        <a href="#">Venues</a>
+        <span>/</span>
+        <span class="current">Moraea Farm</span>
+      </nav>
+
+      <!-- Venue Header -->
+      <header class="venue-header">
+        <div class="venue-header-left">
+          <div class="venue-thumbnail"></div>
+          <div class="venue-header-info">
+            <div class="venue-title-row">
+              <h1 class="venue-title">Moraea Farm</h1>
+              <span class="venue-type-badge">Retreat Venue</span>
+            </div>
+            <div class="venue-meta">
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                Berry, NSW, Australia
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                </svg>
+                Max 12 guests
+              </div>
+              <div class="venue-meta-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Added Feb 8, 2026
+              </div>
+            </div>
+            <div class="venue-status">
+              <span class="status-indicator active">
+                <span class="status-dot"></span>
+                Active
+              </span>
+              <span style="color: var(--accent); font-size: 12px;">• Featured Plan</span>
+            </div>
+          </div>
+        </div>
+        <div class="venue-header-actions">
+          <button class="btn-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+          <button class="btn btn-secondary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="3,6 5,6 21,6"/>
+              <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+            </svg>
+            Delete
+          </button>
+          <button class="btn btn-primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+              <polyline points="17,21 17,13 7,13 7,21"/>
+              <polyline points="7,3 7,8 15,8"/>
+            </svg>
+            Save Changes
+          </button>
+        </div>
+      </header>
+
+      <!-- Venue Tabs -->
+      <nav class="venue-tabs">
+        <div class="venue-tab">Overview</div>
+        <div class="venue-tab">Accommodation</div>
+        <div class="venue-tab">Amenities</div>
+        <div class="venue-tab active">Wellness Services</div>
+        <div class="venue-tab">Wellness Facilities</div>
+        <div class="venue-tab">Retreat Facilities</div>
+        <div class="venue-tab">Pricing & Booking</div>
+        <div class="venue-tab">Media</div>
+        <div class="venue-tab">Internal</div>
+        <div class="venue-tab">Owner/Manager</div>
+        <div class="venue-tab">Bookings</div>
+      </nav>
+
+      <!-- Content Area -->
+      <div class="content-area">
+
+        <!-- Info Banner -->
+        <div class="info-banner">
+          <svg class="info-banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+          <div class="info-banner-text">
+            <strong>Wellness Services</strong> are treatments, classes, and therapies that can be provided at this venue — either by on-site practitioners, visiting practitioners, or facilitated by retreat hosts. This is different from <strong>Wellness Facilities</strong> (physical spaces/equipment like saunas, pools, treatment rooms).
+          </div>
+        </div>
+
+        <!-- Tab Images -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Tab Images</h3>
+              <p class="form-section-subtitle">Hero image displayed on the "Experiences & Add-Ons" tab of your public listing</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Experiences Tab Hero Image</label>
+                <div class="image-upload-area" style="border: 2px dashed rgba(184, 184, 184, 0.4); border-radius: 12px; padding: 40px; text-align: center; background-color: var(--secondary-bg);">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5" style="margin-bottom: 16px;">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21,15 16,10 5,21"/>
+                  </svg>
+                  <p style="color: var(--text); font-weight: 500; margin-bottom: 4px;">Click to upload or drag and drop</p>
+                  <p style="color: var(--accent); font-size: 12px;">Recommended: 1920×600px, JPG or PNG</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab Content -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Tab Content</h3>
+              <p class="form-section-subtitle">Intro text displayed on the "Experiences & Add-Ons" tab of your public listing</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Tab Label</label>
+                <input type="text" class="form-input" value="Experiences & Add-Ons" placeholder="e.g. Experiences & Add-Ons, Services">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tab Title</label>
+                <input type="text" class="form-input" value="Enhance Your Retreat" placeholder="e.g. Enhance Your Retreat, Additional Services">
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Tab Subtitle</label>
+                <input type="text" class="form-input" value="Optional services to complement your programming" placeholder="Brief subtitle...">
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Intro Paragraph</label>
+                <textarea class="form-input form-textarea" rows="3" placeholder="A paragraph introducing available services and practitioners...">Most facilitators bring their own programming—and we're here to support that fully. But if you'd like to weave in local practitioners, treatments, or excursions, we have a trusted network ready to enhance your offering.</textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Practitioners Section Content -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Practitioners Section</h3>
+              <p class="form-section-subtitle">How the practitioners section appears on your public listing</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Section Label</label>
+                <input type="text" class="form-input" value="Resident Practitioners" placeholder="e.g. Resident Practitioners, Our Healers">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Section Subtitle</label>
+                <input type="text" class="form-input" value="Local experts available for your retreat" placeholder="e.g. Available to book for your retreat">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Service Availability Overview -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Service Availability</h3>
+              <p class="form-section-subtitle">How wellness services are provided at this venue</p>
+            </div>
+          </div>
+          <div class="form-section-body">
+            <div class="form-grid three-col">
+              <div class="form-group">
+                <label class="form-label">On-site Practitioners Available</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">External Practitioners Welcome</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">BYO Facilitator Friendly</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Can Arrange Services</label>
+                <div class="toggle-container">
+                  <div class="toggle active">
+                    <div class="toggle-knob"></div>
+                  </div>
+                  <span class="toggle-label">Yes - venue can coordinate</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Advance Booking Required</label>
+                <select class="form-input form-select">
+                  <option>No - available on request</option>
+                  <option selected>Yes - 48 hours notice</option>
+                  <option>Yes - 1 week notice</option>
+                  <option>Yes - 2 weeks notice</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Service Pricing</label>
+                <select class="form-input form-select">
+                  <option>Included in venue hire</option>
+                  <option selected>Additional cost</option>
+                  <option>Some included, some additional</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Massage & Bodywork -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Massage & Bodywork</h3>
+              <p class="form-section-subtitle">Therapeutic touch and manual therapies</p>
+            </div>
+            <span style="font-size: 12px; color: var(--success); font-weight: 500;">6 available</span>
+          </div>
+          <div class="form-section-body">
+            <div class="service-category-grid">
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Swedish Massage</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Deep Tissue Massage</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Remedial Massage</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Aromatherapy Massage</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Hot Stone Massage</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Lymphatic Drainage</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Thai Massage</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Reflexology</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Shiatsu</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Craniosacral Therapy</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Myofascial Release</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Pregnancy Massage</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Movement & Fitness -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Movement & Fitness</h3>
+              <p class="form-section-subtitle">Classes and physical practices</p>
+            </div>
+            <span style="font-size: 12px; color: var(--success); font-weight: 500;">8 available</span>
+          </div>
+          <div class="form-section-body">
+            <div class="service-category-grid">
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Yoga Classes</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Pilates</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Meditation Sessions</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Breathwork Sessions</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Tai Chi / Qigong</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Personal Training</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Nature Walks / Hiking</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Sound Healing</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Dance / Movement Therapy</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Holistic & Energy Therapies -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Holistic & Energy Therapies</h3>
+              <p class="form-section-subtitle">Energy work and alternative therapies</p>
+            </div>
+            <span style="font-size: 12px; color: var(--success); font-weight: 500;">4 available</span>
+          </div>
+          <div class="form-section-body">
+            <div class="service-category-grid">
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Reiki</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Energy Healing</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Acupuncture</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Acupressure</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Kinesiology</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Hypnotherapy</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Crystal Healing</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Shamanic Healing</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Ayurvedic Treatments</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Nutrition & Detox -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Nutrition & Detox</h3>
+              <p class="form-section-subtitle">Food, fasting, and cleansing programs</p>
+            </div>
+            <span style="font-size: 12px; color: var(--success); font-weight: 500;">5 available</span>
+          </div>
+          <div class="form-section-body">
+            <div class="service-category-grid">
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Nutritional Consultation</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Cooking Classes</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Juice Cleanse Programs</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Detox Programs</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Plant-based Menu Options</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Fasting Programs</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">IV Therapy</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Colonic Hydrotherapy</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mind & Spirit -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Mind & Spirit</h3>
+              <p class="form-section-subtitle">Coaching, counselling, and spiritual practices</p>
+            </div>
+            <span style="font-size: 12px; color: var(--success); font-weight: 500;">6 available</span>
+          </div>
+          <div class="form-section-body">
+            <div class="service-category-grid">
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Life Coaching</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Counselling / Therapy</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Mindfulness Training</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Psychotherapy</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Cacao Ceremony</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Women's / Men's Circles</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Journaling / Writing Workshops</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Tarot / Oracle Reading</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Astrology Consultation</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Beauty & Spa -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">Beauty & Spa</h3>
+              <p class="form-section-subtitle">Aesthetic and pampering treatments</p>
+            </div>
+            <span style="font-size: 12px; color: var(--success); font-weight: 500;">3 available</span>
+          </div>
+          <div class="form-section-body">
+            <div class="service-category-grid">
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Facials</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Body Scrubs / Wraps</span>
+              </div>
+              <div class="service-item checked">
+                <div class="service-checkbox">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"/>
+                  </svg>
+                </div>
+                <span class="service-label">Manicure / Pedicure</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Hair Treatments</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Waxing</span>
+              </div>
+              <div class="service-item">
+                <div class="service-checkbox"></div>
+                <span class="service-label">Makeup Services</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- On-site Practitioners -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">On-site Practitioners</h3>
+              <p class="form-section-subtitle">Wellness professionals available through this venue — displayed on your public listing</p>
+            </div>
+            <button class="btn btn-secondary btn-small">
+              <svg class="icon icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add Practitioner
+            </button>
+          </div>
+          <div class="form-section-body">
+            <div class="practitioner-cards">
+              
+              <!-- Practitioner 1 - Expanded -->
+              <div class="practitioner-card" style="flex-direction: column; align-items: stretch; padding: 20px;">
+                <div style="display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px;">
+                  <div style="width: 100px; height: 100px; border-radius: 8px; background: var(--secondary-bg); display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(184, 184, 184, 0.4); flex-shrink: 0;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                      <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                  </div>
+                  <div style="flex: 1;">
+                    <div class="practitioner-name" style="margin-bottom: 4px;">Sarah Johnson</div>
+                    <div class="practitioner-title" style="margin-bottom: 8px;">Remedial Massage Therapist • 12 years experience</div>
+                    <div class="practitioner-services">
+                      <span class="practitioner-service-tag">Swedish</span>
+                      <span class="practitioner-service-tag">Deep Tissue</span>
+                      <span class="practitioner-service-tag">Remedial</span>
+                      <span class="practitioner-service-tag">Lymphatic</span>
+                    </div>
+                  </div>
+                  <div class="practitioner-actions" style="display: flex; flex-direction: column; gap: 8px;">
+                    <div class="toggle-container" style="justify-content: flex-end;">
+                      <div class="toggle active">
+                        <div class="toggle-knob"></div>
+                      </div>
+                      <span class="toggle-label" style="font-size: 11px;">Show on website</span>
+                    </div>
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </div>
+                </div>
+                <div style="border-top: 1px solid rgba(184, 184, 184, 0.2); padding-top: 16px;">
+                  <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 16px;">
+                    <div>
+                      <label class="form-label" style="font-size: 11px; margin-bottom: 4px;">Website Display Title</label>
+                      <input type="text" class="form-input" value="Bodywork & Massage" style="font-size: 12px; padding: 8px;">
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size: 11px; margin-bottom: 4px;">Website Description</label>
+                      <input type="text" class="form-input" value="15 years experience in remedial massage, deep tissue, and lymphatic drainage." style="font-size: 12px; padding: 8px;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Practitioner 2 - Expanded -->
+              <div class="practitioner-card" style="flex-direction: column; align-items: stretch; padding: 20px;">
+                <div style="display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px;">
+                  <div style="width: 100px; height: 100px; border-radius: 8px; background: var(--secondary-bg); display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(184, 184, 184, 0.4); flex-shrink: 0;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                      <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                  </div>
+                  <div style="flex: 1;">
+                    <div class="practitioner-name" style="margin-bottom: 4px;">Maya Kumar</div>
+                    <div class="practitioner-title" style="margin-bottom: 8px;">Yoga Teacher & Energy Healer • RYT-500</div>
+                    <div class="practitioner-services">
+                      <span class="practitioner-service-tag">Yoga</span>
+                      <span class="practitioner-service-tag">Meditation</span>
+                      <span class="practitioner-service-tag">Reiki</span>
+                      <span class="practitioner-service-tag">Sound Healing</span>
+                    </div>
+                  </div>
+                  <div class="practitioner-actions" style="display: flex; flex-direction: column; gap: 8px;">
+                    <div class="toggle-container" style="justify-content: flex-end;">
+                      <div class="toggle active">
+                        <div class="toggle-knob"></div>
+                      </div>
+                      <span class="toggle-label" style="font-size: 11px;">Show on website</span>
+                    </div>
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </div>
+                </div>
+                <div style="border-top: 1px solid rgba(184, 184, 184, 0.2); padding-top: 16px;">
+                  <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 16px;">
+                    <div>
+                      <label class="form-label" style="font-size: 11px; margin-bottom: 4px;">Website Display Title</label>
+                      <input type="text" class="form-input" value="Yoga & Energy Healing" style="font-size: 12px; padding: 8px;">
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size: 11px; margin-bottom: 4px;">Website Description</label>
+                      <input type="text" class="form-input" value="RYT-500 teacher offering yoga, meditation guidance, Reiki, and sound healing sessions." style="font-size: 12px; padding: 8px;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Practitioner 3 - Expanded -->
+              <div class="practitioner-card" style="flex-direction: column; align-items: stretch; padding: 20px;">
+                <div style="display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px;">
+                  <div style="width: 100px; height: 100px; border-radius: 8px; background: var(--secondary-bg); display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(184, 184, 184, 0.4); flex-shrink: 0;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B8B8B8" stroke-width="1.5">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                      <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                  </div>
+                  <div style="flex: 1;">
+                    <div class="practitioner-name" style="margin-bottom: 4px;">Dr. Rebecca Liu</div>
+                    <div class="practitioner-title" style="margin-bottom: 8px;">Naturopath & Nutritionist • BHSc</div>
+                    <div class="practitioner-services">
+                      <span class="practitioner-service-tag">Nutrition</span>
+                      <span class="practitioner-service-tag">Detox</span>
+                      <span class="practitioner-service-tag">Kinesiology</span>
+                    </div>
+                  </div>
+                  <div class="practitioner-actions" style="display: flex; flex-direction: column; gap: 8px;">
+                    <div class="toggle-container" style="justify-content: flex-end;">
+                      <div class="toggle active">
+                        <div class="toggle-knob"></div>
+                      </div>
+                      <span class="toggle-label" style="font-size: 11px;">Show on website</span>
+                    </div>
+                    <button class="btn btn-secondary btn-small">Edit</button>
+                  </div>
+                </div>
+                <div style="border-top: 1px solid rgba(184, 184, 184, 0.2); padding-top: 16px;">
+                  <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 16px;">
+                    <div>
+                      <label class="form-label" style="font-size: 11px; margin-bottom: 4px;">Website Display Title</label>
+                      <input type="text" class="form-input" value="Naturopathy & Nutrition" style="font-size: 12px; padding: 8px;">
+                    </div>
+                    <div>
+                      <label class="form-label" style="font-size: 11px; margin-bottom: 4px;">Website Description</label>
+                      <input type="text" class="form-input" value="Naturopathic doctor offering consultations, detox guidance, and nutritional workshops." style="font-size: 12px; padding: 8px;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <button class="add-service-btn" style="margin-top: 16px;">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add Another Practitioner
+            </button>
+          </div>
+        </section>
+
+        <!-- Service Notes -->
+        <section class="form-section">
+          <div class="form-section-header">
+            <h3 class="form-section-title">Additional Service Notes</h3>
+          </div>
+          <div class="form-section-body">
+            <div class="form-group">
+              <label class="form-label">Notes for Retreat Hosts & Guests</label>
+              <textarea class="form-input form-textarea" placeholder="Any additional information about wellness services...">All massage and bodywork services require 48 hours advance booking. Practitioners are based locally in Berry and travel to the property. Equipment provided includes massage tables, bolsters, towels, and premium organic oils. For larger groups (8+), we recommend booking multiple practitioners. Retreat hosts are welcome to bring their own practitioners - we have two dedicated treatment rooms available.</textarea>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>

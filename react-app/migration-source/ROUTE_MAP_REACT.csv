@@ -1,0 +1,50 @@
+﻿source_file,target_next_route,platform,priority
+index.html,/,chooser,P0
+web-pages/tgs_home_v7.html,/web,web,P0
+web-pages/tgs_contact_v4.html,/web/contact,web,P0
+web-pages/tgs_list_your_venue_v4.html,/web/list-your-venue,web,P0
+web-pages/tgs_about_v4.html,/web/about,web,P1
+web-pages/tgs_how_it_works_v4 (2).html,/web/how-it-works,web,P1
+web-pages/tgs_venues_v3.html,/web/venues,web,P1
+web-pages/tgs_venues.html,/web/venues-legacy,web,P2
+web-pages/tgs_wellness_experiences_v6.html,/web/wellness-experiences,web,P1
+web-pages/tgs_wellness_edit_v2 (1).html,/web/the-wellness-edit,web,P1
+web-pages/tgs_legal_v5.html,/web/legal,web,P1
+portal-pages/TGS Internal Portal Home Page V2.html,/portal,portal,P0
+portal-pages/TGS Internal Portal - Bookings Dashboard.html,/portal/tgs-internal-portal---bookings-dashboard,portal,P1
+portal-pages/TGS Internal Portal - Individual Retreat Host Profile.html,/portal/tgs-internal-portal---individual-retreat-host-profile,portal,P1
+portal-pages/TGS Internal Portal - Individual Venue Owner Profile.html,/portal/tgs-internal-portal---individual-venue-owner-profile,portal,P1
+portal-pages/TGS Internal Portal - Retreat Host General Dashboard.html,/portal/tgs-internal-portal---retreat-host-general-dashboard,portal,P1
+portal-pages/TGS Internal Portal - Retreat Venue Accommodation Tab V2.html,/portal/tgs-internal-portal---retreat-venue-accommodation-tab-v2,portal,P1
+portal-pages/TGS Internal Portal - Retreat Venue Amenities Tab V2.html,/portal/tgs-internal-portal---retreat-venue-amenities-tab-v2,portal,P1
+portal-pages/TGS Internal Portal - Retreat Venue Bookings Tab V2.html,/portal/tgs-internal-portal---retreat-venue-bookings-tab-v2,portal,P1
+portal-pages/TGS Internal Portal - Retreat Venue Facilities Tab V2.html,/portal/tgs-internal-portal---retreat-venue-facilities-tab-v2,portal,P1
+portal-pages/TGS Internal Portal - Retreat Venue Media Tab V2.html,/portal/tgs-internal-portal---retreat-venue-media-tab-v2,portal,P1
+portal-pages/TGS Internal Portal - Retreat Venue Owner Manager Tab V2.html,/portal/tgs-internal-portal---retreat-venue-owner-manager-tab-v2,portal,P1
+portal-pages/TGS Internal Portal - Retreat Venue Pricing Booking V2.html,/portal/tgs-internal-portal---retreat-venue-pricing-booking-v2,portal,P1
+portal-pages/TGS Internal Portal - Retreat Venue TGS Internal V2.html,/portal/tgs-internal-portal---retreat-venue-tgs-internal-v2,portal,P1
+portal-pages/TGS Internal Portal - Retreat Venue Wellness Facilities V2.html,/portal/tgs-internal-portal---retreat-venue-wellness-facilities-v2,portal,P1
+portal-pages/TGS Internal Portal - Retreat Venue Wellness Services V2.html,/portal/tgs-internal-portal---retreat-venue-wellness-services-v2,portal,P1
+portal-pages/TGS Internal Portal - Wellness Guest General Dashboard.html,/portal/tgs-internal-portal---wellness-guest-general-dashboard,portal,P1
+portal-pages/TGS Internal Portal - Wellness Guest Individual Profile.html,/portal/tgs-internal-portal---wellness-guest-individual-profile,portal,P1
+portal-pages/TGS Internal Portal - Wellness Venue Accommodation Tab V2.html,/portal/tgs-internal-portal---wellness-venue-accommodation-tab-v2,portal,P1
+portal-pages/TGS Internal Portal - Wellness Venue Amenities V2.html,/portal/tgs-internal-portal---wellness-venue-amenities-v2,portal,P1
+portal-pages/TGS Internal Portal - Wellness Venue Booking Pricing Tab V2.html,/portal/tgs-internal-portal---wellness-venue-booking-pricing-tab-v2,portal,P1
+portal-pages/TGS Internal Portal - Wellness Venue Bookings V2.html,/portal/tgs-internal-portal---wellness-venue-bookings-v2,portal,P1
+portal-pages/TGS Internal Portal - Wellness Venue Facilities Tab V2.html,/portal/tgs-internal-portal---wellness-venue-facilities-tab-v2,portal,P1
+portal-pages/TGS Internal Portal - Wellness Venue Media V2.html,/portal/tgs-internal-portal---wellness-venue-media-v2,portal,P1
+portal-pages/TGS Internal Portal - Wellness Venue Owner Manager Tab V2.html,/portal/tgs-internal-portal---wellness-venue-owner-manager-tab-v2,portal,P1
+portal-pages/TGS Internal Portal - Wellness Venue Services V2.html,/portal/tgs-internal-portal---wellness-venue-services-v2,portal,P1
+portal-pages/TGS Internal Portal - Wellness Venue TGS Internal V2.html,/portal/tgs-internal-portal---wellness-venue-tgs-internal-v2,portal,P1
+portal-pages/TGS Internal Portal Analytics.html,/portal/tgs-internal-portal-analytics,portal,P1
+portal-pages/TGS Internal Portal Enquiries Dashboard.html,/portal/tgs-internal-portal-enquiries-dashboard,portal,P1
+portal-pages/TGS Internal Portal Payments.html,/portal/tgs-internal-portal-payments,portal,P1
+portal-pages/TGS Internal Portal Sanctum Journal.html,/portal/tgs-internal-portal-sanctum-journal,portal,P1
+portal-pages/TGS Internal Portal Settings.html,/portal/tgs-internal-portal-settings,portal,P1
+portal-pages/TGS Internal Portal Subscriptions.html,/portal/tgs-internal-portal-subscriptions,portal,P1
+portal-pages/TGS Internal Portal The Wellness Edit.html,/portal/tgs-internal-portal-the-wellness-edit,portal,P1
+portal-pages/TGS Internal Portal Users.html,/portal/tgs-internal-portal-users,portal,P1
+portal-pages/TGS Internal Portal Venue Owners General Dashboard.html,/portal/tgs-internal-portal-venue-owners-general-dashboard,portal,P1
+portal-pages/TGS Internal Portal Venues Page V2.html,/portal/tgs-internal-portal-venues-page-v2,portal,P1
+portal-pages/TGS_Internal_Portal_-_Retreat_Venue_Overview_Tab_V3.html,/portal/tgs_internal_portal_-_retreat_venue_overview_tab_v3,portal,P1
+portal-pages/TGS_Internal_Portal_-_Wellness_Venue_Overview_V3.html,/portal/tgs_internal_portal_-_wellness_venue_overview_v3,portal,P1

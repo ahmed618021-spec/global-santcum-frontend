@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TGS Image Implementation Brief — JR</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --charcoal: #313131;
+    --warm-white: #FDFCF9;
+    --warm-cream: #F7F5F1;
+    --gold: #C4A265;
+    --gold-dark: #7A644F;
+    --border: #E8E4DC;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--warm-white);
+    color: var(--charcoal);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 48px 80px;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .logo-lockup { display: flex; align-items: center; gap: 14px; }
+
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--charcoal);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-mark svg { width: 20px; height: 20px; fill: var(--gold); }
+
+  .brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+  }
+
+  .doc-meta {
+    text-align: right;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--gold-dark);
+    text-transform: uppercase;
+  }
+
+  .doc-meta span { display: block; }
+
+  /* Title block */
+  .title-block {
+    margin-bottom: 48px;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--charcoal);
+    margin-bottom: 20px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold-dark);
+  }
+
+  .intro {
+    font-size: 13px;
+    font-weight: 300;
+    color: #555;
+    max-width: 600px;
+    line-height: 1.8;
+  }
+
+  /* Critical note */
+  .critical-note {
+    background: var(--charcoal);
+    color: var(--warm-white);
+    padding: 24px 28px;
+    margin-bottom: 48px;
+    border-left: 3px solid var(--gold);
+  }
+
+  .critical-note .note-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .critical-note p {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: #E8E4DC;
+  }
+
+  /* Page sections */
+  .page-section {
+    margin-bottom: 52px;
+  }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-badge {
+    background: var(--charcoal);
+    color: var(--warm-white);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    flex-shrink: 0;
+  }
+
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--charcoal);
+    letter-spacing: 0.02em;
+  }
+
+  /* Section groupings */
+  .section-group {
+    margin-bottom: 28px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 10px;
+    padding-left: 16px;
+    border-left: 2px solid var(--gold);
+  }
+
+  /* Image rows */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    background: var(--warm-cream);
+  }
+
+  thead th {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    padding: 10px 16px;
+    text-align: left;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: var(--warm-cream); }
+
+  tbody tr:last-child { border-bottom: none; }
+
+  td {
+    padding: 12px 16px;
+    vertical-align: middle;
+  }
+
+  td:first-child {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: #666;
+    width: 35%;
+    text-transform: uppercase;
+  }
+
+  td:last-child {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--charcoal);
+  }
+
+  .keep-tag {
+    display: inline-block;
+    background: var(--warm-cream);
+    border: 1px solid var(--border);
+    color: var(--gold-dark);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 64px;
+    padding-top: 28px;
+    border-top: 1px solid var(--gold);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--gold-dark);
+    text-transform: uppercase;
+  }
+
+  .footer-note {
+    font-size: 10px;
+    font-weight: 400;
+    color: #999;
+    letter-spacing: 0.06em;
+    text-align: right;
+  }
+
+  @media print {
+    body { background: white; }
+    .page { padding: 40px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-lockup">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2 L13.5 8.5 L20 7 L15.5 12 L20 17 L13.5 15.5 L12 22 L10.5 15.5 L4 17 L8.5 12 L4 7 L10.5 8.5 Z"/>
+        </svg>
+      </div>
+      <div class="brand-name">The Global Sanctum</div>
+    </div>
+    <div class="doc-meta">
+      <span>Developer Brief</span>
+      <span>Image Implementation</span>
+      <span>29 March 2026</span>
+    </div>
+  </div>
+
+  <!-- Title -->
+  <div class="title-block">
+    <div class="eyebrow">For JR — Frontend Developer</div>
+    <h1>Image Implementation <em>Brief</em></h1>
+    <p class="intro">This document specifies every image replacement required across the TGS platform. All images have been selected, filtered, and prepared by Kate and are available in the shared Google Drive folder. Please implement each image exactly as specified below.</p>
+  </div>
+
+  <!-- Critical Note -->
+  <div class="critical-note">
+    <div class="note-label">Critical Requirement</div>
+    <p>All images must display at high resolution and high quality across all devices and screen sizes. No image should appear blurred, pixelated, or compressed. Please ensure correct implementation of image optimisation — use high-res source files, appropriate srcset attributes where applicable, and ensure images are rendered at full quality. Do not reduce image quality during implementation.</p>
+  </div>
+
+  <!-- HOME PAGE -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-badge">Page 01</div>
+      <div class="page-title">Home</div>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">Hero</div>
+      <table>
+        <thead><tr><th>Section</th><th>Image Filename</th></tr></thead>
+        <tbody>
+          <tr><td>Hero</td><td>No change required <span class="keep-tag">Keep</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">'A New Era of Wellness Discovery' Section</div>
+      <table>
+        <thead><tr><th>Section</th><th>Image Filename</th></tr></thead>
+        <tbody>
+          <tr><td>Main Image</td><td>Woman meditating in sacred site nordic filter</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">'Discover Differently' — Settings Grid</div>
+      <table>
+        <thead><tr><th>Setting</th><th>Image Filename</th></tr></thead>
+        <tbody>
+          <tr><td>Coastal</td><td>Edited beach with boat rainforest</td></tr>
+          <tr><td>Desert</td><td>Sunset desert nordic</td></tr>
+          <tr><td>Tropical Sanctuaries</td><td>Misty jungle forest</td></tr>
+          <tr><td>Urban</td><td>City wet pavement</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">'Find Your Path' — Pathway Cards</div>
+      <table>
+        <thead><tr><th>Card</th><th>Image Filename</th></tr></thead>
+        <tbody>
+          <tr><td>Retreat Venues</td><td>Jungle cabin nordic filter</td></tr>
+          <tr><td>Wellness Venues</td><td>Onsen 3</td></tr>
+          <tr><td>Wellness Experiences</td><td>Massage black &amp; white</td></tr>
+          <tr><td>Wellness Insights</td><td>No change required <span class="keep-tag">Keep</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">'The Year Ahead' — Experience Cards</div>
+      <table>
+        <thead><tr><th>Experience</th><th>Image Filename</th></tr></thead>
+        <tbody>
+          <tr><td>Thermal Bathing Rituals</td><td>Woman in spa dark tiles nordic filter</td></tr>
+          <tr><td>Vibrational Sound Journeys</td><td>Gold sound bowl nordic filter</td></tr>
+          <tr><td>Forest Bathing</td><td>Man walking through forest</td></tr>
+          <tr><td>Conscious Breath</td><td>Man black &amp; white hands on chest</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">'Destinations Defining Wellness Travel' — Country Cards</div>
+      <table>
+        <thead><tr><th>Destination</th><th>Image Filename</th></tr></thead>
+        <tbody>
+          <tr><td>Australia</td><td>Australia Uluru</td></tr>
+          <tr><td>Bali</td><td>No change required <span class="keep-tag">Keep</span></td></tr>
+          <tr><td>Japan</td><td>Japan red temple nordic filter</td></tr>
+          <tr><td>India</td><td>India building</td></tr>
+          <tr><td>Thailand</td><td>Rice terraces nordic filter</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">'Discover Intentionally' Section</div>
+      <table>
+        <thead><tr><th>Section</th><th>Image Filename</th></tr></thead>
+        <tbody>
+          <tr><td>Main Image</td><td>Man with ipad nordic filter</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">'Our Philosophy' — Mosaic</div>
+      <table>
+        <thead><tr><th>Position</th><th>Image Filename</th></tr></thead>
+        <tbody>
+          <tr><td>Top (large)</td><td>Moroccan pool scandi filter</td></tr>
+          <tr><td>Bottom left</td><td>Andean man with shell</td></tr>
+          <tr><td>Bottom right</td><td>Misty forest</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ABOUT US -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-badge">Page 02</div>
+      <div class="page-title">About Us</div>
+    </div>
+
+    <table>
+      <thead><tr><th>Section</th><th>Image Filename</th></tr></thead>
+      <tbody>
+        <tr><td>Hero</td><td>No change required <span class="keep-tag">Keep</span></td></tr>
+        <tr><td>'Wellness Redefined'</td><td>Old man with sound bowls nordic filter</td></tr>
+        <tr><td>'The Problem We Saw'</td><td>Group of hands together nordic filter</td></tr>
+        <tr><td>'The Solution'</td><td>Woman eyes closed meditate nordic filter</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-badge">Page 03</div>
+      <div class="page-title">How It Works</div>
+    </div>
+
+    <table>
+      <thead><tr><th>Section</th><th>Image Filename</th></tr></thead>
+      <tbody>
+        <tr><td>Hero</td><td>No change required <span class="keep-tag">Keep</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- EXPLORE VENUES -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-badge">Page 04</div>
+      <div class="page-title">Explore Venues</div>
+    </div>
+
+    <table>
+      <thead><tr><th>Section</th><th>Image Filename</th></tr></thead>
+      <tbody>
+        <tr><td>Hero</td><td>Oriental building nordic filter</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WELLNESS EXPERIENCES -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-badge">Page 05</div>
+      <div class="page-title">Wellness Experiences</div>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">Hero</div>
+      <table>
+        <thead><tr><th>Section</th><th>Image Filename</th></tr></thead>
+        <tbody>
+          <tr><td>Hero</td><td>Woman hot stone silhouette</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">Experience Category Images</div>
+      <table>
+        <thead><tr><th>Category</th><th>Image Filename</th></tr></thead>
+        <tbody>
+          <tr><td>Thermal &amp; Hydrotherapy</td><td>Woman in bath</td></tr>
+          <tr><td>Yoga &amp; Movement</td><td>Woman stretching back yoga</td></tr>
+          <tr><td>Breathwork</td><td>Breathwork lying down</td></tr>
+          <tr><td>Sound &amp; Vibrational</td><td>Woman with sound bowl nordic filter</td></tr>
+          <tr><td>Ayurveda</td><td>Ayurveda Shirodhara</td></tr>
+          <tr><td>Indigenous &amp; Earth Traditions</td><td>Shaman with flute</td></tr>
+          <tr><td>Plant Medicine &amp; Ceremony</td><td>Herbs on timber</td></tr>
+          <tr><td>Meditation &amp; Mindfulness</td><td>Meditation black and white mountain</td></tr>
+          <tr><td>Bodywork &amp; Body Therapies</td><td>Black and white massage</td></tr>
+          <tr><td>Nutrition &amp; Cleansing</td><td>Raw salad bowl</td></tr>
+          <tr><td>Energy &amp; Esoteric</td><td>Reiki image</td></tr>
+          <tr><td>Modern Wellness</td><td>Halo therapy</td></tr>
+          <tr><td>Nature Immersion</td><td>No change required <span class="keep-tag">Keep</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LIST YOUR VENUE -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-badge">Page 06</div>
+      <div class="page-title">List Your Venue</div>
+    </div>
+
+    <table>
+      <thead><tr><th>Section</th><th>Image Filename</th></tr></thead>
+      <tbody>
+        <tr><td>Hero</td><td>Bali pool nordic filter</td></tr>
+        <tr><td>Retreat Venue card</td><td>Meditation room filter</td></tr>
+        <tr><td>Wellness Venue card</td><td>Sauna modern</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-brand">Aurella Group Pty Ltd — T/A The Global Sanctum</div>
+    <div class="footer-note">
+      All images located in shared Google Drive folder<br>
+      Questions: hello@theglobalsanctum.com
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
