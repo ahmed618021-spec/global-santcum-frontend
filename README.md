@@ -1,89 +1,36 @@
-# TGS HTML Demo - Deployment Guide
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## What this project contains
+## Getting Started
 
-- Public website entry page: `tgs_home_v7.html`
-- Internal portal entry page: `TGS Internal Portal Home Page V2.html`
-- Static image assets: `images/`
-- Shareable landing page: `index.html`
-- Deployment config: `vercel.json`
+First, run the development server:
 
-## Industry-standard handoff notes
-
-- This is a static HTML/CSS/JS project (no build step required).
-- All core navigation is wired to local HTML files.
-- Image references are local and deployment-safe.
-- A root landing page is provided for clean sharing and demo access.
-
-## Local run
-
-If you want to run locally with Node:
-
-1. Open terminal in this project folder.
-2. Run:
-
-```powershell
-npx --yes serve -l 5500 .
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-3. Open:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- `http://localhost:5500/` (landing page)
-- `http://localhost:5500/tgs_home_v7.html` (public website)
-- `http://localhost:5500/TGS%20Internal%20Portal%20Home%20Page%20V2.html` (portal)
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-If you want `/website` and `/portal` shortcuts locally as well, run:
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-```powershell
-vercel dev
-```
+## Learn More
 
-## Deploy to Vercel (recommended)
+To learn more about Next.js, take a look at the following resources:
 
-### Option A: Vercel Dashboard (easiest)
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-1. Push this folder to a GitHub repository.
-2. Go to Vercel dashboard.
-3. Click Add New -> Project.
-4. Import your repository.
-5. Framework preset: Other.
-6. Build command: leave empty.
-7. Output directory: leave empty.
-8. Click Deploy.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-After deploy, share:
+## Deploy on Vercel
 
-- `https://your-project.vercel.app/`
-- `https://your-project.vercel.app/website`
-- `https://your-project.vercel.app/portal`
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### Option B: Vercel CLI
-
-1. Install CLI once:
-
-```powershell
-npm i -g vercel
-```
-
-2. In project folder, deploy:
-
-```powershell
-vercel
-```
-
-3. For production deploy:
-
-```powershell
-vercel --prod
-```
-
-## Pre-share checklist
-
-- Open `/` and verify both cards work.
-- Open `/website` and test top nav links.
-- Open `/portal` and test sidebar links.
-- Verify key images render on home/about/venues/experiences/list-your-venue pages.
-
-## Optional next improvement
-
-For cleaner URLs, you can later rename files with spaces to kebab-case names (for example `portal-home.html`) and update links once.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
