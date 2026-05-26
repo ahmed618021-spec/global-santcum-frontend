@@ -1,10 +1,11 @@
-import FrozenPageFrame from "../../../components/FrozenPageFrame";
-
 export default function VenuesPage() {
   return (
-    <FrozenPageFrame
-      src="https://nextjs-webportal-tgs.vercel.app/venues"
-      title="Explore venues"
-    />
+    <main style={{ minHeight: "100vh" }}>
+      <iframe
+        src="https://nextjs-webportal-tgs.vercel.app/venues"
+        title="Explore venues"
+        style={{ border: 0, width: "100%", minHeight: "100vh" }}
+      />
+    </main>
   );
 }
