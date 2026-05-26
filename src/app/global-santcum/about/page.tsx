@@ -1,4 +1,4 @@
-import FrozenPageFrame from "@/components/FrozenPageFrame";
+import FrozenPageFrame from "../../../components/FrozenPageFrame";
 
 export default function AboutPage() {
   return (
