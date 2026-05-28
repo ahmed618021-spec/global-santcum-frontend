@@ -1,0 +1,377 @@
+.page {
+  --warm-white: #fdfcf9;
+  --cream: #f4f0e8;
+  --charcoal: #313131;
+  --dark: #313131;
+  --muted: #6f685f;
+  --gold: #b89b6b;
+  background: var(--warm-white);
+  color: var(--charcoal);
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+.hero {
+  position: relative;
+  height: 70vh;
+  min-height: 620px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--warm-white);
+  overflow: hidden;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(58, 58, 58, 0.35), rgba(58, 58, 58, 0.5)),
+    url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80") center/cover;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  width: min(1100px, calc(100% - 48px));
+  padding: 0 40px;
+}
+
+.eyebrow {
+  margin: 0 0 20px;
+  color: var(--gold);
+  font: 400 9px/1 var(--font-sans), Arial, sans-serif;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  margin: 0 14px 3px;
+  background: var(--gold);
+  vertical-align: middle;
+}
+
+.hero .eyebrow {
+  margin-bottom: 28px;
+  color: var(--warm-white);
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  opacity: 0.92;
+}
+
+.hero .eyebrow::before,
+.hero .eyebrow::after {
+  width: 36px;
+  margin-right: 18px;
+  margin-left: 18px;
+}
+
+.hero h1,
+.title,
+.ready h2,
+.newsletter h2 {
+  margin: 0;
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.hero em,
+.title em {
+  font-style: italic;
+  color: inherit;
+  font-weight: 400;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 5vw, 56px);
+  line-height: 1.15;
+  margin-bottom: 24px;
+}
+
+.hero p:last-child,
+.text,
+.step p,
+.whyCard p,
+.ready p,
+.newsletter p {
+  color: #3a3a3a;
+  font: 400 16px/1.7 var(--font-serif), Georgia, serif;
+}
+
+.hero p:last-child {
+  color: rgba(253, 252, 249, 0.92);
+  max-width: 620px;
+  margin: 0 auto;
+  font-size: 19px;
+}
+
+.journey,
+.ready,
+.newsletter {
+  padding: 90px 60px;
+}
+
+.journeyAlt {
+  background: var(--cream);
+}
+
+.inner {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+}
+
+.sectionHead {
+  text-align: center;
+  margin: 0 auto 64px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.step,
+.whyCard {
+  background: var(--warm-white);
+  border: 1px solid rgba(49, 49, 49, 0.1);
+  padding: 36px 22px 32px;
+  text-align: center;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.journey:not(.journeyAlt) .step {
+  background: #fff;
+}
+
+.step:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 12px 36px rgba(49, 49, 49, 0.06);
+}
+
+.stepNumber {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--charcoal);
+  color: var(--warm-white);
+  margin: 0 auto 24px;
+  font: italic 400 16px/1 var(--font-serif), Georgia, serif;
+}
+
+.step h3,
+.whyCard h3 {
+  margin: 0 0 14px;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.step p {
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.why {
+  padding: 100px 48px;
+  background: var(--dark);
+  color: rgba(253, 252, 249, 0.7);
+}
+
+.why .title {
+  color: var(--warm-white);
+}
+
+.why .inner {
+  width: min(1200px, 100%);
+}
+
+.whyGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.whyCard {
+  background: transparent;
+  border-color: rgba(253, 252, 249, 0.08);
+  padding: 34px 32px;
+  text-align: left;
+}
+
+.whyCard h3 {
+  color: var(--warm-white);
+  font-size: 22px;
+}
+
+.whyCard p {
+  color: rgba(253, 252, 249, 0.68);
+}
+
+.ready,
+.newsletter {
+  text-align: center;
+}
+
+.ready {
+  background: var(--cream);
+}
+
+.ready h2 {
+  font-style: italic;
+}
+
+.ready p,
+.newsletter p {
+  max-width: 650px;
+  margin: 18px auto 34px;
+}
+
+.ready a,
+.newsletter button {
+  display: inline-flex;
+  border: 1px solid var(--charcoal);
+  background: transparent;
+  color: var(--charcoal);
+  padding: 14px 32px;
+  text-decoration: none;
+  font: 500 10px/1 var(--font-sans), Arial, sans-serif;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.ready a:first-child,
+.newsletter button {
+  background: var(--charcoal);
+  color: var(--warm-white);
+}
+
+.ready a:hover,
+.newsletter button:hover {
+  background: var(--charcoal);
+  color: var(--warm-white);
+}
+
+.ready a:first-child:hover,
+.newsletter button:hover {
+  background: transparent;
+  color: var(--charcoal);
+}
+
+.readyLinks {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.newsletter {
+  background: var(--cream);
+}
+
+.form {
+  display: flex;
+  gap: 12px;
+  max-width: 520px;
+  margin: 0 auto;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.form input {
+  flex: 1;
+  min-width: 240px;
+  border: 1px solid rgba(49, 49, 49, 0.15);
+  background: var(--warm-white);
+  padding: 13px 18px;
+  font: 400 12px/1 var(--font-sans), Arial, sans-serif;
+}
+
+.footer {
+  background: var(--dark);
+  color: rgba(253, 252, 249, 0.72);
+  padding: 80px 48px 40px;
+}
+
+.footerGrid {
+  width: min(1400px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr repeat(5, 1fr);
+  gap: 48px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footerGrid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.footer img {
+  width: 72px;
+  height: 72px;
+}
+
+.footer h3,
+.footer h4 {
+  color: var(--warm-white);
+  font-weight: 400;
+}
+
+.footer p,
+.footer a {
+  color: rgba(253, 252, 249, 0.72);
+  text-decoration: none;
+  font: 400 15px/1.7 var(--font-serif), Georgia, serif;
+}
+
+.footer h4 {
+  color: rgba(255, 255, 255, 0.4);
+  font: 500 10px/1 var(--font-sans), Arial, sans-serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 980px) {
+  .steps,
+  .whyGrid,
+  .footerGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .journey,
+  .why,
+  .ready,
+  .newsletter {
+    padding: 72px 24px;
+  }
+
+  .steps,
+  .whyGrid,
+  .footerGrid,
+  .form {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .newsletter button {
+    justify-content: center;
+    padding: 18px;
+  }
+}
