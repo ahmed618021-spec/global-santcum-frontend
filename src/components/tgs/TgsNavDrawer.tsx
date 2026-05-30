@@ -109,13 +109,12 @@ const styles = `
 .tgsdrawer-link:hover .tgsdrawer-link-arrow { color: rgba(49,49,49,0.5); transform: translateX(4px); }
 .tgsdrawer-secondary-link {
   display: flex; align-items: center; gap: 10px;
-  font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 400;
-  color: rgba(49,49,49,0.7); padding: 10px 0;
-  transition: color 0.2s, padding-left 0.2s;
+  font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; font-weight: 300;
+  color: #313131; padding: 10px 0;
+  transition: color 0.3s, padding-left 0.3s;
 }
-.tgsdrawer-secondary-link:hover { color: #313131; padding-left: 4px; }
-.tgsdrawer-secondary-link svg { width: 16px; height: 16px; color: rgba(49,49,49,0.3); transition: color 0.2s; }
-.tgsdrawer-secondary-link:hover svg { color: #313131; }
+.tgsdrawer-secondary-link:hover { color: rgba(49,49,49,0.7); padding-left: 6px; }
+.tgsdrawer-secondary-link svg { display: none; }
 .tgsdrawer-cta {
   display: block; width: 100%; text-align: center;
   background: #313131; color: #FFFFFF;

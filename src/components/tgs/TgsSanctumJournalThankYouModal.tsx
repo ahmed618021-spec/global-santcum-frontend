@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const styles = `
 :root {
@@ -257,12 +258,14 @@ const steps = [
 ];
 
 export default function TgsSanctumJournalThankYouModal() {
-  const [open, setOpen] = useState(true);
+  const open = true;
+  const router = useRouter();
+  const close = () => router.back();
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setOpen(false);
+        close();
       }
     };
 
@@ -285,7 +288,7 @@ export default function TgsSanctumJournalThankYouModal() {
         className={`sj-thanks-overlay${open ? " active" : ""}`}
         id="sjThanksOverlay"
         aria-hidden="true"
-        onClick={() => setOpen(false)}
+        onClick={close}
       />
 
       <aside
@@ -306,7 +309,7 @@ export default function TgsSanctumJournalThankYouModal() {
             id="sjThanksClose"
             type="button"
             aria-label="Close"
-            onClick={() => setOpen(false)}
+            onClick={close}
           >
             &times;
           </button>

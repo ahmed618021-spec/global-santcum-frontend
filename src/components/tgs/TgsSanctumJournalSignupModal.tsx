@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const styles = `
 :root {
@@ -484,9 +485,24 @@ const benefits = [
 ];
 
 export default function TgsSanctumJournalSignupModal() {
-  const [open, setOpen] = useState(true);
+  const router = useRouter();
+  const close = () => router.back();
+  const open = true;
   const [email, setEmail] = useState("");
   const [invalid, setInvalid] = useState(false);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        close();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -506,16 +522,13 @@ export default function TgsSanctumJournalSignupModal() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: styles }} />
-      <button className="trigger-btn" onClick={() => setOpen(true)} type="button">
-        Open Journal Modal
-      </button>
 
       <div
         className={`overlay${open ? " active" : ""}`}
         id="overlay"
         onClick={(event) => {
           if (event.target === event.currentTarget) {
-            setOpen(false);
+            close();
           }
         }}
       >
@@ -523,7 +536,7 @@ export default function TgsSanctumJournalSignupModal() {
           <div className="modal-image">
             <button
               className="modal-close"
-              onClick={() => setOpen(false)}
+              onClick={close}
               aria-label="Close"
               type="button"
             >

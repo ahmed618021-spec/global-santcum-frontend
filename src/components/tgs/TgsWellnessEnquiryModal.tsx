@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const styles = `
 :root {
@@ -391,9 +391,9 @@ function todayString() {
 export default function TgsWellnessEnquiryModal() {
   const router = useRouter();
   const pathname = usePathname();
-  const [open, setOpen] = useState(true);
+  const open = true;
   const [submitting, setSubmitting] = useState(false);
-  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
+  const close = () => router.back();
 
   const slug = (() => {
     const match = pathname?.match(/\/wellness-venues\/([^/]+)\/enquiry/);
@@ -407,7 +407,7 @@ export default function TgsWellnessEnquiryModal() {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setOpen(false);
+        close();
       }
     };
     document.addEventListener("keydown", onKeyDown);
@@ -431,25 +431,11 @@ export default function TgsWellnessEnquiryModal() {
     <main>
       <style dangerouslySetInnerHTML={{ __html: styles }} />
 
-      <div className="demo-page">
-        <button
-          type="button"
-          className="demo-trigger"
-          onClick={() => setOpen(true)}
-        >
-          Open Wellness Enquiry Modal
-        </button>
-        <p className="demo-note">
-          Preview only. In production this modal opens from any element with{" "}
-          <code>data-enquiry-trigger</code> on the wellness venue detail page.
-        </p>
-      </div>
-
       <div
         className={`enquiry-modal-overlay${open ? " active" : ""}`}
         id="enquiryOverlay"
         aria-hidden="true"
-        onClick={() => setOpen(false)}
+        onClick={() => close()}
       />
 
       <aside
@@ -470,8 +456,7 @@ export default function TgsWellnessEnquiryModal() {
             id="enquiryClose"
             type="button"
             aria-label="Close enquiry"
-            ref={closeBtnRef}
-            onClick={() => setOpen(false)}
+            onClick={() => close()}
           >
             &times;
           </button>
@@ -796,7 +781,7 @@ export default function TgsWellnessEnquiryModal() {
             </div>
 
             <div className="confirmation-actions">
-              <button type="button" className="confirmation-btn-primary" onClick={() => setOpen(false)}>Continue Exploring</button>
+              <button type="button" className="confirmation-btn-primary" onClick={() => close()}>Continue Exploring</button>
             </div>
 
             <div className="confirmation-contact">

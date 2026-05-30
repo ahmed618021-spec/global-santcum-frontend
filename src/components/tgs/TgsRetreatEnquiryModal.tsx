@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 const styles = `
 :root {
@@ -404,7 +404,7 @@ export default function TgsRetreatEnquiryModal() {
     return match?.[1] || "santosa-retreat";
   }, [pathname]);
 
-  const [open, setOpen] = useState(true);
+  const open = true;
   const formRef = useRef<HTMLFormElement>(null);
   const modalBodyRef = useRef<HTMLDivElement>(null);
 
@@ -415,9 +415,7 @@ export default function TgsRetreatEnquiryModal() {
     return meta.join(" · ");
   }, []);
 
-  const closeModal = useCallback(() => {
-    setOpen(false);
-  }, []);
+  const close = () => router.back();
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -428,22 +426,11 @@ export default function TgsRetreatEnquiryModal() {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && open) closeModal();
+      if (event.key === "Escape" && open) close();
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open, closeModal]);
-
-  const openModal = useCallback(() => {
-    if (modalBodyRef.current) modalBodyRef.current.scrollTop = 0;
-    setOpen(true);
-    setTimeout(() => {
-      const firstInput = formRef.current?.querySelector<HTMLElement>(
-        "input:not([type=hidden]):not([name=website]), select, textarea",
-      );
-      if (firstInput) firstInput.focus();
-    }, 150);
-  }, []);
+  }, [open, close]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -454,20 +441,10 @@ export default function TgsRetreatEnquiryModal() {
     <main>
       <style dangerouslySetInnerHTML={{ __html: styles }} />
 
-      <div className="demo-page">
-        <button type="button" className="demo-trigger" onClick={openModal}>
-          Open Retreat Enquiry Modal
-        </button>
-        <p className="demo-note">
-          Preview only. In production this modal opens from any element with{" "}
-          <code>data-enquiry-trigger</code> on the venue detail page.
-        </p>
-      </div>
-
       <div
         className={`enquiry-modal-overlay${open ? " active" : ""}`}
         aria-hidden="true"
-        onClick={closeModal}
+        onClick={close}
       />
 
       <aside
@@ -486,7 +463,7 @@ export default function TgsRetreatEnquiryModal() {
             className="enquiry-modal-close"
             type="button"
             aria-label="Close enquiry"
-            onClick={closeModal}
+            onClick={close}
           >
             &times;
           </button>

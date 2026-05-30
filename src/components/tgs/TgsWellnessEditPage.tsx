@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import TgsNavDrawer from "@/components/tgs/TgsNavDrawer";
 
 const styles = `
 :root {
@@ -1475,121 +1476,7 @@ export default function TgsWellnessEditPage() {
         </div>
       </nav>
 
-      <div
-        className={`drawer-overlay${drawerOpen ? " active" : ""}`}
-        id="drawerOverlay"
-        onClick={() => setDrawerOpen(false)}
-        aria-hidden={drawerOpen ? "false" : "true"}
-      />
-      <div
-        className={`drawer${drawerOpen ? " active" : ""}`}
-        id="navDrawer"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Navigation menu"
-        aria-hidden={drawerOpen ? "false" : "true"}
-      >
-        <div className="drawer-header">
-          <div className="drawer-header-left">
-            <span className="drawer-logo" />
-            <span className="drawer-label">Navigation</span>
-          </div>
-          <button
-            className="drawer-close"
-            onClick={() => setDrawerOpen(false)}
-            aria-label="Close menu"
-            type="button"
-          >
-            &times;
-          </button>
-        </div>
-        <div className="drawer-search">
-          <div className="drawer-search-bar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-            <input type="text" placeholder="Search venues, experiences, locations..." />
-          </div>
-        </div>
-        <div className="drawer-body">
-          <div className="drawer-group">
-            <div className="drawer-group-label">Discover</div>
-            <Link href="/global-santcum/retreat-venues" className="drawer-link">
-              Retreat Venues<span className="drawer-link-arrow">→</span>
-            </Link>
-            <Link href="/global-santcum/wellness-venues" className="drawer-link">
-              Wellness Venues<span className="drawer-link-arrow">→</span>
-            </Link>
-            <Link href="/global-santcum/wellness-experiences" className="drawer-link">
-              Wellness Experiences<span className="drawer-link-arrow">→</span>
-            </Link>
-          </div>
-          <div className="drawer-group">
-            <div className="drawer-group-label">Learn</div>
-            <Link href="/global-santcum/about" className="drawer-secondary-link">
-              About Us
-            </Link>
-            <Link href="/global-santcum/how-it-works" className="drawer-secondary-link">
-              How It Works
-            </Link>
-            <Link href="/global-santcum/the-wellness-edit" className="drawer-secondary-link">
-              The Wellness Edit
-            </Link>
-          </div>
-          <div className="drawer-group">
-            <div className="drawer-group-label">Connect</div>
-            <Link href="/global-santcum/contact" className="drawer-secondary-link">
-              Contact Us
-            </Link>
-            <Link href="/global-santcum/list-your-venue" className="drawer-secondary-link">
-              List Your Venue
-            </Link>
-          </div>
-          <div className="drawer-group">
-            <Link href="/global-santcum/list-your-venue" className="drawer-cta">
-              List Your Venue
-            </Link>
-          </div>
-        </div>
-        <div className="drawer-footer">
-          <div className="drawer-footer-contact">
-            <a className="drawer-footer-item" href="mailto:hello@theglobalsanctum.com">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-              <span className="email-text">hello@theglobalsanctum.com</span>
-            </a>
-          </div>
-          <div className="drawer-social">
-            <a
-              href="https://www.facebook.com/profile.php?id=61577706717526"
-              target="_blank"
-              rel="noopener"
-              aria-label="Facebook"
-            >
-              Fb
-            </a>
-            <a
-              href="https://www.instagram.com/theglobalsanctum/"
-              target="_blank"
-              rel="noopener"
-              aria-label="Instagram"
-            >
-              Ig
-            </a>
-            <a
-              href="https://www.linkedin.com/company/the-global-sanctum/"
-              target="_blank"
-              rel="noopener"
-              aria-label="LinkedIn"
-            >
-              Li
-            </a>
-          </div>
-        </div>
-      </div>
+      <TgsNavDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
 
       <main id="main-content" role="main">
         <section className="hero">

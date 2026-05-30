@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 
 const styles = `
@@ -308,17 +309,6 @@ function DocumentIcon() {
   );
 }
 
-function randomId() {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return crypto.randomUUID();
-  }
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (char) => {
-    const random = (Math.random() * 16) | 0;
-    const value = char === "x" ? random : (random & 0x3) | 0x8;
-    return value.toString(16);
-  });
-}
-
 export const wellnessEnquiryThankYou = {
   label: "Wellness Enquiry",
   subtitle:
@@ -387,8 +377,10 @@ export default function TgsEnquiryThankYouModal({
   primaryLabel,
   refPrefix,
 }: TgsEnquiryThankYouModalProps) {
-  const [open, setOpen] = useState(true);
-  const [reference, setReference] = useState(() => {
+  const router = useRouter();
+  const close = () => router.back();
+  const open = true;
+  const [reference] = useState(() => {
     if (typeof window === "undefined") {
       return "";
     }
@@ -400,7 +392,7 @@ export default function TgsEnquiryThankYouModal({
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setOpen(false);
+        close();
       }
     };
 
@@ -415,37 +407,15 @@ export default function TgsEnquiryThankYouModal({
     };
   }, [open]);
 
-  const openDemo = () => {
-    const id = randomId();
-    setReference(`${refPrefix}-${id.slice(0, 8).toUpperCase()}`);
-    setOpen(true);
-  };
-
   return (
     <main>
       <style dangerouslySetInnerHTML={{ __html: styles }} />
-
-      <div className="demo-page">
-        <button
-          type="button"
-          className="demo-trigger"
-          id="demoTrigger"
-          onClick={openDemo}
-        >
-          Open Thank You Modal
-        </button>
-        <p className="demo-note">
-          Preview only. In production, openThankYouModal(submissionId) is called
-          when the form modal&apos;s submission succeeds, OR the modal opens
-          automatically if the URL contains <code>?ref=&lt;uuid&gt;</code>.
-        </p>
-      </div>
 
       <div
         className={`thanks-modal-overlay${open ? " active" : ""}`}
         id="thanksOverlay"
         aria-hidden="true"
-        onClick={() => setOpen(false)}
+        onClick={close}
       />
 
       <aside
@@ -466,7 +436,7 @@ export default function TgsEnquiryThankYouModal({
             id="thanksClose"
             type="button"
             aria-label="Close"
-            onClick={() => setOpen(false)}
+            onClick={close}
           >
             &times;
           </button>

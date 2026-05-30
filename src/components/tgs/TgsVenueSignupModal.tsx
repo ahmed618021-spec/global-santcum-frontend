@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 type BillingCycle = "yearly" | "monthly";
@@ -298,12 +299,13 @@ function trackEvent(event: string, cfg: SignupConfig | null, submissionId: strin
 }
 
 export default function TgsVenueSignupModal() {
-  const [billingCycle, setBillingCycle] = useState<BillingCycle>("yearly");
+  const router = useRouter();
+  const [billingCycle] = useState<BillingCycle>("yearly");
   const [open, setOpen] = useState(true);
-  const [cfg, setCfg] = useState<SignupConfig>(() => createConfig(TRIGGERS[0].items[0], "yearly"));
+  const [cfg] = useState<SignupConfig>(() => createConfig(TRIGGERS[0].items[0], "yearly"));
   const [stepIdx, setStepIdx] = useState(0);
   const [form, setForm] = useState<FormData>(EMPTY_FORM);
-  const [submissionId, setSubmissionId] = useState(() => createSubmissionId());
+  const [submissionId] = useState(() => createSubmissionId());
   const [formError, setFormError] = useState("");
   const [termsScrolled, setTermsScrolled] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -344,24 +346,12 @@ export default function TgsVenueSignupModal() {
     return "Continue \u2192";
   }, [stepName]);
 
-  function openFromTrigger(trigger: SignupTrigger) {
-    const nextConfig = createConfig(trigger, billingCycle);
-    setCfg(nextConfig);
-    setStepIdx(0);
-    setForm(EMPTY_FORM);
-    setFormError("");
-    setTermsScrolled(false);
-    setTermsAccepted(false);
-    setGdprAccepted(false);
-    setSubmissionId(createSubmissionId());
-    setOpen(true);
-  }
-
   function closeModal(force = false) {
     if (!force && stepIdx > 0 && stepName !== "confirm" && !window.confirm("Close this signup? Your progress will be lost.")) {
       return;
     }
     setOpen(false);
+    router.back();
   }
 
   function validateDetails() {
@@ -446,45 +436,7 @@ export default function TgsVenueSignupModal() {
   return (
     <>
       <style>{venueSignupStyles}</style>
-      <main className="demo-page">
-        <div className="demo-cycle-toggle">
-          <span className="demo-cycle-toggle-label">Simulating page-level cycle:</span>
-          {(["yearly", "monthly"] as BillingCycle[]).map((cycle) => (
-            <button
-              className={`demo-cycle-btn ${billingCycle === cycle ? "active" : ""}`}
-              key={cycle}
-              onClick={() => setBillingCycle(cycle)}
-              type="button"
-            >
-              {cycle === "yearly" ? "Yearly" : "Monthly"}
-            </button>
-          ))}
-        </div>
-
-        {TRIGGERS.map((section) => (
-          <section className="demo-section" key={section.label}>
-            <p className="demo-section-label">{section.label}</p>
-            <div className="demo-row">
-              {section.items.map((trigger) => (
-                <button
-                  className={`demo-trigger ${trigger.gold ? "gold" : ""}`}
-                  key={trigger.label}
-                  onClick={() => openFromTrigger(trigger)}
-                  type="button"
-                >
-                  {trigger.label}
-                </button>
-              ))}
-            </div>
-          </section>
-        ))}
-
-        <p className="demo-note">
-          Preview only. In production, these data-attributes go directly on the <code>&lt;a&gt;</code> tier CTAs
-          already on <code>/list-your-venue</code>. The modal reads everything from the trigger element&apos;s{" "}
-          <code>dataset</code> on open - no per-journey config inside the modal.
-        </p>
-      </main>
+      <main />
 
       <div
         aria-hidden={!open}
