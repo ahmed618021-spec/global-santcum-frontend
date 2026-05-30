@@ -1,0 +1,3265 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
+
+const styles = `
+:root {
+    --warm-white: #FDFCF9;
+    --warm-cream: #F7F5F1;
+    --warm-charcoal: #3A3A3A;
+    --charcoal: #313131;
+    --charcoal-80: rgba(49, 49, 49, 0.8);
+    --charcoal-70: rgba(49, 49, 49, 0.7);
+    --charcoal-light: rgba(49, 49, 49, 0.7);
+    --charcoal-lighter: rgba(49, 49, 49, 0.5);
+    --charcoal-50: rgba(49, 49, 49, 0.5);
+    --charcoal-30: rgba(49, 49, 49, 0.3);
+    --charcoal-15: rgba(49, 49, 49, 0.15);
+    --charcoal-border: rgba(49, 49, 49, 0.15);
+    --charcoal-subtle: rgba(49, 49, 49, 0.1);
+    --charcoal-10: rgba(49, 49, 49, 0.1);
+    --charcoal-08: rgba(49, 49, 49, 0.08);
+    --charcoal-05: rgba(49, 49, 49, 0.05);
+    --gold: #C4A265;
+    --gold-accent: #C4A265;
+    --gold-dark: #7A644F;
+    --canyon-clay: #7A644F;
+    --mist: #8B8B8B;
+    --light-rule: #E0D8CC;
+
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Montserrat', sans-serif;
+
+    --section-padding: 100px;
+    --container-width: 1200px;
+    --text-width: 680px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-serif);
+    color: var(--charcoal);
+    background-color: var(--warm-white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+.skip-to-content {
+    position: absolute; top: -100px; left: 16px;
+    background: var(--charcoal); color: var(--warm-white);
+    padding: 12px 20px; z-index: 9999;
+    font-family: var(--font-sans); font-size: 13px; font-weight: 500;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    transition: top 0.2s; text-decoration: none;
+}
+.skip-to-content:focus { top: 16px; outline: 2px solid var(--gold-accent); }
+
+.sample-ribbon {
+    position: absolute;
+    top: 110px;
+    right: 32px;
+    z-index: 30;
+    background: rgba(49, 49, 49, 0.85);
+    backdrop-filter: blur(6px);
+    padding: 10px 18px 10px 18px;
+    border: 1px solid var(--gold-accent);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: right;
+    line-height: 1.3;
+}
+.sample-ribbon-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-accent);
+}
+.sample-ribbon-text {
+    font-family: var(--font-serif);
+    font-size: 12px;
+    font-weight: 400;
+    font-style: italic;
+    color: rgba(255,255,255,0.92);
+    letter-spacing: 0.03em;
+}
+@media (max-width: 768px) {
+    .sample-ribbon {
+        top: 84px;
+        right: 16px;
+        padding: 8px 14px;
+    }
+    .sample-ribbon-eyebrow { font-size: 7px; }
+    .sample-ribbon-text { font-size: 11px; }
+}
+
+.nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 48px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0) 100%);
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+}
+.nav.scrolled {
+    background: rgba(253, 252, 249, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--charcoal-08);
+}
+.nav-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+}
+.nav-left { display: flex; align-items: center; gap: 14px; cursor: pointer; }
+.nav-hamburger {
+    display: flex; flex-direction: column; gap: 4px;
+    background: transparent; border: none; padding: 0;
+    cursor: pointer; color: inherit;
+}
+.nav-hamburger:focus-visible { outline: 2px solid var(--gold-accent); outline-offset: 4px; }
+.nav-hamburger span {
+    width: 22px; height: 1px; background: #FFFFFF;
+    transition: background 0.3s, transform 0.3s, opacity 0.3s;
+    display: block;
+}
+.nav.scrolled .nav-hamburger span { background: var(--charcoal); }
+.nav-hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+.nav-hamburger.active span:nth-child(2) { opacity: 0; }
+.nav-hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+.nav-hamburger-label {
+    font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: #FFFFFF; transition: color 0.3s;
+}
+.nav.scrolled .nav-hamburger-label { color: var(--charcoal); }
+.nav-logo-area {
+    display: flex; align-items: center; gap: 14px;
+    color: #FFFFFF; transition: color 0.3s;
+    text-decoration: none;
+}
+.nav.scrolled .nav-logo-area { color: var(--charcoal); }
+.nav-logo {
+    width: 40px; height: 40px;
+    border: 1px solid var(--gold-accent);
+    transform: rotate(45deg);
+    position: relative;
+}
+.nav-logo::after {
+    content: ""; position: absolute; inset: 4px;
+    border: 1px solid var(--gold-accent);
+}
+.nav-brand-text {
+    font-family: var(--font-serif); font-size: 18px;
+    font-weight: 400; letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: inherit;
+}
+.nav-right { width: 80px; }
+
+.drawer-overlay {
+    position: fixed; inset: 0; z-index: 998;
+    background: rgba(49,49,49,0.45);
+    backdrop-filter: blur(2px);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.drawer-overlay.active { opacity: 1; visibility: visible; }
+
+.drawer {
+    position: fixed; top: 0; left: 0;
+    width: 440px; max-width: 90vw; height: 100vh;
+    background: var(--warm-white); z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    display: flex; flex-direction: column; overflow: hidden;
+}
+.drawer.active { transform: translateX(0); }
+.drawer-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--charcoal-08);
+    flex-shrink: 0;
+}
+.drawer-header-left { display: flex; align-items: center; gap: 12px; }
+.drawer-logo {
+    width: 32px; height: 32px;
+    border: 1px solid var(--gold-accent);
+    transform: rotate(45deg); position: relative;
+}
+.drawer-logo::after {
+    content: ""; position: absolute; inset: 3px;
+    border: 1px solid var(--gold-accent);
+}
+.drawer-label {
+    font-family: var(--font-sans); font-size: 10px;
+    font-weight: 500; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--charcoal-50);
+}
+.drawer-close {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid var(--charcoal-08); background: var(--warm-cream);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: var(--charcoal-50);
+    transition: all 0.25s;
+}
+.drawer-close:hover { border-color: var(--charcoal-30); color: var(--charcoal); }
+.drawer-search {
+    padding: 20px 36px;
+    border-bottom: 1px solid var(--charcoal-08);
+    flex-shrink: 0;
+}
+.drawer-search-bar {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--warm-cream); border: 1px solid var(--charcoal-08);
+    border-radius: 50px; padding: 10px 18px;
+    transition: border-color 0.2s;
+}
+.drawer-search-bar:focus-within { border-color: var(--charcoal-30); }
+.drawer-search-bar svg { width: 16px; height: 16px; color: var(--charcoal-30); flex-shrink: 0; }
+.drawer-search-bar input {
+    flex: 1; border: none; outline: none; background: transparent;
+    font-family: var(--font-sans); font-size: 13px; color: var(--charcoal);
+}
+.drawer-search-bar input::placeholder { color: var(--charcoal-30); }
+.drawer-body { flex: 1; overflow-y: auto; padding: 28px 36px; }
+.drawer-group { margin-bottom: 32px; }
+.drawer-group:last-child { margin-bottom: 0; }
+.drawer-group-label {
+    font-family: var(--font-sans); font-size: 9px;
+    font-weight: 600; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--charcoal);
+    margin-bottom: 12px; padding-left: 2px;
+}
+.drawer-link {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--font-serif); font-size: 26px; font-weight: 300;
+    color: var(--charcoal); padding: 12px 0;
+    border-bottom: 1px solid var(--charcoal-05);
+    transition: color 0.3s, padding-left 0.3s;
+    text-decoration: none;
+}
+.drawer-link:last-child { border-bottom: none; }
+.drawer-link:hover { color: var(--charcoal-70); padding-left: 6px; }
+.drawer-link-arrow { font-size: 18px; color: var(--charcoal-15); transition: color 0.3s, transform 0.3s; }
+.drawer-link:hover .drawer-link-arrow { color: var(--charcoal-50); transform: translateX(4px); }
+.drawer-secondary-link {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-serif); font-size: 26px; font-weight: 300;
+    color: var(--charcoal); padding: 10px 0;
+    transition: color 0.2s, padding-left 0.2s;
+    text-decoration: none;
+}
+.drawer-secondary-link:hover { color: var(--charcoal-70); padding-left: 4px; }
+.drawer-cta {
+    display: block; width: 100%; text-align: center;
+    background: var(--charcoal); color: #FFFFFF;
+    font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 16px 24px; transition: background 0.3s; margin-top: 8px;
+    text-decoration: none;
+}
+.drawer-cta:hover { background: var(--warm-charcoal); }
+.drawer-footer {
+    padding: 24px 36px;
+    border-top: 1px solid var(--charcoal-08);
+    background: var(--warm-cream); flex-shrink: 0;
+}
+.drawer-footer-contact {
+    display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;
+}
+.drawer-footer-item {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-sans); font-size: 12px;
+    color: var(--charcoal-50); transition: color 0.2s;
+    text-decoration: none;
+}
+.drawer-footer-item:hover { color: var(--charcoal); }
+.drawer-footer-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+.drawer-social { display: flex; gap: 10px; }
+.drawer-social a {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid var(--charcoal-08);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--charcoal-50); font-family: var(--font-sans);
+    font-size: 11px; font-weight: 500; transition: all 0.2s;
+    text-decoration: none;
+}
+.drawer-social a:hover { border-color: var(--charcoal); color: var(--charcoal); }
+
+.hero-gallery {
+    position: relative;
+    height: 85vh;
+    min-height: 600px;
+    max-height: 900px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4)),
+                url('https://images.unsplash.com/photo-1600618528240-fb9fc964b853?w=1920&q=80') center/cover;
+}
+
+.hero-content {
+    position: absolute;
+    bottom: 140px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: white;
+}
+
+.hero-venue-name {
+    font-family: var(--font-serif);
+    font-size: 56px;
+    font-weight: 400;
+    margin-bottom: 12px;
+}
+
+.hero-location {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+.hero-view-photos {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hero-view-photos:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: white;
+}
+
+.hero-thumbnails {
+    position: absolute;
+    bottom: 30px;
+    left: 40px;
+    display: flex;
+    gap: 10px;
+}
+
+.hero-thumb {
+    width: 100px;
+    height: 70px;
+    border-radius: 4px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.hero-thumb:hover {
+    opacity: 1;
+}
+
+.sticky-info-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--charcoal-subtle);
+    padding: 0 40px;
+    display: none;
+}
+
+.sticky-info-bar.visible {
+    display: block;
+}
+
+.sticky-info-inner {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sticky-info-left h2 {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--charcoal);
+}
+
+.sticky-info-left p {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--charcoal-lighter);
+}
+
+.sticky-info-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.sticky-stats {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    color: var(--charcoal-light);
+}
+
+.sticky-stats span {
+    margin: 0 8px;
+    color: var(--charcoal-lighter);
+}
+
+.sticky-cta {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    background: var(--charcoal);
+    color: white;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: opacity 0.3s ease;
+}
+
+.sticky-cta:hover {
+    opacity: 0.85;
+}
+
+.tab-nav {
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--charcoal-subtle);
+}
+
+.tab-nav-inner {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 40px;
+}
+
+.tab-nav-inner::-webkit-scrollbar {
+    display: none;
+}
+
+.tab {
+    padding: 22px 28px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--charcoal-light);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.tab:hover {
+    color: var(--charcoal);
+}
+
+.tab.active {
+    color: var(--charcoal);
+    border-bottom-color: var(--charcoal);
+}
+
+.main-content {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.content-area {
+    flex: 1;
+    min-width: 0;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.floating-sidebar {
+    width: 340px;
+    padding: 30px;
+    position: sticky;
+    top: 80px;
+    height: fit-content;
+    margin-left: 40px;
+}
+
+.sidebar-card {
+    background: var(--warm-white);
+    border: 1px solid var(--charcoal-border);
+    border-radius: 4px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+.sidebar-price-label {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--charcoal-lighter);
+    margin-bottom: 8px;
+}
+
+.sidebar-price {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--charcoal);
+    margin-bottom: 4px;
+}
+
+.sidebar-price span {
+    font-size: 16px;
+}
+
+.sidebar-price-period {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    color: var(--charcoal-light);
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--charcoal-subtle);
+}
+
+.sidebar-stats {
+    margin-bottom: 24px;
+}
+
+.sidebar-stat {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    font-family: var(--font-serif);
+    font-size: 15px;
+    color: var(--charcoal-light);
+}
+
+.sidebar-stat svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--charcoal);
+    stroke-width: 1.5;
+    fill: none;
+}
+
+.sidebar-enquire {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: var(--charcoal);
+    color: white;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    margin-bottom: 16px;
+}
+
+.sidebar-enquire:hover {
+    opacity: 0.85;
+}
+
+.sidebar-save {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: var(--charcoal);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    border: 1px solid var(--charcoal-border);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sidebar-save:hover {
+    border-color: var(--charcoal);
+}
+
+.sidebar-save svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--charcoal);
+    stroke-width: 1.5;
+    fill: none;
+}
+
+.sidebar-response {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--charcoal-lighter);
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--charcoal-subtle);
+}
+
+.section {
+    padding: var(--section-padding) 40px;
+}
+
+.section--cream {
+    background: var(--warm-cream);
+}
+
+.section--white {
+    background: var(--warm-white);
+}
+
+.section--charcoal {
+    background: var(--charcoal);
+    color: white;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    margin-bottom: 16px;
+}
+
+.section--charcoal .section-label {
+    color: rgba(255,255,255,0.7);
+}
+
+.section-title {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 12px;
+}
+
+.section--charcoal .section-title {
+    color: white;
+}
+
+.section-subtitle {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--charcoal-light);
+}
+
+.section--charcoal .section-subtitle {
+    color: rgba(255,255,255,0.7);
+}
+
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.container--narrow {
+    max-width: var(--text-width);
+}
+
+.tab-hero {
+    position: relative;
+    height: 70vh;
+    min-height: 500px;
+    max-height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+}
+
+.tab-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5));
+}
+
+.tab-hero-content {
+    position: relative;
+    z-index: 1;
+    color: white;
+    max-width: 700px;
+    padding: 0 40px;
+}
+
+.tab-hero-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    opacity: 0.9;
+    margin-bottom: 20px;
+}
+
+.tab-hero-title {
+    font-family: var(--font-serif);
+    font-size: 42px;
+    font-weight: 400;
+    margin-bottom: 16px;
+}
+
+.tab-hero-subtitle {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 300;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+.intro-text {
+    max-width: var(--text-width);
+    margin: 0 auto;
+    text-align: center;
+}
+
+.intro-line {
+    width: 60px;
+    height: 1px;
+    background: var(--charcoal-lighter);
+    margin: 0 auto 40px;
+}
+
+.intro-text p {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--charcoal);
+    margin-bottom: 24px;
+}
+
+.intro-text p:last-child {
+    margin-bottom: 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--warm-cream);
+    border-radius: 4px;
+}
+
+.section--cream .stat-item {
+    background: var(--warm-white);
+}
+
+.stat-value {
+    font-family: var(--font-serif);
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--charcoal);
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--charcoal-lighter);
+}
+
+.feature-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.feature-block--reverse {
+    direction: rtl;
+}
+
+.feature-block--reverse > * {
+    direction: ltr;
+}
+
+.feature-image {
+    aspect-ratio: 4/3;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.feature-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.feature-content {
+
+}
+
+.feature-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--charcoal-lighter);
+    margin-bottom: 16px;
+}
+
+.feature-title {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.feature-text {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--charcoal-light);
+    margin-bottom: 24px;
+}
+
+.feature-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    padding: 10px 18px;
+    background: var(--warm-cream);
+    border: 1px solid var(--charcoal-border);
+    border-radius: 2px;
+    color: var(--charcoal-light);
+}
+
+.section--cream .tag {
+    background: var(--warm-white);
+}
+
+.card-grid {
+    display: grid;
+    gap: 30px;
+}
+
+.card-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.card-grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.card-grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.card {
+    background: var(--warm-cream);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section--cream .card {
+    background: var(--warm-white);
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(49, 49, 49, 0.08);
+}
+
+.card-image {
+    aspect-ratio: 3/2;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.card-content {
+    padding: 24px;
+}
+
+.card-title {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+}
+
+.card-meta {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--charcoal-light);
+    margin-bottom: 12px;
+}
+
+.card-description {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--charcoal-light);
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+}
+
+.icon-item {
+    text-align: center;
+}
+
+.icon-wrapper {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-wrapper svg {
+    width: 32px;
+    height: 32px;
+    stroke: var(--charcoal);
+    stroke-width: 1.5;
+    fill: none;
+}
+
+.icon-label {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--charcoal);
+}
+
+.view-all {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.view-all a {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--charcoal);
+    text-decoration: none;
+    border-bottom: 1px solid var(--charcoal);
+    padding-bottom: 2px;
+    transition: opacity 0.3s ease;
+}
+
+.view-all a:hover {
+    opacity: 0.7;
+}
+
+.host-image {
+    aspect-ratio: 4/5;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.host-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-break {
+    height: 50vh;
+    min-height: 350px;
+    max-height: 500px;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}
+
+@media (max-width: 768px) {
+    .image-break {
+        background-attachment: scroll;
+    }
+}
+
+.amenity-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+}
+
+.amenity-column-title {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--charcoal);
+}
+
+.amenity-item {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--charcoal-subtle);
+}
+
+.amenity-item:last-child {
+    border-bottom: none;
+}
+
+.amenity-name {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 4px;
+}
+
+.amenity-detail {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--charcoal-light);
+}
+
+.policy-card {
+    padding: 40px;
+    background: var(--warm-cream);
+    border-radius: 4px;
+}
+
+.section--cream .policy-card {
+    background: var(--warm-white);
+}
+
+.policy-card-title {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--charcoal-border);
+}
+
+.policy-item {
+    margin-bottom: 16px;
+}
+
+.policy-item:last-child {
+    margin-bottom: 0;
+}
+
+.policy-item-label {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 4px;
+}
+
+.policy-item-value {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--charcoal-light);
+}
+
+.pricing-hero {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.pricing-from {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--charcoal-lighter);
+    margin-bottom: 8px;
+}
+
+.pricing-amount {
+    font-family: var(--font-serif);
+    font-size: 64px;
+    font-weight: 300;
+    color: var(--charcoal);
+    line-height: 1;
+}
+
+.pricing-amount span {
+    font-size: 24px;
+    vertical-align: top;
+    margin-right: 4px;
+}
+
+.pricing-period {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--charcoal-light);
+    margin-top: 8px;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.pricing-card {
+    background: var(--warm-cream);
+    border-radius: 4px;
+    padding: 40px;
+    text-align: center;
+}
+
+.section--cream .pricing-card {
+    background: var(--warm-white);
+}
+
+.pricing-card--featured {
+    border: 2px solid var(--charcoal);
+    position: relative;
+}
+
+.pricing-card-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--charcoal);
+    color: var(--warm-white);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 2px;
+}
+
+.pricing-card-season {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--charcoal-lighter);
+    margin-bottom: 8px;
+}
+
+.pricing-card-dates {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--charcoal-light);
+    margin-bottom: 24px;
+}
+
+.pricing-card-amount {
+    font-family: var(--font-serif);
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--charcoal);
+    margin-bottom: 4px;
+}
+
+.pricing-card-amount span {
+    font-size: 18px;
+    vertical-align: top;
+}
+
+.pricing-card-unit {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--charcoal-lighter);
+}
+
+.quick-facts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-top: 60px;
+}
+
+.quick-fact {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--warm-cream);
+    border-radius: 4px;
+}
+
+.section--cream .quick-fact {
+    background: var(--warm-white);
+}
+
+.quick-fact-value {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+}
+
+.quick-fact-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--charcoal-lighter);
+}
+
+.process-timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.process-timeline::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--charcoal-border);
+}
+
+.process-step {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.process-step:last-child {
+    margin-bottom: 0;
+}
+
+.process-step-number {
+    width: 48px;
+    height: 48px;
+    background: var(--charcoal);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--warm-white);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.process-step-content {
+    padding-top: 8px;
+}
+
+.process-step-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+}
+
+.process-step-text {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--charcoal-light);
+}
+
+.cancellation-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cancellation-table th,
+.cancellation-table td {
+    padding: 20px 24px;
+    text-align: left;
+    border-bottom: 1px solid var(--charcoal-subtle);
+}
+
+.cancellation-table th {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--charcoal-lighter);
+    background: var(--warm-cream);
+}
+
+.section--cream .cancellation-table th {
+    background: rgba(49, 49, 49, 0.05);
+}
+
+.cancellation-table td {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--charcoal-light);
+}
+
+.cancellation-table td:first-child {
+    font-weight: 400;
+    color: var(--charcoal);
+}
+
+.cancellation-table td:last-child {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--charcoal);
+}
+
+.faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    border-bottom: 1px solid var(--charcoal-subtle);
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+.faq-question-text {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--charcoal);
+}
+
+.faq-icon {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.faq-icon::before,
+.faq-icon::after {
+    content: '';
+    position: absolute;
+    background: var(--charcoal);
+    transition: transform 0.3s ease;
+}
+
+.faq-icon::before {
+    width: 16px;
+    height: 1px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.faq-icon::after {
+    width: 1px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.faq-item.active .faq-icon::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 300px;
+}
+
+.faq-answer-text {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--charcoal-light);
+    line-height: 1.7;
+    padding-bottom: 24px;
+}
+
+.cta {
+    padding: 80px 40px;
+    text-align: center;
+}
+
+.cta-title {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+}
+
+.cta-text {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 18px 36px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn--primary {
+    background: var(--warm-white);
+    color: var(--charcoal);
+    border: none;
+}
+
+.btn--primary:hover {
+    background: var(--warm-cream);
+}
+
+.btn--secondary {
+    background: transparent;
+    color: var(--warm-white);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn--secondary:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.similar-venues {
+    padding: var(--section-padding) 40px;
+    background: var(--warm-cream);
+}
+
+.similar-venues .container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.similar-venues .section-header {
+    margin-bottom: 50px;
+}
+
+.venue-card {
+    background: var(--warm-white);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.venue-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(49, 49, 49, 0.08);
+}
+
+.venue-card-image {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+}
+
+.venue-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.venue-card:hover .venue-card-image img {
+    transform: scale(1.05);
+}
+
+.venue-card-content {
+    padding: 24px;
+}
+
+.venue-card-name {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+}
+
+.venue-card-location {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--charcoal-lighter);
+    margin-bottom: 16px;
+}
+
+.venue-card-price {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--charcoal);
+}
+
+.venue-card-price span {
+    font-weight: 300;
+    color: var(--charcoal-light);
+}
+
+.footer { background: var(--charcoal); color: rgba(255,255,255,0.7); padding: 80px 48px 40px; }
+.footer-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 48px; padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.footer-brand { display: flex; flex-direction: column; gap: 20px; }
+.footer-logo-placeholder { width: 72px; height: 72px; border: 2px dashed var(--gold-accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(196, 162, 101, 0.08); flex-shrink: 0; }
+.footer-logo-placeholder span { font-family: var(--font-sans); font-size: 8px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gold-accent); text-align: center; line-height: 1.3; padding: 4px; }
+.footer-brand-name { font-family: var(--font-serif); font-size: 18px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.9); }
+.footer-brand-text { font-family: var(--font-serif); font-size: 15px; font-weight: 400; line-height: 1.7; color: rgba(255,255,255,0.5); }
+.footer-brand-meta { font-family: var(--font-sans); font-size: 11px; font-weight: 400; line-height: 1.7; letter-spacing: 0.05em; color: rgba(255,255,255,0.35); }
+.footer-col-title { font-family: var(--font-sans); font-size: 10px; font-weight: 500; letter-spacing: 0.20em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.footer-links a { font-family: var(--font-serif); font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.6); transition: color 0.3s; text-decoration: none; }
+.footer-links a:hover { color: rgba(255,255,255,0.95); }
+.footer-bottom { max-width: 1400px; margin: 0 auto; padding-top: 32px; display: flex; justify-content: space-between; align-items: center; }
+.footer-copyright { font-family: var(--font-sans); font-size: 12px; font-weight: 400; letter-spacing: 0.05em; color: rgba(255,255,255,0.3); }
+.footer-social { display: flex; gap: 24px; }
+.footer-social a { font-family: var(--font-sans); font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); transition: color 0.3s ease; text-decoration: none; }
+.footer-social a:hover { color: var(--gold-accent); }
+
+@media (max-width: 1200px) {
+    .floating-sidebar {
+        display: none;
+    }
+
+    .main-content {
+        display: block;
+    }
+}
+
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .feature-block {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .feature-block--reverse {
+        direction: ltr;
+    }
+
+    .card-grid--3 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .card-grid--4 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .icon-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+
+    .quick-facts {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .amenity-columns {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --section-padding: 60px;
+    }
+
+    .nav-inner {
+        padding: 0 24px;
+        height: 68px;
+    }
+
+    .nav-hamburger-label { display: none; }
+    .nav-brand-text { font-size: 14px; letter-spacing: 0.1em; }
+    .drawer { width: 100%; max-width: 100vw; }
+
+    .hero-gallery {
+        height: 70vh;
+    }
+
+    .hero-venue-name {
+        font-size: 36px;
+    }
+
+    .hero-thumbnails {
+        display: none;
+    }
+
+    .tab-nav-inner {
+        padding: 0 20px;
+    }
+
+    .section {
+        padding: var(--section-padding) 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-value {
+        font-size: 32px;
+    }
+
+    .card-grid--3,
+    .card-grid--2 {
+        grid-template-columns: 1fr;
+    }
+
+    .icon-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tab-hero-title {
+        font-size: 32px;
+    }
+
+    .feature-title {
+        font-size: 26px;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer { padding: 60px 24px 32px; }
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+
+    .pricing-amount {
+        font-size: 48px;
+    }
+
+    .process-step {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .process-timeline::before {
+        display: none;
+    }
+}
+`;
+
+const tabs = [
+  { id: "overview", label: "Overview" },
+  { id: "spaces", label: "Retreat Spaces" },
+  { id: "accommodation", label: "Accommodation" },
+  { id: "amenities", label: "Amenities" },
+  { id: "experiences", label: "Experiences" },
+  { id: "location", label: "Location" },
+  { id: "reviews", label: "Reviews" },
+  { id: "booking", label: "Booking" },
+];
+
+export default function TgsRetreatVenueDetail() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [stickyVisible, setStickyVisible] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [activeFaq, setActiveFaq] = useState(0);
+
+  const slug = useMemo(() => {
+    const segments = (pathname || "").split("/").filter(Boolean);
+    const idx = segments.indexOf("retreat-venues");
+    const candidate = idx >= 0 ? segments[idx + 1] : undefined;
+    return candidate || "santosa-retreat";
+  }, [pathname]);
+
+  const enquiryHref = `/global-santcum/retreat-venues/${slug}/enquiry`;
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+      setStickyVisible(window.scrollY > 600);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = drawerOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [drawerOpen]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && drawerOpen) {
+        setDrawerOpen(false);
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [drawerOpen]);
+
+  const switchTab = (tabId: string) => {
+    setActiveTab(tabId);
+    window.scrollTo({ top: 500, behavior: "smooth" });
+  };
+
+  const goToEnquiry = () => {
+    router.push(enquiryHref);
+  };
+
+  return (
+    <div>
+      <style dangerouslySetInnerHTML={{ __html: styles }} />
+
+      <a className="skip-to-content" href="#main-content">Skip to main content</a>
+
+      <nav className={`nav${scrolled ? " scrolled" : ""}`} id="mainNav" aria-label="Primary">
+        <div className="nav-inner">
+          <div className="nav-left" onClick={() => setDrawerOpen((open) => !open)}>
+            <button
+              className={`nav-hamburger${drawerOpen ? " active" : ""}`}
+              id="navHamburger"
+              type="button"
+              aria-label={drawerOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={drawerOpen ? "true" : "false"}
+              aria-controls="navDrawer"
+            >
+              <span></span><span></span><span></span>
+            </button>
+            <span className="nav-hamburger-label" aria-hidden="true">Menu</span>
+          </div>
+          <Link href="/global-santcum/web" className="nav-logo-area" aria-label="The Global Sanctum — home">
+            <span className="nav-logo" aria-hidden="true"></span>
+            <span className="nav-brand-text">The Global Sanctum</span>
+          </Link>
+          <div className="nav-right"></div>
+        </div>
+      </nav>
+
+      <div
+        className={`drawer-overlay${drawerOpen ? " active" : ""}`}
+        id="drawerOverlay"
+        onClick={() => setDrawerOpen(false)}
+        aria-hidden={drawerOpen ? "false" : "true"}
+      ></div>
+      <div
+        className={`drawer${drawerOpen ? " active" : ""}`}
+        id="navDrawer"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
+        aria-hidden={drawerOpen ? "false" : "true"}
+      >
+        <div className="drawer-header">
+          <div className="drawer-header-left">
+            <span className="drawer-logo"></span>
+            <span className="drawer-label">Navigation</span>
+          </div>
+          <button className="drawer-close" onClick={() => setDrawerOpen(false)} aria-label="Close menu">&times;</button>
+        </div>
+        <div className="drawer-search">
+          <div className="drawer-search-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" placeholder="Search venues, experiences, locations..." />
+          </div>
+        </div>
+        <div className="drawer-body">
+          <div className="drawer-group">
+            <div className="drawer-group-label">Discover</div>
+            <Link href="/global-santcum/retreat-venues" className="drawer-link">Retreat Venues<span className="drawer-link-arrow">→</span></Link>
+            <Link href="/global-santcum/wellness-venues" className="drawer-link">Wellness Venues<span className="drawer-link-arrow">→</span></Link>
+            <Link href="/global-santcum/wellness-experiences" className="drawer-link">Wellness Experiences<span className="drawer-link-arrow">→</span></Link>
+          </div>
+          <div className="drawer-group">
+            <div className="drawer-group-label">Learn</div>
+            <Link href="/global-santcum/about" className="drawer-secondary-link">About Us</Link>
+            <Link href="/global-santcum/how-it-works" className="drawer-secondary-link">How It Works</Link>
+            <Link href="/global-santcum/the-wellness-edit" className="drawer-secondary-link">The Wellness Edit</Link>
+          </div>
+          <div className="drawer-group">
+            <div className="drawer-group-label">Connect</div>
+            <Link href="/global-santcum/contact" className="drawer-secondary-link">Contact Us</Link>
+            <Link href="/global-santcum/list-your-venue" className="drawer-secondary-link">List Your Venue</Link>
+          </div>
+          <div className="drawer-group">
+            <Link href="/global-santcum/list-your-venue" className="drawer-cta">List Your Venue</Link>
+          </div>
+        </div>
+        <div className="drawer-footer">
+          <div className="drawer-footer-contact">
+            <a className="email-link drawer-footer-item" href="mailto:hello@theglobalsanctum.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <span className="email-text">hello@theglobalsanctum.com</span>
+            </a>
+          </div>
+          <div className="drawer-social">
+            <a href="https://www.facebook.com/profile.php?id=61577706717526" target="_blank" rel="noopener" aria-label="Facebook">Fb</a>
+            <a href="https://www.instagram.com/theglobalsanctum/" target="_blank" rel="noopener" aria-label="Instagram">Ig</a>
+            <a href="https://www.linkedin.com/company/the-global-sanctum/" target="_blank" rel="noopener" aria-label="LinkedIn">Li</a>
+          </div>
+        </div>
+      </div>
+
+      <main id="main-content" role="main">
+
+        <section className="hero-gallery">
+          <div className="sample-ribbon" role="note" aria-label="This is a sample listing">
+            <span className="sample-ribbon-eyebrow">Sample Listing</span>
+            <span className="sample-ribbon-text">Preview Only</span>
+          </div>
+          <div className="hero-content">
+            <h1 className="hero-venue-name">Santosa Retreat</h1>
+            <p className="hero-location">Coromandel Peninsula, New Zealand</p>
+            <a href="#" className="hero-view-photos">View All 48 Photos</a>
+          </div>
+          <div className="hero-thumbnails">
+            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=200&q=80" alt="Thumbnail 1" className="hero-thumb" />
+            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=200&q=80" alt="Thumbnail 2" className="hero-thumb" />
+            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=200&q=80" alt="Thumbnail 3" className="hero-thumb" />
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=200&q=80" alt="Thumbnail 4" className="hero-thumb" />
+          </div>
+        </section>
+
+        <div className={`sticky-info-bar${stickyVisible ? " visible" : ""}`} id="stickyInfoBar">
+          <div className="sticky-info-inner">
+            <div className="sticky-info-left">
+              <h2>Santosa Retreat</h2>
+              <p>Coromandel, New Zealand</p>
+            </div>
+            <div className="sticky-info-right">
+              <div className="sticky-stats">
+                24 Guests<span>·</span>3 Shalas<span>·</span>From $2,800/night
+              </div>
+              <a href="#" className="sticky-cta" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire Now</a>
+            </div>
+          </div>
+        </div>
+
+        <nav className="tab-nav">
+          <div className="tab-nav-inner">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                className={`tab${activeTab === tab.id ? " active" : ""}`}
+                data-tab={tab.id}
+                onClick={() => switchTab(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </nav>
+
+        <div className="main-content">
+
+          <div className="content-area">
+
+            <div className={`tab-content${activeTab === "overview" ? " active" : ""}`} id="overview">
+
+              <section className="tab-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1545389336-cf090694435e?w=1920&q=80')" }}>
+                <div className="tab-hero-content">
+                  <p className="tab-hero-subtitle" style={{ fontSize: "28px" }}>&quot;A place where transformation happens as naturally as breathing&quot;</p>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="intro-text">
+                  <div className="intro-line"></div>
+                  <p>Santosa Retreat is a sanctuary perched on the edge of an ancient forest, where the mountains meet the Tasman Sea. For over a decade, we have welcomed retreat facilitators seeking a space that holds transformation.</p>
+                  <p>Our three practice spaces—from an ocean-facing shala to an intimate garden studio—offer the versatility to support any retreat format. Here, the only agenda is the one you bring.</p>
+                </div>
+              </section>
+
+              <section className="section section--white">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">At a Glance</p>
+                  </header>
+
+                  <div className="stats-grid">
+                    <div className="stat-item">
+                      <p className="stat-value">24</p>
+                      <p className="stat-label">Guests</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value">3</p>
+                      <p className="stat-label">Shalas</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value">12</p>
+                      <p className="stat-label">Acres</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value">2.5hr</p>
+                      <p className="stat-label">Airport</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value">$2,800</p>
+                      <p className="stat-label">From</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value">4.9</p>
+                      <p className="stat-label">Rating</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <div className="feature-block">
+                    <div className="feature-image">
+                      <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80" alt="Yoga practice" />
+                    </div>
+                    <div className="feature-content">
+                      <p className="feature-label">The Experience</p>
+                      <h2 className="feature-title">A Space for Transformation</h2>
+                      <p className="feature-text">Every element of Santosa has been considered with intention. The way morning light filters through the shala. The silence that settles over the land at dusk. The kitchen designed for nourishing large groups with ease.</p>
+                      <p className="feature-text">We believe the best retreats happen when facilitators can focus entirely on their participants—not logistics. That&apos;s why we handle the details, so you can hold space.</p>
+                      <div className="feature-tags">
+                        <span className="tag">Yoga</span>
+                        <span className="tag">Meditation</span>
+                        <span className="tag">Breathwork</span>
+                        <span className="tag">Sound Healing</span>
+                        <span className="tag">Movement</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--white">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Retreat Spaces</p>
+                    <p className="section-subtitle">Three distinct spaces for your practice</p>
+                  </header>
+
+                  <div className="card-grid card-grid--3">
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=600&q=80" alt="Main Shala" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Main Shala</h3>
+                        <p className="card-meta">24 mats · 120m² · Ocean view</p>
+                        <p className="card-description">An ocean-facing pavilion with floor-to-ceiling glass, timber floors, and soaring ceilings.</p>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Garden Studio" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Garden Studio</h3>
+                        <p className="card-meta">12 mats · 60m² · Garden view</p>
+                        <p className="card-description">Intimate space nestled in the gardens, perfect for smaller groups or breakout sessions.</p>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Fire Circle" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Fire Circle</h3>
+                        <p className="card-meta">25 seated · Outdoor · Ceremonies</p>
+                        <p className="card-description">A sacred outdoor space for fire ceremonies, cacao circles, and stargazing.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="view-all">
+                    <a href="#" onClick={(e) => { e.preventDefault(); switchTab("spaces"); }}>View All Spaces →</a>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Accommodation</p>
+                    <p className="section-subtitle">Rest well, rise restored</p>
+                  </header>
+
+                  <div className="stats-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)", maxWidth: "600px", margin: "0 auto 50px" }}>
+                    <div className="stat-item">
+                      <p className="stat-value">24</p>
+                      <p className="stat-label">Total Guests</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value">8</p>
+                      <p className="stat-label">Bedrooms</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value">4</p>
+                      <p className="stat-label">Bathrooms</p>
+                    </div>
+                  </div>
+
+                  <div className="card-grid card-grid--2">
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80" alt="Ocean Suite" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Ocean Suite</h3>
+                        <p className="card-meta">Sleeps 2 · King bed · Ensuite</p>
+                        <p className="card-description">Floor-to-ceiling windows, private terrace, and ocean views. Our most requested room.</p>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80" alt="Garden Twin" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Garden Twin</h3>
+                        <p className="card-meta">Sleeps 2 · Twin beds · Ensuite</p>
+                        <p className="card-description">Peaceful garden outlook with direct shala access. Perfect for retreat participants.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="view-all">
+                    <a href="#" onClick={(e) => { e.preventDefault(); switchTab("accommodation"); }}>View All Rooms →</a>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--white">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Signature Amenities</p>
+                  </header>
+
+                  <div className="icon-grid">
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                      </div>
+                      <p className="icon-label">Infinity Pool</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
+                      </div>
+                      <p className="icon-label">Sauna &amp; Cold Plunge</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                      </div>
+                      <p className="icon-label">Commercial Kitchen</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4"/></svg>
+                      </div>
+                      <p className="icon-label">Sound Equipment</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M3 12h4l3 9l4-18l3 9h4"/></svg>
+                      </div>
+                      <p className="icon-label">Private Beach</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg>
+                      </div>
+                      <p className="icon-label">Yoga Props</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                      </div>
+                      <p className="icon-label">Gardens &amp; Trails</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
+                      </div>
+                      <p className="icon-label">WiFi Throughout</p>
+                    </div>
+                  </div>
+
+                  <div className="view-all">
+                    <a href="#" onClick={(e) => { e.preventDefault(); switchTab("amenities"); }}>View All Amenities →</a>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <div className="feature-block feature-block--reverse">
+                    <div className="feature-content">
+                      <p className="feature-label">Your Hosts</p>
+                      <h2 className="feature-title">Sarah &amp; James</h2>
+                      <p className="feature-text">&quot;We&apos;ve been holding space for retreat facilitators for over 12 years. Every group that arrives teaches us something new about what this land can hold.&quot;</p>
+                      <p className="feature-text">Former yoga teachers themselves, Sarah and James created Santosa as the retreat venue they always wished existed—a place where facilitators could focus entirely on their participants while every logistical detail was seamlessly handled.</p>
+                    </div>
+                    <div className="host-image">
+                      <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=80" alt="Sarah & James" />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--charcoal cta">
+                <h2 className="cta-title">Ready to Hold Your Retreat Here?</h2>
+                <p className="cta-text">Tell us about your vision and we&apos;ll be in touch within 24 hours to discuss availability.</p>
+                <div className="cta-buttons">
+                  <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
+                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                </div>
+              </section>
+
+            </div>
+
+            <div className={`tab-content${activeTab === "spaces" ? " active" : ""}`} id="spaces">
+
+              <section className="tab-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1545389336-cf090694435e?w=1920&q=80')" }}>
+                <div className="tab-hero-content">
+                  <p className="tab-hero-label">Retreat Spaces</p>
+                  <h2 className="tab-hero-title">Spaces That Hold Whatever You Bring</h2>
+                  <p className="tab-hero-subtitle">Three distinct environments for practice, ceremony, and transformation</p>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="intro-text">
+                  <div className="intro-line"></div>
+                  <p>Each of our practice spaces has been designed with intention—the way light moves through them, the quality of silence they hold, the connection to the land beyond. Whether you&apos;re leading dynamic vinyasa or holding space for deep meditation, you&apos;ll find a setting that supports your work.</p>
+                </div>
+              </section>
+
+              <section className="section section--white">
+                <div className="container">
+                  <div className="feature-block">
+                    <div className="feature-image" style={{ aspectRatio: "16/9" }}>
+                      <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=1200&q=80" alt="Main Shala" />
+                    </div>
+                    <div className="feature-content">
+                      <p className="feature-label">Featured Space</p>
+                      <h2 className="feature-title">Main Shala</h2>
+                      <p className="feature-text">The heart of Santosa, our main shala is a soaring open-air pavilion facing directly east toward the Pacific. Floor-to-ceiling glass doors open completely, dissolving the boundary between inside and out.</p>
+                      <p className="feature-text">The space comfortably holds 24 yoga mats with room to move, or 40 seated for lectures and sound healing. Blackout blinds and a premium sound system give you complete control over the environment.</p>
+                      <div className="feature-tags">
+                        <span className="tag">24 Mats</span>
+                        <span className="tag">120m²</span>
+                        <span className="tag">Ocean View</span>
+                        <span className="tag">Sound System</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">All Practice Spaces</p>
+                  </header>
+
+                  <div className="feature-block" style={{ marginBottom: "60px" }}>
+                    <div className="feature-image">
+                      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Garden Studio" />
+                    </div>
+                    <div className="feature-content">
+                      <h2 className="feature-title">Garden Studio</h2>
+                      <p className="feature-text">An intimate space nestled in the gardens, the Garden Studio is perfect for smaller groups, workshops, or breakout sessions. Skylights flood the space with natural light while maintaining privacy and focus.</p>
+                      <div className="feature-tags">
+                        <span className="tag">12 Mats</span>
+                        <span className="tag">60m²</span>
+                        <span className="tag">Garden View</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="feature-block feature-block--reverse">
+                    <div className="feature-content">
+                      <h2 className="feature-title">Fire Circle</h2>
+                      <p className="feature-text">A sacred outdoor space for fire ceremonies, cacao circles, and stargazing. Surrounded by native bush, the fire circle holds up to 25 people seated on timber benches arranged in concentric circles.</p>
+                      <div className="feature-tags">
+                        <span className="tag">25 Seated</span>
+                        <span className="tag">Outdoor</span>
+                        <span className="tag">Ceremonies</span>
+                      </div>
+                    </div>
+                    <div className="feature-image">
+                      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" alt="Fire Circle" />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--charcoal cta">
+                <h2 className="cta-title">Questions About Our Spaces?</h2>
+                <p className="cta-text">We&apos;re happy to arrange a video tour or answer any questions about how our spaces might work for your retreat format.</p>
+                <div className="cta-buttons">
+                  <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
+                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                </div>
+              </section>
+
+            </div>
+
+            <div className={`tab-content${activeTab === "accommodation" ? " active" : ""}`} id="accommodation">
+
+              <div style={{ width: "100%", height: "400px", background: "linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1600&q=80') center/cover", marginBottom: "0" }}></div>
+
+              <section className="section section--white">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Stay With Us</p>
+                  </header>
+                  <div className="intro-text">
+                    <p>Sleep comes easily at Santosa. Our eco-conscious accommodations range from private suites to shared lodges, all designed to immerse guests in the natural environment while maintaining every comfort.</p>
+                    <p>Eight thoughtfully appointed rooms for 24 guests across 3 Private Suites, 2 Twin Rooms, and 1 Dormitory.</p>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Room Types</p>
+                    <p className="section-subtitle">Choose your sanctuary</p>
+                  </header>
+
+                  <div className="card-grid card-grid--2">
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80" alt="Ocean Suite" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Ocean Suite</h3>
+                        <p className="card-description">Our most sought-after room with uninterrupted views of the Tasman Sea from floor-to-ceiling windows. Private terrace and deep soaking tub.</p>
+                        <p className="card-meta" style={{ marginTop: "12px", marginBottom: "0" }}>Sleeps 2 · King Bed · Ensuite · Ocean View</p>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80" alt="Garden Twin" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Garden Twin</h3>
+                        <p className="card-description">Peaceful rooms with garden outlooks and direct access to the main shala. Twin beds can be configured as a king.</p>
+                        <p className="card-meta" style={{ marginTop: "12px", marginBottom: "0" }}>Sleeps 2 · Twin Beds · Ensuite · Garden View</p>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80" alt="Forest Cabin" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Forest Cabin</h3>
+                        <p className="card-description">Standalone cabin tucked into native bush. Complete privacy with outdoor shower and meditation deck.</p>
+                        <p className="card-meta" style={{ marginTop: "12px", marginBottom: "0" }}>Sleeps 2 · Queen Bed · Ensuite · Forest View</p>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&q=80" alt="Shared Dormitory" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Shared Dormitory</h3>
+                        <p className="card-description">Community-focused accommodation with 10 single beds. Shared bathrooms and common lounge area.</p>
+                        <p className="card-meta" style={{ marginTop: "12px", marginBottom: "0" }}>Sleeps 10 · Single Beds · Shared Bathroom</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--white">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">In Every Room</p>
+                    <p className="section-subtitle">Standard amenities across all rooms</p>
+                  </header>
+
+                  <div className="icon-grid" style={{ gridTemplateColumns: "repeat(6, 1fr)" }}>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>
+                      </div>
+                      <p className="icon-label">Organic Toiletries</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                      </div>
+                      <p className="icon-label">Robe &amp; Slippers</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                      </div>
+                      <p className="icon-label">Filtered Water</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                      </div>
+                      <p className="icon-label">Daily Cleaning</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg>
+                      </div>
+                      <p className="icon-label">Quality Linens</p>
+                    </div>
+                    <div className="icon-item">
+                      <div className="icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/></svg>
+                      </div>
+                      <p className="icon-label">USB Charging</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+            </div>
+
+            <div className={`tab-content${activeTab === "amenities" ? " active" : ""}`} id="amenities">
+
+              <section className="tab-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1920&q=80')" }}>
+                <div className="tab-hero-content">
+                  <p className="tab-hero-label">Amenities</p>
+                  <h2 className="tab-hero-title">Everything Your Retreat Needs</h2>
+                  <p className="tab-hero-subtitle">Thoughtfully curated to support transformation</p>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Supporting Your Practice</p>
+                    <p className="section-subtitle">Everything you need to hold transformative sessions</p>
+                  </header>
+
+                  <div className="amenity-columns">
+                    <div>
+                      <h3 className="amenity-column-title">Yoga &amp; Movement</h3>
+                      <div className="amenity-item">
+                        <p className="amenity-name">24 Premium Yoga Mats</p>
+                        <p className="amenity-detail">Manduka PRO series, cleaned between each retreat</p>
+                      </div>
+                      <div className="amenity-item">
+                        <p className="amenity-name">Props Collection</p>
+                        <p className="amenity-detail">Blocks, straps, bolsters, blankets, eye pillows</p>
+                      </div>
+                      <div className="amenity-item">
+                        <p className="amenity-name">Meditation Cushions</p>
+                        <p className="amenity-detail">Zafus and zabutons for 24</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="amenity-column-title">Sound &amp; Ceremony</h3>
+                      <div className="amenity-item">
+                        <p className="amenity-name">Crystal Singing Bowls (7)</p>
+                        <p className="amenity-detail">Full chakra set, mallets included</p>
+                      </div>
+                      <div className="amenity-item">
+                        <p className="amenity-name">Tibetan Singing Bowls (12)</p>
+                        <p className="amenity-detail">Various sizes, antique collection</p>
+                      </div>
+                      <div className="amenity-item">
+                        <p className="amenity-name">Gong (36&quot; Paiste)</p>
+                        <p className="amenity-detail">With stand and mallet</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <div className="image-break" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&q=80')" }}></div>
+
+              <section className="section section--white">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Water &amp; Healing</p>
+                    <p className="section-subtitle">Restore through stillness and contrast</p>
+                  </header>
+
+                  <div className="card-grid card-grid--3">
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80" alt="Infinity Pool" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Infinity Pool</h3>
+                        <p className="card-description">18-meter heated pool overlooking the ocean. Solar heated year-round.</p>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="Finnish Sauna" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Finnish Sauna</h3>
+                        <p className="card-description">Traditional wood-fired sauna for 8 people with ocean views.</p>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-image">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Cold Plunge" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Cold Plunge</h3>
+                        <p className="card-description">Dedicated cold immersion pool maintained at 10°C.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Good to Know</p>
+                    <p className="section-subtitle">Policies and practical considerations</p>
+                  </header>
+
+                  <div className="card-grid card-grid--3">
+                    <div className="policy-card">
+                      <h3 className="policy-card-title">Connectivity</h3>
+                      <div className="policy-item">
+                        <p className="policy-item-label">WiFi</p>
+                        <p className="policy-item-value">Available throughout. Consider phone-free policy for retreats.</p>
+                      </div>
+                      <div className="policy-item">
+                        <p className="policy-item-label">Mobile Coverage</p>
+                        <p className="policy-item-value">Limited. Vodafone has best reception.</p>
+                      </div>
+                    </div>
+                    <div className="policy-card">
+                      <h3 className="policy-card-title">Accessibility</h3>
+                      <div className="policy-item">
+                        <p className="policy-item-label">Wheelchair Access</p>
+                        <p className="policy-item-value">Main shala and 2 ground-floor rooms are accessible.</p>
+                      </div>
+                      <div className="policy-item">
+                        <p className="policy-item-label">Dietary Needs</p>
+                        <p className="policy-item-value">Kitchen equipped for all dietary requirements.</p>
+                      </div>
+                    </div>
+                    <div className="policy-card">
+                      <h3 className="policy-card-title">Environment</h3>
+                      <div className="policy-item">
+                        <p className="policy-item-label">Smoking</p>
+                        <p className="policy-item-value">Designated outdoor area only.</p>
+                      </div>
+                      <div className="policy-item">
+                        <p className="policy-item-label">Pets</p>
+                        <p className="policy-item-value">Service animals only.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--charcoal cta">
+                <h2 className="cta-title">Need Something Specific?</h2>
+                <p className="cta-text">If there&apos;s equipment or arrangements you need that you don&apos;t see listed, just ask. We&apos;re here to support your retreat.</p>
+                <div className="cta-buttons">
+                  <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
+                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                </div>
+              </section>
+
+            </div>
+
+            <div className={`tab-content${activeTab === "experiences" ? " active" : ""}`} id="experiences">
+
+              <section className="tab-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1920&q=80')" }}>
+                <div className="tab-hero-content">
+                  <p className="tab-hero-label">Experiences &amp; Add-Ons</p>
+                  <h2 className="tab-hero-title">Enhance Your Retreat</h2>
+                  <p className="tab-hero-subtitle">Optional services to complement your programming</p>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="intro-text">
+                  <div className="intro-line"></div>
+                  <p>Most facilitators bring their own programming—and we&apos;re here to support that fully. But if you&apos;d like to weave in local practitioners, treatments, or excursions, we have a trusted network ready to enhance your offering.</p>
+                </div>
+              </section>
+
+              <section className="section section--white">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Resident Practitioners</p>
+                    <p className="section-subtitle">Local experts available for your retreat</p>
+                  </header>
+
+                  <div className="card-grid card-grid--3">
+                    <div className="card">
+                      <div className="card-image" style={{ aspectRatio: "1" }}>
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=80" alt="Maya Chen" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Maya Chen</h3>
+                        <p className="card-meta">Bodywork &amp; Energy Healing</p>
+                        <p className="card-description">15 years experience in Thai massage, craniosacral therapy, and energy work.</p>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-image" style={{ aspectRatio: "1" }}>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Te Koha Wiremu" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Te Koha Wiremu</h3>
+                        <p className="card-meta">Sound &amp; Ceremony</p>
+                        <p className="card-description">Māori elder offering traditional ceremony, sound healing, and cultural connection.</p>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-image" style={{ aspectRatio: "1" }}>
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&q=80" alt="Dr. Anna Patel" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Dr. Anna Patel</h3>
+                        <p className="card-meta">Ayurveda &amp; Nutrition</p>
+                        <p className="card-description">Ayurvedic doctor offering consultations, cooking workshops, and wellness talks.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Local Excursions</p>
+                    <p className="section-subtitle">Curated experiences in the Coromandel</p>
+                  </header>
+
+                  <div className="card-grid card-grid--2">
+                    <div className="card" style={{ display: "flex", flexDirection: "row" }}>
+                      <div className="card-image" style={{ width: "200px", flexShrink: 0, aspectRatio: "1" }}>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Cathedral Cove" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Cathedral Cove Walk</h3>
+                        <p className="card-meta">3 hours · Easy · $45/person</p>
+                        <p className="card-description">Guided coastal walk to the iconic sea arch and pristine beach.</p>
+                      </div>
+                    </div>
+                    <div className="card" style={{ display: "flex", flexDirection: "row" }}>
+                      <div className="card-image" style={{ width: "200px", flexShrink: 0, aspectRatio: "1" }}>
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&q=80" alt="Hot Water Beach" />
+                      </div>
+                      <div className="card-content">
+                        <h3 className="card-title">Hot Water Beach</h3>
+                        <p className="card-meta">2 hours · Easy · $35/person</p>
+                        <p className="card-description">Dig your own hot pool where geothermal springs meet the ocean.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--charcoal cta">
+                <h2 className="cta-title">Interested in Add-Ons?</h2>
+                <p className="cta-text">Let us know what you&apos;re looking for and we&apos;ll include options in your proposal.</p>
+                <div className="cta-buttons">
+                  <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
+                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                </div>
+              </section>
+
+            </div>
+
+            <div className={`tab-content${activeTab === "location" ? " active" : ""}`} id="location">
+
+              <section className="tab-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&q=80')" }}>
+                <div className="tab-hero-content">
+                  <p className="tab-hero-label">Location &amp; Getting Here</p>
+                  <h2 className="tab-hero-title">Where the Forest Meets the Sea</h2>
+                  <p className="tab-hero-subtitle">A world away from the everyday</p>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="intro-text">
+                  <div className="intro-line"></div>
+                  <p>The journey here is part of the experience. As the highway gives way to winding coastal roads, as the bustle of Auckland fades into native bush, something shifts. By the time you arrive, the retreat has already begun.</p>
+                </div>
+              </section>
+
+              <section className="section section--white">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Distances &amp; Travel Times</p>
+                  </header>
+
+                  <div className="stats-grid" style={{ gridTemplateColumns: "repeat(4, 1fr)" }}>
+                    <div className="stat-item">
+                      <p className="stat-value">2.5<span style={{ fontSize: "20px" }}>hr</span></p>
+                      <p className="stat-label">Auckland Airport</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value">1.5<span style={{ fontSize: "20px" }}>hr</span></p>
+                      <p className="stat-label">Tauranga Airport</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value">15<span style={{ fontSize: "20px" }}>min</span></p>
+                      <p className="stat-label">Whitianga Village</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value">25<span style={{ fontSize: "20px" }}>min</span></p>
+                      <p className="stat-label">Hospital</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Climate &amp; Best Time to Visit</p>
+                  </header>
+
+                  <div className="card-grid card-grid--4">
+                    <div className="card" style={{ textAlign: "center", padding: "30px" }}>
+                      <p style={{ fontFamily: "var(--font-sans)", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: "var(--charcoal-lighter)", marginBottom: "8px" }}>Summer</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "14px", color: "var(--charcoal-light)", marginBottom: "16px" }}>Dec – Feb</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "28px", color: "var(--charcoal)", marginBottom: "16px" }}>22–26°C</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "14px", color: "var(--charcoal-light)" }}>Warm and settled. Peak season for beach activities.</p>
+                    </div>
+                    <div className="card" style={{ textAlign: "center", padding: "30px" }}>
+                      <p style={{ fontFamily: "var(--font-sans)", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: "var(--charcoal-lighter)", marginBottom: "8px" }}>Autumn</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "14px", color: "var(--charcoal-light)", marginBottom: "16px" }}>Mar – May</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "28px", color: "var(--charcoal)", marginBottom: "16px" }}>16–22°C</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "14px", color: "var(--charcoal-light)" }}>Mild and golden. Fewer visitors, beautiful light.</p>
+                    </div>
+                    <div className="card" style={{ textAlign: "center", padding: "30px" }}>
+                      <p style={{ fontFamily: "var(--font-sans)", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: "var(--charcoal-lighter)", marginBottom: "8px" }}>Winter</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "14px", color: "var(--charcoal-light)", marginBottom: "16px" }}>Jun – Aug</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "28px", color: "var(--charcoal)", marginBottom: "16px" }}>10–16°C</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "14px", color: "var(--charcoal-light)" }}>Cool and reflective. Ideal for inward-focused retreats.</p>
+                    </div>
+                    <div className="card" style={{ textAlign: "center", padding: "30px" }}>
+                      <p style={{ fontFamily: "var(--font-sans)", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: "var(--charcoal-lighter)", marginBottom: "8px" }}>Spring</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "14px", color: "var(--charcoal-light)", marginBottom: "16px" }}>Sep – Nov</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "28px", color: "var(--charcoal)", marginBottom: "16px" }}>14–20°C</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "14px", color: "var(--charcoal-light)" }}>Fresh and renewing. Native birds nesting.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--charcoal cta">
+                <h2 className="cta-title">Questions About Getting Here?</h2>
+                <p className="cta-text">We&apos;re happy to help coordinate logistics for you and your participants.</p>
+                <div className="cta-buttons">
+                  <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
+                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                </div>
+              </section>
+
+            </div>
+
+            <div className={`tab-content${activeTab === "reviews" ? " active" : ""}`} id="reviews">
+
+              <section className="section section--cream">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Facilitator Reviews</p>
+                  </header>
+
+                  <div style={{ textAlign: "center", marginBottom: "50px" }}>
+                    <p style={{ fontSize: "32px", color: "#D4A853", marginBottom: "16px" }}>★ ★ ★ ★ ★</p>
+                    <p style={{ fontFamily: "var(--font-serif)", fontSize: "64px", fontWeight: 300, color: "var(--charcoal)" }}>4.9</p>
+                    <p style={{ fontFamily: "var(--font-serif)", fontSize: "16px", color: "var(--charcoal-lighter)" }}>from 23 reviews</p>
+                  </div>
+
+                  <div className="stats-grid" style={{ gridTemplateColumns: "repeat(5, 1fr)", maxWidth: "800px", margin: "0 auto" }}>
+                    <div className="stat-item">
+                      <p className="stat-value" style={{ fontSize: "28px" }}>5.0</p>
+                      <p className="stat-label">Communication</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value" style={{ fontSize: "28px" }}>4.9</p>
+                      <p className="stat-label">Spaces</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value" style={{ fontSize: "28px" }}>4.8</p>
+                      <p className="stat-label">Amenities</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value" style={{ fontSize: "28px" }}>4.9</p>
+                      <p className="stat-label">Location</p>
+                    </div>
+                    <div className="stat-item">
+                      <p className="stat-value" style={{ fontSize: "28px" }}>4.8</p>
+                      <p className="stat-label">Value</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--white">
+                <div className="container">
+                  <div className="feature-block">
+                    <div className="feature-content">
+                      <p style={{ fontSize: "18px", color: "#D4A853", marginBottom: "20px" }}>★ ★ ★ ★ ★</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "24px", fontStyle: "italic", color: "var(--charcoal)", lineHeight: 1.6, marginBottom: "30px" }}>&quot;The shala was beyond anything we&apos;d imagined. Every morning, watching the sun rise over the ocean while 20 women moved through their practice... it was transformative for all of us.&quot;</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80" alt="Sarah Mitchell" style={{ width: "48px", height: "48px", borderRadius: "50%", objectFit: "cover" }} />
+                        <div>
+                          <p style={{ fontFamily: "var(--font-serif)", fontSize: "17px", fontWeight: 400, color: "var(--charcoal)" }}>Sarah Mitchell</p>
+                          <p style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "var(--charcoal-lighter)" }}>Women&apos;s Wellness Retreat · October 2025</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="feature-image">
+                      <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=600&q=80" alt="Retreat moment" />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">All Reviews</p>
+                  </header>
+
+                  <div className="card-grid card-grid--2">
+                    <div className="card" style={{ padding: "40px" }}>
+                      <p style={{ fontSize: "14px", color: "#D4A853", marginBottom: "16px" }}>★ ★ ★ ★ ★</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "18px", fontStyle: "italic", color: "var(--charcoal)", lineHeight: 1.6, marginBottom: "24px" }}>&quot;Sarah and James anticipated every need before we even knew we had it. The attention to detail was extraordinary.&quot;</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Reviewer" style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }} />
+                        <div>
+                          <p style={{ fontFamily: "var(--font-serif)", fontSize: "15px", color: "var(--charcoal)" }}>Mark Thompson</p>
+                          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--charcoal-lighter)" }}>Yoga Teacher Training · Sep 2025</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="card" style={{ padding: "40px" }}>
+                      <p style={{ fontSize: "14px", color: "#D4A853", marginBottom: "16px" }}>★ ★ ★ ★ ★</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "18px", fontStyle: "italic", color: "var(--charcoal)", lineHeight: 1.6, marginBottom: "24px" }}>&quot;The kitchen was a dream to work in. Our chef said it was the best-equipped retreat kitchen she&apos;s encountered in 10 years.&quot;</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Reviewer" style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }} />
+                        <div>
+                          <p style={{ fontFamily: "var(--font-serif)", fontSize: "15px", color: "var(--charcoal)" }}>Lisa Chen</p>
+                          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--charcoal-lighter)" }}>Wellness Retreat · Aug 2025</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--charcoal cta">
+                <h2 className="cta-title">Ready to Create Your Own Story?</h2>
+                <p className="cta-text">Join the facilitators who have found their retreat home at Santosa.</p>
+                <div className="cta-buttons">
+                  <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
+                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                </div>
+              </section>
+
+            </div>
+
+            <div className={`tab-content${activeTab === "booking" ? " active" : ""}`} id="booking">
+
+              <section className="section section--cream" style={{ padding: "80px 40px" }}>
+                <div style={{ textAlign: "center" }}>
+                  <p className="section-label">Booking &amp; Terms</p>
+                  <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "42px", fontWeight: 400, color: "var(--charcoal)", margin: "20px 0" }}>Plan Your Retreat</h2>
+                  <p style={{ fontFamily: "var(--font-serif)", fontSize: "18px", fontWeight: 300, color: "var(--charcoal-light)", maxWidth: "600px", margin: "0 auto" }}>Everything you need to know about rates, availability, and the booking process.</p>
+                </div>
+              </section>
+
+              <section className="section section--white">
+                <div className="container">
+                  <div className="pricing-hero">
+                    <p className="pricing-from">Exclusive Use From</p>
+                    <p className="pricing-amount"><span>$</span>2,800</p>
+                    <p className="pricing-period">per night</p>
+                  </div>
+
+                  <div className="pricing-grid">
+                    <div className="pricing-card">
+                      <p className="pricing-card-season">Low Season</p>
+                      <p className="pricing-card-dates">Jun – Aug</p>
+                      <p className="pricing-card-amount"><span>$</span>2,800</p>
+                      <p className="pricing-card-unit">per night</p>
+                    </div>
+                    <div className="pricing-card pricing-card--featured">
+                      <span className="pricing-card-badge">Most Popular</span>
+                      <p className="pricing-card-season">Mid Season</p>
+                      <p className="pricing-card-dates">Mar – May, Sep – Nov</p>
+                      <p className="pricing-card-amount"><span>$</span>3,400</p>
+                      <p className="pricing-card-unit">per night</p>
+                    </div>
+                    <div className="pricing-card">
+                      <p className="pricing-card-season">High Season</p>
+                      <p className="pricing-card-dates">Dec – Feb</p>
+                      <p className="pricing-card-amount"><span>$</span>4,200</p>
+                      <p className="pricing-card-unit">per night</p>
+                    </div>
+                  </div>
+
+                  <div className="quick-facts">
+                    <div className="quick-fact">
+                      <p className="quick-fact-value">3 nights</p>
+                      <p className="quick-fact-label">Minimum Stay</p>
+                    </div>
+                    <div className="quick-fact">
+                      <p className="quick-fact-value">24 guests</p>
+                      <p className="quick-fact-label">Maximum Capacity</p>
+                    </div>
+                    <div className="quick-fact">
+                      <p className="quick-fact-value">3:00 PM</p>
+                      <p className="quick-fact-label">Check-In</p>
+                    </div>
+                    <div className="quick-fact">
+                      <p className="quick-fact-value">11:00 AM</p>
+                      <p className="quick-fact-label">Check-Out</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">How to Book</p>
+                    <p className="section-subtitle">A simple four-step process</p>
+                  </header>
+
+                  <div className="process-timeline">
+                    <div className="process-step">
+                      <div className="process-step-number">1</div>
+                      <div className="process-step-content">
+                        <h3 className="process-step-title">Submit an Enquiry</h3>
+                        <p className="process-step-text">Tell us about your retreat—your dates, group size, and what you&apos;re looking to create. We&apos;ll respond within 24 hours.</p>
+                      </div>
+                    </div>
+                    <div className="process-step">
+                      <div className="process-step-number">2</div>
+                      <div className="process-step-content">
+                        <h3 className="process-step-title">Receive Your Proposal</h3>
+                        <p className="process-step-text">We&apos;ll send a detailed proposal including pricing, what&apos;s included, and any add-ons you&apos;ve requested.</p>
+                      </div>
+                    </div>
+                    <div className="process-step">
+                      <div className="process-step-number">3</div>
+                      <div className="process-step-content">
+                        <h3 className="process-step-title">Secure with Deposit</h3>
+                        <p className="process-step-text">A 30% deposit secures your dates. We&apos;ll send a booking agreement and your dates will be held exclusively for you.</p>
+                      </div>
+                    </div>
+                    <div className="process-step">
+                      <div className="process-step-number">4</div>
+                      <div className="process-step-content">
+                        <h3 className="process-step-title">Pre-Retreat Planning</h3>
+                        <p className="process-step-text">We&apos;ll schedule a planning call to discuss logistics, dietary requirements, and any special requests.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--white">
+                <div className="container container--narrow" style={{ maxWidth: "800px" }}>
+                  <header className="section-header">
+                    <p className="section-label">Cancellation Policy</p>
+                  </header>
+
+                  <table className="cancellation-table">
+                    <thead>
+                      <tr>
+                        <th>Notice Period</th>
+                        <th>What Happens</th>
+                        <th>Refund</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>90+ days before</td>
+                        <td>Full refund minus fee</td>
+                        <td>90%</td>
+                      </tr>
+                      <tr>
+                        <td>60–89 days before</td>
+                        <td>Deposit retained</td>
+                        <td>70%</td>
+                      </tr>
+                      <tr>
+                        <td>30–59 days before</td>
+                        <td>50% retained</td>
+                        <td>50%</td>
+                      </tr>
+                      <tr>
+                        <td>Less than 30 days</td>
+                        <td>Full amount retained</td>
+                        <td>0%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section className="section section--cream">
+                <div className="container">
+                  <header className="section-header">
+                    <p className="section-label">Common Questions</p>
+                  </header>
+
+                  <div className="faq-list">
+                    <div className={`faq-item${activeFaq === 0 ? " active" : ""}`}>
+                      <button className="faq-question" onClick={() => setActiveFaq((prev) => (prev === 0 ? -1 : 0))}>
+                        <p className="faq-question-text">Can I book for fewer than 24 people?</p>
+                        <div className="faq-icon"></div>
+                      </button>
+                      <div className="faq-answer">
+                        <p className="faq-answer-text">Yes, absolutely. Our pricing is based on exclusive use of the property rather than per-person rates. Whether you bring 10 or 24 guests, the nightly rate remains the same.</p>
+                      </div>
+                    </div>
+                    <div className={`faq-item${activeFaq === 1 ? " active" : ""}`}>
+                      <button className="faq-question" onClick={() => setActiveFaq((prev) => (prev === 1 ? -1 : 1))}>
+                        <p className="faq-question-text">What if my guest numbers change?</p>
+                        <div className="faq-icon"></div>
+                      </button>
+                      <div className="faq-answer">
+                        <p className="faq-answer-text">We understand retreat numbers can fluctuate. Final guest counts are confirmed 14 days before arrival.</p>
+                      </div>
+                    </div>
+                    <div className={`faq-item${activeFaq === 2 ? " active" : ""}`}>
+                      <button className="faq-question" onClick={() => setActiveFaq((prev) => (prev === 2 ? -1 : 2))}>
+                        <p className="faq-question-text">Do you provide catering?</p>
+                        <div className="faq-icon"></div>
+                      </button>
+                      <div className="faq-answer">
+                        <p className="faq-answer-text">Catering is not included but can be arranged through our preferred caterers or you&apos;re welcome to bring your own chef.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="section section--charcoal cta">
+                <h2 className="cta-title">Ready to Book Your Retreat?</h2>
+                <p className="cta-text">Submit an enquiry and we&apos;ll send you a detailed proposal within 24 hours.</p>
+                <div className="cta-buttons">
+                  <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
+                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                </div>
+              </section>
+
+            </div>
+
+          </div>
+
+          <aside className="floating-sidebar">
+            <div className="sidebar-card">
+              <p className="sidebar-price-label">From</p>
+              <p className="sidebar-price">$2,800<span>/night</span></p>
+              <p className="sidebar-price-period">Exclusive use for up to 24 guests</p>
+
+              <div className="sidebar-stats">
+                <div className="sidebar-stat">
+                  <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  Sleeps 24 guests
+                </div>
+                <div className="sidebar-stat">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                  3 Retreat spaces
+                </div>
+                <div className="sidebar-stat">
+                  <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  Exclusive use
+                </div>
+              </div>
+
+              <button className="sidebar-enquire" onClick={goToEnquiry}>Enquire Now</button>
+
+              <button className="sidebar-save">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                Save to Wishlist
+              </button>
+
+              <p className="sidebar-response">Typically responds within 24 hours</p>
+            </div>
+          </aside>
+
+        </div>
+
+        <section className="similar-venues">
+          <div className="container">
+            <header className="section-header">
+              <p className="section-label">You May Also Like</p>
+            </header>
+
+            <div className="card-grid card-grid--3">
+              <div className="venue-card">
+                <div className="venue-card-image">
+                  <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80" alt="Venue" />
+                </div>
+                <div className="venue-card-content">
+                  <h3 className="venue-card-name">Awakening House</h3>
+                  <p className="venue-card-location">Bay of Islands, New Zealand</p>
+                  <p className="venue-card-price">From $2,400 <span>/ night</span></p>
+                </div>
+              </div>
+              <div className="venue-card">
+                <div className="venue-card-image">
+                  <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Venue" />
+                </div>
+                <div className="venue-card-content">
+                  <h3 className="venue-card-name">Te Aroha Retreat</h3>
+                  <p className="venue-card-location">Waikato, New Zealand</p>
+                  <p className="venue-card-price">From $3,200 <span>/ night</span></p>
+                </div>
+              </div>
+              <div className="venue-card">
+                <div className="venue-card-image">
+                  <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="Venue" />
+                </div>
+                <div className="venue-card-content">
+                  <h3 className="venue-card-name">Stillness Sanctuary</h3>
+                  <p className="venue-card-location">Northland, New Zealand</p>
+                  <p className="venue-card-price">From $2,600 <span>/ night</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <footer className="footer">
+        <div className="footer-grid">
+          <div className="footer-brand">
+            <div className="footer-logo-placeholder">
+              <span>Logo Goes Here</span>
+            </div>
+            <span className="footer-brand-name">The Global Sanctum</span>
+            <p className="footer-brand-text">Curated wellness venues and transformational retreat spaces for retreat hosts, wellness guests, and seekers worldwide.</p>
+            <p className="footer-brand-meta">Aurella Group Pty Ltd<br />ABN 70 649 742 423</p>
+          </div>
+          <div className="footer-col">
+            <h4 className="footer-col-title">Discover</h4>
+            <ul className="footer-links">
+              <li><Link href="/global-santcum/retreat-venues">Retreat Venues</Link></li>
+              <li><Link href="/global-santcum/wellness-venues">Wellness Venues</Link></li>
+              <li><Link href="/global-santcum/wellness-experiences">Wellness Experiences</Link></li>
+              <li><Link href="/global-santcum/how-it-works">How It Works</Link></li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <h4 className="footer-col-title">Partner With Us</h4>
+            <ul className="footer-links">
+              <li><Link href="/global-santcum/list-your-venue">List Your Venue</Link></li>
+              <li><Link href="/global-santcum/host-a-retreat">Host A Retreat</Link></li>
+              <li><Link href="/global-santcum/contact#press-media">Press &amp; Media</Link></li>
+              <li><Link href="/global-santcum/contact">Contact Us</Link></li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <h4 className="footer-col-title">Resources</h4>
+            <ul className="footer-links">
+              <li><Link href="/global-santcum/the-wellness-edit">The Wellness Edit</Link></li>
+              <li><Link href="/global-santcum/sanctum-journal">Sanctum Journal</Link></li>
+              <li><Link href="/global-santcum/about">About Us</Link></li>
+              <li><Link href="/global-santcum/our-story">Our Story</Link></li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <h4 className="footer-col-title">Legal</h4>
+            <ul className="footer-links">
+              <li><Link href="/global-santcum/terms-and-conditions">Terms &amp; Conditions</Link></li>
+              <li><Link href="/global-santcum/privacy-policy">Privacy Policy</Link></li>
+              <li><Link href="/global-santcum/cookies-policy">Cookies Policy</Link></li>
+              <li><Link href="/global-santcum/legal">All Legal &amp; Policies →</Link></li>
+            </ul>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p className="footer-copyright">© 2026 The Global Sanctum. All rights reserved.</p>
+          <div className="footer-social">
+            <a href="https://www.instagram.com/theglobalsanctum/" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+            <a href="https://www.facebook.com/profile.php?id=61577706717526" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
+            <a href="https://www.linkedin.com/company/the-global-sanctum/" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
