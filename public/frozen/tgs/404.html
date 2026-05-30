@@ -1,0 +1,747 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found â€” The Global Sanctum</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --warm-white: #FDFCF9;
+            --warm-cream: #F7F5F1;
+            --charcoal: #313131;
+            --charcoal-80: rgba(49, 49, 49, 0.8);
+            --charcoal-70: rgba(49, 49, 49, 0.7);
+            --charcoal-50: rgba(49, 49, 49, 0.5);
+            --charcoal-30: rgba(49, 49, 49, 0.3);
+            --charcoal-15: rgba(49, 49, 49, 0.15);
+            --charcoal-10: rgba(49, 49, 49, 0.1);
+            --charcoal-05: rgba(49, 49, 49, 0.05);
+            --gold-accent: #C4A265;
+            --canyon-clay: #7A644F;
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-serif);
+            font-size: 17px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--charcoal);
+            background: var(--warm-white);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: inherit; text-decoration: none; }
+
+        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           NAVIGATION
+           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: var(--warm-white);
+            border-bottom: 1px solid var(--charcoal-10);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .nav.scrolled { box-shadow: 0 2px 20px rgba(49, 49, 49, 0.06); }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 48px;
+            height: 80px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 10px;
+            margin-left: -10px;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-hamburger:hover { opacity: 0.6; }
+
+        .nav-hamburger span {
+            width: 26px;
+            height: 1.5px;
+            background: var(--charcoal);
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .nav-hamburger span:nth-child(2) { width: 18px; }
+
+        .nav-hamburger.active span:first-child { transform: rotate(45deg) translate(5px, 5px); }
+        .nav-hamburger.active span:nth-child(2) { opacity: 0; }
+        .nav-hamburger.active span:last-child { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .nav-hamburger-label {
+            font-family: var(--font-sans);
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--charcoal);
+            margin-left: 14px;
+        }
+
+        .nav-logo-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .nav-logo-placeholder {
+            width: 44px;
+            height: 44px;
+            border: 2px dashed var(--gold-accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--charcoal);
+            flex-shrink: 0;
+        }
+
+        .nav-logo-placeholder span {
+            font-family: var(--font-sans);
+            font-size: 7px;
+            font-weight: 500;
+            text-transform: uppercase;
+            color: var(--gold-accent);
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .nav-brand-text {
+            font-family: var(--font-serif);
+            font-size: 17px;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--charcoal);
+            white-space: nowrap;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .nav-book-now {
+            font-family: var(--font-sans);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--warm-white);
+            background: var(--charcoal);
+            padding: 11px 24px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-book-now:hover {
+            background: var(--canyon-clay);
+            transform: translateY(-1px);
+        }
+
+        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           DRAWER
+           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        .nav-overlay {
+            position: fixed; inset: 0;
+            background: rgba(49, 49, 49, 0.3);
+            z-index: 998;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .nav-overlay.active { opacity: 1; visibility: visible; }
+
+        .nav-drawer {
+            position: fixed; top: 0; left: 0;
+            width: 380px; max-width: 85vw; height: 100vh;
+            background: var(--warm-white);
+            z-index: 999;
+            transform: translateX(-100%);
+            transition: transform 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+            display: flex; flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .nav-drawer.active { transform: translateX(0); }
+
+        .nav-drawer-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 24px 36px;
+            border-bottom: 1px solid var(--charcoal-10);
+        }
+
+        .nav-drawer-close {
+            width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            font-family: var(--font-serif); font-size: 24px; font-weight: 300;
+            color: var(--charcoal);
+            background: none; border: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-drawer-close:hover { color: var(--canyon-clay); }
+
+        .nav-drawer-label {
+            font-family: var(--font-sans); font-size: 9px; font-weight: 500;
+            letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--charcoal);
+        }
+
+        .nav-drawer-links {
+            padding: 40px 36px;
+            display: flex; flex-direction: column;
+            flex: 1;
+        }
+
+        .nav-drawer-links a {
+            font-family: var(--font-serif); font-size: 26px; font-weight: 300;
+            color: var(--charcoal);
+            padding: 16px 0;
+            border-bottom: 1px solid var(--charcoal-05);
+            transition: color 0.3s ease, padding-left 0.3s ease;
+            display: block;
+        }
+
+        .nav-drawer-links a:hover { color: var(--canyon-clay); padding-left: 8px; }
+
+        .nav-drawer-section-label {
+            font-family: var(--font-sans); font-size: 9px; font-weight: 500;
+            letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--charcoal);
+            margin-top: 32px; margin-bottom: 8px;
+        }
+
+        .nav-drawer-footer {
+            padding: 28px 36px;
+            border-top: 1px solid var(--charcoal-10);
+        }
+
+        .nav-drawer-footer p {
+            font-family: var(--font-serif); font-size: 14px; font-weight: 300;
+            color: var(--charcoal); line-height: 1.6;
+        }
+
+        .nav-drawer-footer a {
+            color: var(--canyon-clay);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .nav-drawer-footer a:hover { border-color: var(--canyon-clay); }
+
+        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           404 CONTENT
+           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        .error-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 160px 48px 120px;
+            text-align: center;
+            background: var(--warm-white);
+        }
+
+        .error-inner {
+            max-width: 560px;
+        }
+
+        .error-number {
+            font-family: var(--font-serif);
+            font-size: clamp(100px, 18vw, 200px);
+            font-weight: 300;
+            line-height: 1;
+            color: var(--charcoal);
+            letter-spacing: -0.02em;
+            opacity: 0.08;
+            margin-bottom: 24px;
+        }
+
+        .error-title {
+            font-family: var(--font-serif);
+            font-size: clamp(30px, 4.5vw, 44px);
+            font-weight: 300;
+            line-height: 1.2;
+            color: var(--charcoal);
+            margin-bottom: 28px;
+        }
+
+        .error-text {
+            font-family: var(--font-serif);
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.75;
+            color: var(--charcoal);
+            margin-bottom: 48px;
+        }
+
+        .error-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .error-btn-primary {
+            font-family: var(--font-sans);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--warm-white);
+            background: var(--charcoal);
+            padding: 16px 36px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .error-btn-primary:hover {
+            background: var(--canyon-clay);
+            transform: translateY(-1px);
+        }
+
+        .error-btn-secondary {
+            font-family: var(--font-sans);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--charcoal);
+            background: transparent;
+            padding: 16px 36px;
+            border: 1px solid var(--charcoal-15);
+            transition: border-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .error-btn-secondary:hover {
+            border-color: var(--charcoal);
+            transform: translateY(-1px);
+        }
+
+        .error-divider {
+            width: 48px;
+            height: 1px;
+            background: var(--charcoal-15);
+            margin: 48px auto 40px;
+        }
+
+        .error-suggestions-label {
+            font-family: var(--font-sans);
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--charcoal);
+            margin-bottom: 20px;
+        }
+
+        .error-suggestions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+
+        .error-suggestions a {
+            font-family: var(--font-serif);
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--charcoal);
+            border-bottom: 1px solid var(--charcoal-15);
+            padding-bottom: 2px;
+            transition: border-color 0.3s ease;
+        }
+
+        .error-suggestions a:hover {
+            border-color: var(--charcoal);
+        }
+
+        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           FOOTER
+           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        .footer {
+            background: var(--charcoal);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 80px 48px 40px;
+        }
+
+        .footer-grid {
+            max-width: 1400px; margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr repeat(5, 1fr);
+            gap: 48px;
+            padding-bottom: 56px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-brand { display: flex; flex-direction: column; gap: 20px; }
+
+        .footer-logo-placeholder {
+            width: 72px; height: 72px;
+            border: 2px dashed var(--gold-accent); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(196, 162, 101, 0.08);
+        }
+
+        .footer-logo-placeholder span {
+            font-family: var(--font-sans); font-size: 8px; font-weight: 500;
+            text-transform: uppercase; color: var(--gold-accent);
+            text-align: center; line-height: 1.3;
+        }
+
+        .footer-brand-name {
+            font-family: var(--font-serif); font-size: 18px; font-weight: 400;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .footer-brand-text {
+            font-family: var(--font-serif); font-size: 14px; font-weight: 300;
+            line-height: 1.7; color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-social { display: flex; gap: 16px; margin-top: 4px; }
+
+        .footer-social a {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 400;
+            letter-spacing: 0.1em; color: rgba(255, 255, 255, 0.4);
+            transition: color 0.3s ease;
+        }
+
+        .footer-social a:hover { color: var(--gold-accent); }
+
+        .footer-col-title {
+            font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4); margin-bottom: 24px;
+        }
+
+        .footer-links {
+            list-style: none; display: flex; flex-direction: column; gap: 14px;
+        }
+
+        .footer-links a {
+            font-family: var(--font-serif); font-size: 15px; font-weight: 300;
+            color: rgba(255, 255, 255, 0.6); transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover { color: rgba(255, 255, 255, 0.95); }
+
+        .footer-bottom {
+            max-width: 1400px; margin: 0 auto; padding-top: 32px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .footer-copyright {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 300;
+            letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.3);
+        }
+
+        .footer-legal { display: flex; gap: 28px; }
+
+        .footer-legal a {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 300;
+            letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.3);
+            transition: color 0.3s ease;
+        }
+
+        .footer-legal a:hover { color: rgba(255, 255, 255, 0.7); }
+
+        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           RESPONSIVE
+           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        @media (max-width: 1024px) {
+            .footer-grid { grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-inner { padding: 0 24px; height: 68px; }
+            .nav-hamburger-label { display: none; }
+            .nav-brand-text { font-size: 14px; letter-spacing: 0.1em; }
+            .nav-logo-placeholder { width: 36px; height: 36px; }
+            .nav-book-now { font-size: 9px; padding: 9px 16px; }
+            .nav-drawer { width: 100%; max-width: 100vw; }
+
+            .error-section { padding: 140px 24px 80px; }
+            .error-actions { flex-direction: column; }
+            .error-suggestions { flex-direction: column; gap: 16px; }
+
+            .footer { padding: 60px 24px 32px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+        }
+
+        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           ANIMATION
+           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .error-inner > * {
+            animation: fadeUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .error-inner > *:nth-child(1) { animation-delay: 0.1s; }
+        .error-inner > *:nth-child(2) { animation-delay: 0.2s; }
+        .error-inner > *:nth-child(3) { animation-delay: 0.3s; }
+        .error-inner > *:nth-child(4) { animation-delay: 0.4s; }
+        .error-inner > *:nth-child(5) { animation-delay: 0.5s; }
+        .error-inner > *:nth-child(6) { animation-delay: 0.6s; }
+        .error-inner > *:nth-child(7) { animation-delay: 0.7s; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-inner">
+            <div class="nav-left">
+                <div class="nav-hamburger" id="navHamburger" onclick="toggleDrawer()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span class="nav-hamburger-label">Menu</span>
+            </div>
+
+            <a href="/global-santcum/web" class="nav-logo-area">
+                <div class="nav-logo-placeholder">
+                    <span>Logo Goes Here</span>
+                </div>
+                <div class="nav-brand-text">The Global Sanctum</div>
+            </a>
+
+            <div class="nav-right">
+                <a href="/global-santcum/book" class="nav-book-now">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- DRAWER -->
+    <div class="nav-overlay" id="navOverlay" onclick="toggleDrawer()"></div>
+    <div class="nav-drawer" id="navDrawer">
+        <div class="nav-drawer-header">
+            <span class="nav-drawer-label">Navigation</span>
+            <button class="nav-drawer-close" onclick="toggleDrawer()">Ã—</button>
+        </div>
+        <div class="nav-drawer-links">
+            <p class="nav-drawer-section-label">Discover</p>
+            <a href="/global-santcum/retreat-venues">Retreat Venues</a>
+            <a href="/global-santcum/wellness-venues">Wellness Venues</a>
+            <a href="/global-santcum/wellness-experiences">Wellness Experiences</a>
+
+            <p class="nav-drawer-section-label">Learn</p>
+            <a href="/global-santcum/about">About Us</a>
+            <a href="/global-santcum/our-story">Our Story</a>
+            <a href="/global-santcum/how-it-works">How It Works</a>
+            <a href="/global-santcum/the-wellness-edit">The Wellness Edit</a>
+
+            <p class="nav-drawer-section-label">Connect</p>
+            <a href="/global-santcum/contact">Contact Us</a>
+            <a href="/global-santcum/list-your-venue">List Your Venue</a>
+        </div>
+        <div class="nav-drawer-footer">
+            <p>Questions? Reach us at<br><a href="mailto:hello@theglobalsanctum.com">hello@theglobalsanctum.com</a></p>
+        </div>
+    </div>
+
+    <!-- 404 CONTENT -->
+    <section class="error-section">
+        <div class="error-inner">
+            <p class="error-number">404</p>
+            <h1 class="error-title">This Path Leads Elsewhere</h1>
+            <p class="error-text">The page you're looking for may have moved, been renamed, or is temporarily unavailable. Let us guide you back to where you need to be.</p>
+            <div class="error-actions">
+                <a href="/global-santcum/web" class="error-btn-primary">Return Home</a>
+                <a href="/global-santcum/contact" class="error-btn-secondary">Contact Us</a>
+            </div>
+            <div class="error-divider"></div>
+            <p class="error-suggestions-label">Or explore</p>
+            <div class="error-suggestions">
+                <a href="/global-santcum/retreat-venues">Retreat Venues</a>
+                <a href="/global-santcum/wellness-venues">Wellness Venues</a>
+                <a href="/global-santcum/wellness-experiences">Experiences</a>
+                <a href="/global-santcum/the-wellness-edit">The Wellness Edit</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo-placeholder">
+                    <span>Logo Goes Here</span>
+                </div>
+                <span class="footer-brand-name">The Global Sanctum</span>
+                <p class="footer-brand-text">Curated wellness venues and transformational retreat spaces for facilitators, travelers, and seekers worldwide.</p>
+                <div class="footer-social">
+                    <a href="#">Fb</a>
+                    <a href="#">Ig</a>
+                    <a href="#">Li</a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-col-title">About TGS</h4>
+                <ul class="footer-links">
+                    <li><a href="/global-santcum/about">About Us</a></li>
+                    <li><a href="/global-santcum/our-story">Our Story</a></li>
+                    <li><a href="/global-santcum/how-it-works">How It Works</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-col-title">Discover</h4>
+                <ul class="footer-links">
+                    <li><a href="/global-santcum/retreat-venues">Retreat Venues</a></li>
+                    <li><a href="/global-santcum/wellness-venues">Wellness Venues</a></li>
+                    <li><a href="/global-santcum/wellness-experiences">Experiences</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-col-title">Partner With Us</h4>
+                <ul class="footer-links">
+                    <li><a href="/global-santcum/list-your-venue">List Your Venue</a></li>
+                    <li><a href="/global-santcum/contact#press-media">Press & Media</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-col-title">Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="/global-santcum/the-wellness-edit">The Wellness Edit</a></li>
+                    <li><a href="/global-santcum/sanctum-journal">Sanctum Journal</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-col-title">Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="/global-santcum/terms-and-conditions">Terms & Conditions</a></li>
+                    <li><a href="/global-santcum/privacy-policy">Privacy Policy</a></li>
+                    <li><a href="/global-santcum/cookies-policy">Cookies Policy</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="footer-copyright">Â© 2026 The Global Sanctum. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="/global-santcum/terms-and-conditions">Terms</a>
+                <a href="/global-santcum/privacy-policy">Privacy</a>
+                <a href="/global-santcum/cookies-policy">Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        function toggleDrawer() {
+            document.getElementById('navHamburger').classList.toggle('active');
+            document.getElementById('navDrawer').classList.toggle('active');
+            document.getElementById('navOverlay').classList.toggle('active');
+            document.body.style.overflow = document.getElementById('navDrawer').classList.contains('active') ? 'hidden' : '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('navDrawer').classList.contains('active')) toggleDrawer();
+        });
+    </script>
+
+<script>
+(function(){
+  var routeMap = {
+    '/': '/global-santcum/web',
+    '/book': '/global-santcum/book',
+    '/venues': '/global-santcum/venues',
+    '/retreat-venues': '/global-santcum/retreat-venues',
+    '/wellness-venues': '/global-santcum/wellness-venues',
+    '/wellness-experiences': '/global-santcum/wellness-experiences',
+    '/about': '/global-santcum/about',
+    '/our-story': '/global-santcum/our-story',
+    '/how-it-works': '/global-santcum/how-it-works',
+    '/the-wellness-edit': '/global-santcum/the-wellness-edit',
+    '/contact': '/global-santcum/contact',
+    '/list-your-venue': '/global-santcum/list-your-venue',
+    '/host-a-retreat': '/global-santcum/host-a-retreat',
+    '/sanctum-journal': '/global-santcum/sanctum-journal',
+    '/terms-and-conditions': '/global-santcum/terms-and-conditions',
+    '/privacy-policy': '/global-santcum/privacy-policy',
+    '/cookies-policy': '/global-santcum/cookies-policy',
+    '/legal': '/global-santcum/legal',
+    '/terms': '/global-santcum/terms-and-conditions'
+  };
+  function targetFor(anchor) {
+    var raw = anchor.getAttribute('href');
+    if (!raw || raw === '#' || raw.charAt(0) === '#') return null;
+    if (/^(mailto:|tel:|javascript:)/i.test(raw)) return null;
+    try {
+      var url = new URL(raw, window.location.origin);
+      if (url.origin !== window.location.origin) return null;
+      var path = url.pathname.replace(/\/$/, '') || '/';
+      var mapped = routeMap[path];
+      if (!mapped && path.indexOf('/global-santcum/') === 0) mapped = path;
+      if (!mapped && path.indexOf('/retreat-venues/') === 0) mapped = '/global-santcum/retreat-venues/sample-venue';
+      if (!mapped && path.indexOf('/wellness-venues/') === 0) mapped = '/global-santcum/wellness-venues/sample-venue';
+      return mapped ? mapped + url.search + url.hash : null;
+    } catch (e) { return null; }
+  }
+  document.addEventListener('click', function(event) {
+    var anchor = event.target && event.target.closest ? event.target.closest('a[href]') : null;
+    if (!anchor) return;
+    var target = targetFor(anchor);
+    if (!target) return;
+    event.preventDefault();
+    window.top.location.href = target;
+  }, true);
+})();
+</script>
+</body>
+</html>
+

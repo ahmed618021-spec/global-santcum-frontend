@@ -1,0 +1,1875 @@
+﻿<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venue Subscription Modal â€” Component Preview | The Global Sanctum</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#313131">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         VENUE SUBSCRIPTION / SIGN-UP MODAL â€” Component Preview (v2)
+         â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+         CHANGED IN v2 â€” DATASET-DRIVEN ARCHITECTURE
+         The modal no longer carries a hardcoded CFG object of journey types.
+         Instead, every CTA on the List Your Venue page (and anywhere else
+         that opens the modal) carries the full plan info as data-attributes
+         on the trigger element. The modal reads them on open.
+
+         This means: when a programme transitions (Founding fills â†’
+         Launch active â†’ eventually Standard pricing), the modal needs
+         ZERO code changes. The Pricing page swaps which set of price IDs
+         the CTAs reference; the modal just uses whatever it's handed.
+
+         BILLING CYCLE â€” the user picks monthly vs annual on the pricing
+         table (existing page toggle). The modal is read-only confirmation:
+         it shows the chosen cycle but does not let the user change it.
+         To change cycle they close the modal and re-pick from the table.
+
+         The page integrates by setting one global from its existing toggle:
+             window.tgsPageBillingCycle = 'yearly' | 'monthly'
+         The modal reads this on open and locks the cycle for that session.
+         For CTAs outside the pricing table (e.g. footer, email links) the
+         CTA can override with data-signup-billing-cycle='monthly' or
+         'yearly'. Default if neither is set: 'yearly' (matches page default).
+
+         Each CTA needs the following data attributes:
+             data-signup-trigger                  (marker â€” required)
+             data-signup-tier                     (essentials|standard|featured|premium â€” analytics)
+             data-signup-tier-name                (display: "Standard")
+             data-signup-free                     (true|false)
+             data-signup-commission               (display: "10% per booking")
+
+         Track-aware CTAs (Founding/Launch) add:
+             data-signup-track                    (founding|launch â€” analytics)
+             data-signup-track-name               (display: "Founding Partner")
+
+         Paid CTAs add (essential â€” these are the Stripe price IDs):
+             data-signup-price-monthly            (display: "$19.60/month")
+             data-signup-price-monthly-id         (Stripe price ID, monthly)
+             data-signup-price-yearly             (display: "$196/year")
+             data-signup-price-yearly-id          (Stripe price ID, yearly)
+             data-signup-annual-saving            (display: "Save $39.20" â€” optional)
+             data-signup-trial                    (true|false â€” 14 day Stripe trial)
+
+         Optional per-CTA cycle override (for triggers outside the pricing table):
+             data-signup-billing-cycle            (monthly|yearly â€” overrides window.tgsPageBillingCycle)
+
+         INTEGRATION â€” Kane's team takes:
+             1. The CSS block        (search for: === SIGNUP MODAL ===)
+             2. The HTML block       (search for: SIGNUP MODAL  in the body)
+             3. The JS block         (search for: === SIGNUP MODAL JS ===)
+         â€¦and drops them into the List Your Venue page template (or wherever
+         a venue signup CTA appears). Add the data attributes above to each
+         tier CTA â€” no other wiring required.
+
+         JOURNEY MATRIX â€” at any given moment, only ONE programme is live
+         on the page. Currently active: Founding Partner (60% off).
+         Stripe products are pre-configured with the discounted prices,
+         so each price ID resolves to its exact amount with no coupon math
+         at checkout. Founding/Launch transitions are a price-ID swap on
+         the Pricing page CTAs only.
+
+         STEPS (3 visible per journey â€” varies by free vs paid):
+             Paid tiers (Standard/Featured/Premium across any track):
+                 1. Details   â€” name, email, phone, venue, country
+                 2. Agreement â€” full Terms + Venue Partner + Booking Terms
+                 3. Payment   â€” Stripe Checkout handoff (redirects out)
+             Free tier (Essentials):
+                 1. Details
+                 2. Agreement
+                 3. Confirmed â€” in-modal welcome (no payment)
+
+         FUNNEL EVENTS (form_name='venue_signup'):
+             modal open                  â†’ signup_form_view
+             each step renders           â†’ signup_step_view
+             advance from Details step   â†’ signup_details_submit
+             advance from Agreement step â†’ signup_terms_accepted
+             click "Proceed to Payment"  â†’ signup_payment_initiated
+             essentials confirmation     â†’ signup_confirmation_view
+         All carry submissionId, tier, and (if set) track for funnel matching.
+         Paid tiers fire signup_confirmation_view from the post-Stripe landing
+         page (/signup-confirmed?ref=<uuid>), not from inside the modal.
+
+         REFERENCE â€” Each modal session generates a UUID stored as the
+         submissionId. Format displayed for support/concierge:
+             TGS-SIGN-XXXXXXXX
+         distinct from TGS-RE / TGS-WE so the team knows it's a venue
+         signup at a glance.
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         (Original v1 header retained below for reference; safe to delete)
+         â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+         v1 used a hardcoded CFG object with six generic journey keys
+         (founding, launch, essentials, standard, featured, premium). The
+         partner journeys showed vague "60% off your selected plan" copy
+         because they didn't know the underlying tier. Replaced in v2.
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- â•â•â• CONSENT MODE V2 (page-level â€” already site-wide) â•â•â• -->
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'functionality_storage': 'granted',
+        'security_storage': 'granted',
+        'wait_for_update': 500
+    });
+    </script>
+
+    <!-- â•â•â• tgsTrackOnce single-fire wrapper (page-level) â•â•â• -->
+    <script>
+    window.__tgsEventsFired = window.__tgsEventsFired || {};
+    window.tgsTrackOnce = function(eventName, payload) {
+        payload = payload || {};
+        var key = eventName + "_" + (payload.submissionId || payload.interactionId || "default") + "_" + (payload.step || '');
+        if (window.__tgsEventsFired[key]) return false;
+        window.__tgsEventsFired[key] = true;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push(Object.assign({ event: eventName }, payload));
+        return true;
+    };
+    </script>
+
+    <!-- â•â•â• GTM (page-level) â•â•â• -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NBQCMQXG');</script>
+
+    <style>
+        /* â•â•â• BRAND TOKENS â€” match enquiry modals exactly â•â•â• */
+        :root {
+            --warm-cream: #F7F5F1;
+            --warm-white: #FDFCF9;
+            --warm-linen: #F9F6F0;
+            --charcoal: #313131;
+            --charcoal-70: rgba(49,49,49,0.7);
+            --charcoal-50: rgba(49,49,49,0.5);
+            --charcoal-30: rgba(49,49,49,0.3);
+            --charcoal-15: rgba(49,49,49,0.15);
+            --charcoal-08: rgba(49,49,49,0.08);
+            --gold-accent: #C4A265;
+            --gold-dark: #7A644F;
+            --rule: #E0D8CC;
+            --white: #FFFFFF;
+            --error-border: #B03C32;
+            --error-bg: rgba(176,60,50,0.06);
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-sans);
+            color: var(--charcoal);
+            background: var(--warm-white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* â•â•â• DEMO TRIGGER (preview only â€” REMOVE IN PRODUCTION) â•â•â•
+           Production: instead of these buttons, add data-signup-trigger
+           and the price-ID + display data attributes (see header comment)
+           to the existing tier CTAs on the List Your Venue page. */
+        .demo-page {
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 60px 20px;
+            background:
+                linear-gradient(rgba(49,49,49,0.55), rgba(49,49,49,0.55)),
+                #5a7a6a;
+            gap: 28px;
+        }
+        .demo-section {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 10px;
+            max-width: 760px; width: 100%;
+        }
+        .demo-section-label {
+            font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            color: rgba(253,252,249,0.65);
+            text-align: center; line-height: 1.5;
+        }
+        .demo-row {
+            display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+            max-width: 720px;
+        }
+        .demo-trigger {
+            background: var(--charcoal); color: var(--white);
+            font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            padding: 12px 22px; border: 1px solid var(--charcoal); border-radius: 50px;
+            cursor: pointer; transition: background 0.3s, border-color 0.3s;
+            text-decoration: none; display: inline-block;
+        }
+        .demo-trigger:hover { background: var(--charcoal-70); border-color: var(--charcoal-70); }
+        .demo-trigger.gold {
+            background: transparent; color: var(--gold-accent);
+            border-color: rgba(196,162,101,0.55);
+        }
+        .demo-trigger.gold:hover { background: rgba(196,162,101,0.12); }
+        .demo-note {
+            text-align: center; max-width: 640px;
+            font-family: var(--font-sans); font-size: 11px;
+            color: var(--white); opacity: 0.6; line-height: 1.7;
+            margin-top: 8px;
+        }
+        .demo-note code {
+            background: rgba(255,255,255,0.1); padding: 1px 5px; border-radius: 3px;
+        }
+        .demo-cycle-toggle {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 14px; border-radius: 50px;
+            background: rgba(255,255,255,0.12);
+            margin-bottom: 8px;
+        }
+        .demo-cycle-toggle-label {
+            font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin-right: 4px;
+        }
+        .demo-cycle-btn {
+            font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 7px 14px; border-radius: 50px;
+            background: transparent; color: rgba(255,255,255,0.65);
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer; transition: all 0.25s;
+        }
+        .demo-cycle-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.45); }
+        .demo-cycle-btn.active {
+            background: var(--white); color: var(--charcoal);
+            border-color: var(--white);
+        }
+
+        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           === SIGNUP MODAL ===
+           Right-slide drawer. Same architecture as enquiry modals.
+           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        .signup-modal-overlay {
+            position: fixed; inset: 0; z-index: 1100;
+            background: rgba(49,49,49,0.55);
+            backdrop-filter: blur(2px);
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .signup-modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .signup-modal {
+            position: fixed; top: 0; right: 0;
+            width: 560px; max-width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            background: var(--warm-white); z-index: 1101;
+            transform: translateX(100%);
+            transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: -16px 0 60px rgba(49,49,49,0.12);
+        }
+        .signup-modal.active { transform: translateX(0); }
+
+        /* Header (sticky) */
+        .signup-modal-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 36px;
+            border-bottom: 1px solid var(--charcoal-08);
+            flex-shrink: 0; background: var(--warm-white);
+        }
+        .signup-modal-header-left { display: flex; align-items: center; gap: 12px; }
+        .signup-modal-logo {
+            width: 28px; height: 28px;
+            border: 1px solid var(--gold-accent);
+            transform: rotate(45deg); position: relative;
+        }
+        .signup-modal-logo::after {
+            content: ""; position: absolute; inset: 3px;
+            border: 1px solid var(--gold-accent);
+        }
+        .signup-modal-label-wrap { display: flex; flex-direction: column; gap: 2px; }
+        .signup-modal-eyebrow {
+            font-family: var(--font-sans); font-size: 9px; font-weight: 600;
+            letter-spacing: 0.22em; text-transform: uppercase;
+            color: var(--gold-dark);
+        }
+        .signup-modal-label {
+            font-family: var(--font-sans); font-size: 10px;
+            font-weight: 600; letter-spacing: 0.22em;
+            text-transform: uppercase; color: var(--charcoal);
+        }
+        .signup-modal-close {
+            width: 40px; height: 40px; border-radius: 50%;
+            border: 1px solid var(--charcoal-08); background: var(--warm-cream);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 22px; line-height: 1; color: var(--charcoal-50);
+            transition: all 0.25s; padding: 0;
+        }
+        .signup-modal-close:hover { border-color: var(--charcoal-30); color: var(--charcoal); }
+        .signup-modal-close:focus-visible { outline: 2px solid var(--gold-accent); outline-offset: 2px; }
+
+        /* Step progress (sticky below header) */
+        .signup-progress {
+            display: flex; align-items: center;
+            padding: 14px 36px;
+            background: var(--warm-cream);
+            border-bottom: 1px solid var(--charcoal-08);
+            flex-shrink: 0;
+        }
+        .progress-step { display: flex; align-items: center; gap: 10px; }
+        .progress-dot {
+            width: 22px; height: 22px; border-radius: 50%;
+            border: 1.5px solid var(--charcoal-15);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-sans); font-size: 9px; font-weight: 600;
+            color: var(--charcoal-50);
+            background: var(--warm-white);
+            transition: all 0.3s; flex-shrink: 0;
+        }
+        .progress-dot.active {
+            border-color: var(--charcoal); background: var(--charcoal);
+            color: var(--white);
+        }
+        .progress-dot.done {
+            border-color: var(--gold-dark); background: var(--gold-dark);
+            color: var(--white);
+        }
+        .progress-label {
+            font-family: var(--font-sans); font-size: 9px; font-weight: 500;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--charcoal-50); transition: color 0.3s; white-space: nowrap;
+        }
+        .progress-label.active { color: var(--charcoal); }
+        .progress-line {
+            flex: 1; height: 1px; background: var(--charcoal-15);
+            margin: 0 10px; min-width: 12px;
+            transition: background 0.3s;
+        }
+        .progress-line.done { background: var(--gold-dark); }
+
+        /* Body â€” scrollable */
+        .signup-modal-body {
+            flex: 1; overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 28px 36px 32px;
+        }
+
+        /* Footer (sticky â€” Back / step count / Continue) */
+        .signup-modal-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 36px;
+            border-top: 1px solid var(--charcoal-08);
+            background: var(--warm-white);
+            flex-shrink: 0;
+        }
+        .btn-back {
+            font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--charcoal-50); background: transparent;
+            border: 1px solid var(--charcoal-08);
+            padding: 11px 18px; border-radius: 50px;
+            cursor: pointer; transition: all 0.25s;
+        }
+        .btn-back:hover { color: var(--charcoal); border-color: var(--charcoal-30); }
+        .btn-back[hidden] { display: none; }
+        .step-count {
+            font-family: var(--font-sans); font-size: 10px; font-weight: 400;
+            color: var(--charcoal-30);
+        }
+        .btn-next {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--white); background: var(--charcoal);
+            border: 1px solid var(--charcoal);
+            padding: 12px 22px; border-radius: 50px;
+            cursor: pointer; transition: all 0.25s;
+        }
+        .btn-next:hover:not(:disabled) { background: var(--charcoal-70); border-color: var(--charcoal-70); }
+        .btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
+        .btn-next.gold {
+            background: var(--gold-accent); border-color: var(--gold-accent);
+            color: var(--charcoal);
+        }
+        .btn-next.gold:hover:not(:disabled) { background: var(--gold-dark); border-color: var(--gold-dark); color: var(--white); }
+        .btn-back:focus-visible,
+        .btn-next:focus-visible { outline: 2px solid var(--gold-accent); outline-offset: 2px; }
+
+        /* â•â•â• STEP CONTENT â€” DETAILS â•â•â• */
+        .partner-banner {
+            background: var(--charcoal); color: var(--white);
+            padding: 12px 16px; border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .partner-banner-dot {
+            width: 6px; height: 6px; background: var(--gold-accent);
+            border-radius: 50%; flex-shrink: 0;
+        }
+        .partner-banner-text {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 400;
+            color: rgba(253,252,249,0.85); line-height: 1.5;
+        }
+        .partner-banner-text strong { color: var(--gold-accent); font-weight: 600; }
+
+        .step-intro {
+            font-family: var(--font-sans); font-size: 12px; font-weight: 300;
+            color: var(--charcoal-70); line-height: 1.65;
+            margin-bottom: 18px;
+        }
+
+        /* Form fields â€” same pattern as enquiry modal */
+        .form-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+        }
+        .form-field { display: flex; flex-direction: column; gap: 6px; }
+        .form-field.full { grid-column: 1 / -1; }
+        .form-label {
+            font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+            color: var(--charcoal);
+        }
+        .form-label .required { color: var(--error-border); margin-left: 2px; }
+        .form-label .optional { font-weight: 300; color: var(--charcoal-30); }
+        .form-input {
+            font-family: var(--font-sans); font-size: 13px; font-weight: 400;
+            color: var(--charcoal);
+            background: var(--warm-cream);
+            border: 1px solid var(--charcoal-08);
+            border-radius: 6px; padding: 11px 14px;
+            outline: none; transition: border-color 0.2s;
+            width: 100%;
+        }
+        .form-input:focus { border-color: var(--charcoal-30); }
+        .form-input::placeholder { color: var(--charcoal-30); }
+        textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.5; }
+        select.form-input {
+            cursor: pointer; -webkit-appearance: none; appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23313131' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 14px center;
+            padding-right: 36px;
+        }
+        .form-input:focus-visible { outline: 2px solid var(--gold-accent); outline-offset: 2px; }
+        /* Inline field error */
+        .form-input.invalid { border-color: var(--error-border); }
+        .form-field-error {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 400;
+            color: var(--error-border); display: none;
+        }
+        .form-field-error.shown { display: block; }
+
+        /* Honeypot â€” visually hidden */
+        .hp-trap {
+            position: absolute !important;
+            left: -9999px !important; top: -9999px !important;
+            opacity: 0 !important; pointer-events: none !important;
+            height: 0; width: 0; overflow: hidden;
+        }
+
+        /* Inline form-level error (top of form, like enquiry modals) */
+        .form-error {
+            background: var(--error-bg);
+            border-left: 3px solid var(--error-border);
+            padding: 12px 14px; margin-bottom: 16px;
+            font-family: var(--font-sans); font-size: 12px;
+            color: var(--charcoal); line-height: 1.5;
+            border-radius: 0 4px 4px 0;
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .form-error svg {
+            width: 16px; height: 16px; color: var(--error-border);
+            flex-shrink: 0; margin-top: 1px;
+        }
+        .form-error a { color: var(--charcoal); text-decoration: underline; font-weight: 500; }
+        .form-error[hidden] { display: none; }
+
+        /* â•â•â• STEP CONTENT â€” TERMS â•â•â• */
+        .terms-intro {
+            font-family: var(--font-sans); font-size: 12px; font-weight: 300;
+            color: var(--charcoal-70); line-height: 1.7;
+            margin-bottom: 14px;
+        }
+        .terms-container {
+            border: 1px solid var(--charcoal-08);
+            border-radius: 8px;
+            height: 240px; overflow-y: auto;
+            padding: 18px 20px 0;
+            background: var(--warm-cream);
+            margin-bottom: 16px;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
+        }
+        .terms-section-title {
+            font-family: var(--font-serif); font-size: 16px; font-weight: 400;
+            color: var(--charcoal); margin: 18px 0 6px;
+        }
+        .terms-section-title:first-child { margin-top: 0; }
+        .terms-text {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 300;
+            color: var(--charcoal-70); line-height: 1.75;
+            margin-bottom: 8px;
+        }
+        .terms-text strong { color: var(--charcoal); font-weight: 500; }
+        .terms-end { height: 28px; }
+        .terms-scroll-hint {
+            position: sticky; bottom: 0;
+            background: linear-gradient(to top, var(--warm-cream) 60%, transparent);
+            padding: 22px 0 8px;
+            text-align: center;
+            font-family: var(--font-sans); font-size: 9px; font-weight: 600;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--charcoal-50);
+            pointer-events: none; transition: opacity 0.3s;
+        }
+        .terms-scroll-hint[hidden] { display: none; }
+
+        .agree-row {
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 10px;
+        }
+        .agree-checkbox {
+            width: 18px; height: 18px;
+            border: 1.5px solid var(--charcoal-15);
+            border-radius: 3px;
+            flex-shrink: 0; cursor: pointer;
+            transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            margin-top: 1px; background: var(--warm-cream);
+        }
+        .agree-checkbox:focus-visible { outline: 2px solid var(--gold-accent); outline-offset: 2px; }
+        .agree-checkbox.locked { opacity: 0.4; cursor: not-allowed; }
+        .agree-checkbox.checked {
+            background: var(--charcoal); border-color: var(--charcoal);
+        }
+        .agree-checkbox.checked::after {
+            content: ''; width: 10px; height: 10px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+        }
+        .agree-label {
+            font-family: var(--font-sans); font-size: 12px; font-weight: 400;
+            color: var(--charcoal); line-height: 1.55;
+        }
+        .agree-label a { color: var(--gold-dark); text-decoration: underline; }
+        .agree-must-scroll {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 300;
+            color: var(--charcoal-30); font-style: italic;
+            margin-top: 8px;
+        }
+        .agree-must-scroll[hidden] { display: none; }
+
+        /* â•â•â• STEP CONTENT â€” STRIPE HANDOFF â•â•â• */
+        .stripe-trial-note {
+            background: rgba(196,162,101,0.08);
+            border: 1px solid rgba(196,162,101,0.25);
+            border-radius: 8px;
+            padding: 12px 16px; margin-bottom: 16px;
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .stripe-trial-dot {
+            width: 6px; height: 6px; background: var(--gold-accent);
+            border-radius: 50%; flex-shrink: 0; margin-top: 4px;
+        }
+        .stripe-trial-text {
+            font-family: var(--font-sans); font-size: 12px; font-weight: 300;
+            color: var(--gold-dark); line-height: 1.6;
+        }
+        .stripe-trial-text strong { color: var(--gold-dark); font-weight: 600; }
+
+        .stripe-summary {
+            background: var(--warm-cream);
+            border: 1px solid var(--charcoal-08);
+            border-radius: 8px;
+            padding: 18px; margin-bottom: 16px;
+        }
+        .stripe-row {
+            display: flex; justify-content: space-between; align-items: baseline;
+            padding: 8px 0; border-bottom: 1px solid var(--charcoal-08);
+        }
+        .stripe-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .stripe-row:first-child { padding-top: 0; }
+        .stripe-label {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 400;
+            color: var(--charcoal-50);
+        }
+        .stripe-value {
+            font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+            color: var(--charcoal); text-align: right;
+        }
+        .stripe-value.hi { color: var(--gold-dark); }
+
+        .stripe-handoff-note {
+            background: var(--warm-cream);
+            border: 1px solid var(--charcoal-08);
+            border-radius: 8px;
+            padding: 14px 16px; margin-bottom: 16px;
+        }
+        .stripe-handoff-title {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+            color: var(--charcoal); margin-bottom: 6px;
+            letter-spacing: 0.04em;
+        }
+        .stripe-handoff-body {
+            font-family: var(--font-sans); font-size: 11.5px; font-weight: 300;
+            color: var(--charcoal-70); line-height: 1.65;
+            margin-bottom: 4px;
+        }
+        .stripe-handoff-body:last-child { margin-bottom: 0; }
+
+        .stripe-badges {
+            display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+        }
+        .stripe-badge {
+            font-family: var(--font-sans); font-size: 9px; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 5px 10px;
+            border: 1px solid var(--charcoal-08);
+            border-radius: 50px;
+            color: var(--charcoal-50);
+            background: var(--warm-cream);
+        }
+        .stripe-change-note {
+            margin-top: 18px;
+            font-family: var(--font-sans); font-size: 11px; font-weight: 300;
+            color: var(--charcoal-30); line-height: 1.6;
+            text-align: center;
+        }
+
+        /* â•â•â• STEP CONTENT â€” IN-MODAL CONFIRMATION (essentials) â•â•â• */
+        .confirm-wrap { text-align: center; padding-top: 20px; }
+        .confirm-icon {
+            width: 64px; height: 64px; margin: 0 auto 24px;
+            border-radius: 50%; border: 2px solid var(--charcoal);
+            display: flex; align-items: center; justify-content: center;
+            animation: scaleIn 0.5s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s both;
+        }
+        .confirm-icon svg {
+            width: 28px; height: 28px; color: var(--charcoal);
+            stroke-dasharray: 50; stroke-dashoffset: 50;
+            animation: drawCheck 0.5s ease 0.5s forwards;
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+        @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+        @keyframes fadeUp {
+            from { transform: translateY(12px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
+        }
+        .confirm-title {
+            font-family: var(--font-serif); font-size: 30px; font-weight: 300;
+            color: var(--charcoal); line-height: 1.2; margin-bottom: 10px;
+            animation: fadeUp 0.5s ease 0.3s both;
+            outline: none;
+        }
+        .confirm-title em { font-style: italic; color: var(--gold-dark); }
+        .confirm-text {
+            font-family: var(--font-sans); font-size: 12.5px; font-weight: 300;
+            color: var(--charcoal-70); line-height: 1.7;
+            max-width: 380px; margin: 0 auto 24px;
+            animation: fadeUp 0.5s ease 0.5s both;
+        }
+        .confirm-text strong { font-weight: 500; color: var(--charcoal); }
+
+        .confirm-detail {
+            background: var(--warm-cream);
+            border: 1px solid var(--charcoal-08);
+            border-radius: 8px;
+            padding: 16px 18px;
+            text-align: left; margin-bottom: 16px;
+            animation: fadeUp 0.5s ease 0.7s both;
+        }
+        .confirm-row {
+            display: flex; justify-content: space-between;
+            padding: 8px 0; border-bottom: 1px solid var(--charcoal-08);
+        }
+        .confirm-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .confirm-row:first-child { padding-top: 0; }
+        .confirm-row-label {
+            font-family: var(--font-sans); font-size: 9.5px; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--charcoal-50);
+        }
+        .confirm-row-value {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+            color: var(--charcoal); text-align: right;
+        }
+        .confirm-ref {
+            font-family: var(--font-sans); font-size: 11px;
+            color: var(--charcoal-30);
+            text-align: center; margin-bottom: 16px;
+            animation: fadeUp 0.5s ease 0.9s both;
+        }
+        .confirm-ref strong { color: var(--charcoal-50); font-weight: 500; }
+        .confirm-email-note {
+            font-family: var(--font-sans); font-size: 11.5px; font-weight: 300;
+            color: var(--charcoal-50); line-height: 1.6;
+            text-align: center;
+            animation: fadeUp 0.5s ease 1s both;
+        }
+        .confirm-email-note em { color: var(--charcoal); font-style: normal; font-weight: 500; }
+        .confirm-email-note a { color: var(--charcoal); text-decoration: none; font-weight: 500; }
+
+        /* â•â•â• REDUCED MOTION â•â•â• */
+        @media (prefers-reduced-motion: reduce) {
+            .signup-modal-overlay,
+            .signup-modal,
+            .progress-dot,
+            .progress-line,
+            .progress-label { transition: none !important; }
+            .confirm-icon, .confirm-icon svg, .confirm-title,
+            .confirm-text, .confirm-detail, .confirm-ref,
+            .confirm-email-note { animation: none !important; }
+            .confirm-icon svg { stroke-dashoffset: 0 !important; }
+        }
+
+        /* â•â•â• MOBILE â•â•â• */
+        @media (max-width: 768px) {
+            .signup-modal { width: 100vw; }
+            .signup-modal-header { padding: 16px 20px; }
+            .signup-progress { padding: 12px 20px; }
+            .signup-modal-body { padding: 22px 20px 28px; }
+            .signup-modal-footer { padding: 14px 20px; }
+            /* Tap targets â€” WCAG 2.5.5 minimum 44x44 px */
+            .signup-modal-close { width: 44px; height: 44px; }
+            .form-input { padding: 13px 14px; }
+            .btn-back { padding: 13px 18px; }
+            .btn-next { padding: 14px 22px; }
+            /* Layout */
+            .form-grid { grid-template-columns: 1fr; gap: 12px; }
+            .progress-label { display: none; }
+            .progress-line { margin: 0 6px; }
+            .progress-step { gap: 0; }
+            .terms-container { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- GTM noscript fallback -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NBQCMQXG"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <!-- â•â•â• DEMO TRIGGER ROWS (preview only â€” REMOVE IN PRODUCTION) â•â•â•
+         Each link demonstrates the data-attribute pattern Kane will add to
+         the actual List Your Venue page CTAs. Stripe price IDs shown here
+         are placeholders â€” Kate, swap them for the real IDs from your Stripe
+         dashboard before launch.
+
+         The "Simulating page-level cycle" toggle below mimics the existing
+         yearly/monthly toggle on the List Your Venue page. In production,
+         that page's existing toggle JS sets window.tgsPageBillingCycle
+         on each flip; the modal reads it on open. -->
+    <div class="demo-page">
+
+        <div class="demo-cycle-toggle">
+            <span class="demo-cycle-toggle-label">Simulating page-level cycle:</span>
+            <button type="button" class="demo-cycle-btn active" data-demo-cycle="yearly">Yearly</button>
+            <button type="button" class="demo-cycle-btn" data-demo-cycle="monthly">Monthly</button>
+        </div>
+
+        <div class="demo-section">
+            <p class="demo-section-label">Free tier (no track variant â€” Essentials is shared across all programmes)</p>
+            <div class="demo-row">
+                <a href="#" class="demo-trigger"
+                   data-signup-trigger
+                   data-signup-tier="essentials"
+                   data-signup-tier-name="Essentials"
+                   data-signup-free="true"
+                   data-signup-commission="20% per booking">Essentials â€” Free</a>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <p class="demo-section-label">Founding Partner pricing â€” 60% off subscription, lifetime (currently active programme)</p>
+            <div class="demo-row">
+                <a href="#" class="demo-trigger gold"
+                   data-signup-trigger
+                   data-signup-tier="standard"
+                   data-signup-tier-name="Standard"
+                   data-signup-track="founding"
+                   data-signup-track-name="Founding Partner"
+                   data-signup-free="false"
+                   data-signup-trial="true"
+                   data-signup-commission="10% per booking"
+                   data-signup-price-monthly="$19.60/month"
+                   data-signup-price-monthly-id="price_FND_STD_M_REPLACE"
+                   data-signup-price-yearly="$196/year"
+                   data-signup-price-yearly-id="price_FND_STD_Y_REPLACE"
+                   data-signup-annual-saving="Save $39.20">Founding Â· Standard</a>
+
+                <a href="#" class="demo-trigger gold"
+                   data-signup-trigger
+                   data-signup-tier="featured"
+                   data-signup-tier-name="Featured"
+                   data-signup-track="founding"
+                   data-signup-track-name="Founding Partner"
+                   data-signup-free="false"
+                   data-signup-trial="true"
+                   data-signup-commission="7% per booking"
+                   data-signup-price-monthly="$39.60/month"
+                   data-signup-price-monthly-id="price_FND_FEA_M_REPLACE"
+                   data-signup-price-yearly="$396/year"
+                   data-signup-price-yearly-id="price_FND_FEA_Y_REPLACE"
+                   data-signup-annual-saving="Save $79.20">Founding Â· Featured</a>
+
+                <a href="#" class="demo-trigger gold"
+                   data-signup-trigger
+                   data-signup-tier="premium"
+                   data-signup-tier-name="Premium"
+                   data-signup-track="founding"
+                   data-signup-track-name="Founding Partner"
+                   data-signup-free="false"
+                   data-signup-trial="true"
+                   data-signup-commission="5% per booking"
+                   data-signup-price-monthly="$79.60/month"
+                   data-signup-price-monthly-id="price_FND_PRE_M_REPLACE"
+                   data-signup-price-yearly="$796/year"
+                   data-signup-price-yearly-id="price_FND_PRE_Y_REPLACE"
+                   data-signup-annual-saving="Save $159.20">Founding Â· Premium</a>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <p class="demo-section-label">Launch Partner pricing â€” 40% off subscription, lifetime (next programme)</p>
+            <div class="demo-row">
+                <a href="#" class="demo-trigger gold"
+                   data-signup-trigger
+                   data-signup-tier="standard"
+                   data-signup-tier-name="Standard"
+                   data-signup-track="launch"
+                   data-signup-track-name="Launch Partner"
+                   data-signup-free="false"
+                   data-signup-trial="true"
+                   data-signup-commission="10% per booking"
+                   data-signup-price-monthly="$29.40/month"
+                   data-signup-price-monthly-id="price_LCH_STD_M_REPLACE"
+                   data-signup-price-yearly="$294/year"
+                   data-signup-price-yearly-id="price_LCH_STD_Y_REPLACE"
+                   data-signup-annual-saving="Save $58.80">Launch Â· Standard</a>
+
+                <a href="#" class="demo-trigger gold"
+                   data-signup-trigger
+                   data-signup-tier="featured"
+                   data-signup-tier-name="Featured"
+                   data-signup-track="launch"
+                   data-signup-track-name="Launch Partner"
+                   data-signup-free="false"
+                   data-signup-trial="true"
+                   data-signup-commission="7% per booking"
+                   data-signup-price-monthly="$59.40/month"
+                   data-signup-price-monthly-id="price_LCH_FEA_M_REPLACE"
+                   data-signup-price-yearly="$594/year"
+                   data-signup-price-yearly-id="price_LCH_FEA_Y_REPLACE"
+                   data-signup-annual-saving="Save $118.80">Launch Â· Featured</a>
+
+                <a href="#" class="demo-trigger gold"
+                   data-signup-trigger
+                   data-signup-tier="premium"
+                   data-signup-tier-name="Premium"
+                   data-signup-track="launch"
+                   data-signup-track-name="Launch Partner"
+                   data-signup-free="false"
+                   data-signup-trial="true"
+                   data-signup-commission="5% per booking"
+                   data-signup-price-monthly="$119.40/month"
+                   data-signup-price-monthly-id="price_LCH_PRE_M_REPLACE"
+                   data-signup-price-yearly="$1,194/year"
+                   data-signup-price-yearly-id="price_LCH_PRE_Y_REPLACE"
+                   data-signup-annual-saving="Save $238.80">Launch Â· Premium</a>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <p class="demo-section-label">Standard pricing â€” full price (post-launch programme)</p>
+            <div class="demo-row">
+                <a href="#" class="demo-trigger"
+                   data-signup-trigger
+                   data-signup-tier="standard"
+                   data-signup-tier-name="Standard"
+                   data-signup-free="false"
+                   data-signup-trial="true"
+                   data-signup-commission="10% per booking"
+                   data-signup-price-monthly="$49/month"
+                   data-signup-price-monthly-id="price_STD_STD_M_REPLACE"
+                   data-signup-price-yearly="$490/year"
+                   data-signup-price-yearly-id="price_STD_STD_Y_REPLACE"
+                   data-signup-annual-saving="Save $98">Standard</a>
+
+                <a href="#" class="demo-trigger"
+                   data-signup-trigger
+                   data-signup-tier="featured"
+                   data-signup-tier-name="Featured"
+                   data-signup-free="false"
+                   data-signup-trial="true"
+                   data-signup-commission="7% per booking"
+                   data-signup-price-monthly="$99/month"
+                   data-signup-price-monthly-id="price_STD_FEA_M_REPLACE"
+                   data-signup-price-yearly="$990/year"
+                   data-signup-price-yearly-id="price_STD_FEA_Y_REPLACE"
+                   data-signup-annual-saving="Save $198">Featured</a>
+
+                <a href="#" class="demo-trigger"
+                   data-signup-trigger
+                   data-signup-tier="premium"
+                   data-signup-tier-name="Premium"
+                   data-signup-free="false"
+                   data-signup-trial="true"
+                   data-signup-commission="5% per booking"
+                   data-signup-price-monthly="$199/month"
+                   data-signup-price-monthly-id="price_STD_PRE_M_REPLACE"
+                   data-signup-price-yearly="$1,990/year"
+                   data-signup-price-yearly-id="price_STD_PRE_Y_REPLACE"
+                   data-signup-annual-saving="Save $398">Premium</a>
+            </div>
+        </div>
+
+        <p class="demo-note">
+            Preview only. In production, these data-attributes go directly on the <code>&lt;a&gt;</code> tier CTAs already on
+            <code>/list-your-venue</code>. The modal reads everything from the trigger element's <code>dataset</code> on open â€”
+            no per-journey config inside the modal. Programme transitions become a price-ID swap on the page CTAs.
+        </p>
+    </div>
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         SIGNUP MODAL
+         Drop this entire block into the venue/pricing page templates.
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <div class="signup-modal-overlay" id="signupOverlay" aria-hidden="true"></div>
+
+    <aside class="signup-modal" id="signupModal" role="dialog" aria-modal="true" aria-label="Venue Subscription" aria-hidden="true" inert>
+
+        <!-- HEADER (sticky) -->
+        <header class="signup-modal-header">
+            <div class="signup-modal-header-left">
+                <span class="signup-modal-logo" aria-hidden="true"></span>
+                <div class="signup-modal-label-wrap">
+                    <span class="signup-modal-eyebrow" id="signupEyebrow">â€”</span>
+                    <span class="signup-modal-label" id="signupTitle">List Your Venue</span>
+                </div>
+            </div>
+            <button class="signup-modal-close" id="signupClose" type="button" aria-label="Close">&times;</button>
+        </header>
+
+        <!-- PROGRESS (sticky) -->
+        <nav class="signup-progress" id="signupProgress" aria-label="Signup progress"></nav>
+
+        <!-- BODY (scrollable, content rendered per step) -->
+        <div class="signup-modal-body" id="signupBody"></div>
+
+        <!-- FOOTER (sticky â€” Back / step count / Continue) -->
+        <footer class="signup-modal-footer">
+            <button type="button" class="btn-back" id="btnBack" hidden>â† Back</button>
+            <span class="step-count" id="stepCount">â€”</span>
+            <button type="button" class="btn-next" id="btnNext">Continue â†’</button>
+        </footer>
+    </aside>
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         END SIGNUP MODAL
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+
+    <!-- Cloudflare Turnstile loader (page-level â€” already site-wide) -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         === SIGNUP MODAL JS ===
+         Multi-step state machine. Open / close / focus management /
+         step navigation / per-step rendering / validation / Stripe handoff.
+         Drop the entire IIFE into the List Your Venue page.
+
+         Exposes:
+           window.openVenueSignupModal(triggerEl)
+                 â€” programmatic open. triggerEl is any element carrying the
+                 data-signup-* attributes documented in the file header.
+                 Useful if Kane wants to open the modal from a non-click
+                 event (e.g. URL-driven or post-action).
+           window.closeVenueSignupModal(force)
+                 â€” programmatic close. Pass true to skip the mid-flow
+                 confirm dialog.
+           window.tgsStripeHandoff (override hook)
+                 â€” if defined by Kane on the page, it gets called instead of
+                 the default alert when the user clicks "Proceed to Secure
+                 Payment". Receives { price_id, billing_cycle, tier, track,
+                 formData, submissionId, trial }.
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <script>
+    (function() {
+        'use strict';
+
+        // â”€â”€ Element references â”€â”€
+        var overlay   = document.getElementById('signupOverlay');
+        var modal     = document.getElementById('signupModal');
+        var closeBtn  = document.getElementById('signupClose');
+        var bodyEl    = document.getElementById('signupBody');
+        var progEl    = document.getElementById('signupProgress');
+        var eyebrowEl = document.getElementById('signupEyebrow');
+        var titleEl   = document.getElementById('signupTitle');
+        var btnBack   = document.getElementById('btnBack');
+        var btnNext   = document.getElementById('btnNext');
+        var stepCount = document.getElementById('stepCount');
+
+        if (!modal) return;
+
+        // â”€â”€ State â”€â”€
+        var lastTrigger = null;
+        var cfg          = null;          // dynamic config built from trigger.dataset on open
+        var stepIdx      = 0;             // index into cfg.steps
+        var formData     = {};            // captured details
+        var submissionId = null;          // UUID for funnel matching
+        var __turnstileToken = null;
+        // Per-step transient flags
+        var termsScrolled = false;
+        var termsAccepted = false;
+        var gdprAccepted  = false;
+
+        // â”€â”€ Build cfg from a trigger element's dataset â”€â”€
+        // Reads every data-signup-* attribute and produces a normalised config
+        // object the modal uses throughout its lifecycle. Also derives the
+        // step list (free tiers skip Stripe, paid tiers skip in-modal confirm)
+        // and locks in the billing cycle from the page state at open time.
+        function buildCfgFromTrigger(trigger) {
+            var d = trigger.dataset || {};
+            var isFree = (d.signupFree || '').toLowerCase() === 'true';
+            var hasTrack = !!(d.signupTrack && d.signupTrackName);
+
+            // Resolve billing cycle (ignored for free tier):
+            //   1. Explicit attribute on the trigger (data-signup-billing-cycle)
+            //      â€” used for CTAs outside the pricing table (footer, email, etc.)
+            //   2. Page-level state (window.tgsPageBillingCycle) â€” set by the
+            //      pricing toggle on the List Your Venue page
+            //   3. Default to 'yearly' (matches the page's default state)
+            var cycle = (d.signupBillingCycle || '').toLowerCase() ||
+                        (window.tgsPageBillingCycle || '').toLowerCase() ||
+                        'yearly';
+            if (cycle !== 'monthly' && cycle !== 'yearly') cycle = 'yearly';
+
+            var c = {
+                // Identity
+                tier:             d.signupTier      || '',
+                tierName:         d.signupTierName  || 'Plan',
+                track:            d.signupTrack     || '',          // '' if no partner track
+                trackName:        d.signupTrackName || '',
+                free:             isFree,
+                trial:            (d.signupTrial || '').toLowerCase() === 'true',
+                commission:       d.signupCommission || '',
+                // Pricing (paid tiers only; ignored if free)
+                priceMonthly:     d.signupPriceMonthly      || '',
+                priceMonthlyId:   d.signupPriceMonthlyId    || '',
+                priceYearly:      d.signupPriceYearly       || '',
+                priceYearlyId:    d.signupPriceYearlyId     || '',
+                annualSaving:     d.signupAnnualSaving      || '',
+                // Locked-in billing cycle for this session
+                billingCycle:     isFree ? '' : cycle,
+                // Derived
+                steps:  isFree ? ['details','terms','confirm'] : ['details','terms','stripe'],
+                labels: isFree ? ['Your Details','Agreement','Confirmed'] : ['Your Details','Agreement','Payment'],
+                hasTrack: hasTrack
+            };
+
+            // Display naming
+            c.eyebrow = hasTrack ? c.trackName : (c.tierName + ' Plan');
+            c.title   = isFree ? 'Get Started Free' : 'List Your Venue';
+
+            // Plan name shown on the Stripe summary and in confirmation
+            c.planDisplayName = hasTrack
+                ? (c.tierName + ' Â· ' + c.trackName)
+                : c.tierName;
+
+            // Partner banner copy (only used if hasTrack)
+            if (hasTrack) {
+                var pct = c.track === 'founding' ? '60% off' :
+                          c.track === 'launch'   ? '40% off' : '';
+                c.banner = c.trackName + ' â€” <strong>' +
+                           (pct ? pct + ', for life' : 'lifetime pricing') +
+                           '</strong>';
+            }
+
+            // Sanity check â€” paid CTAs need price IDs to work end-to-end
+            if (!isFree && (!c.priceMonthlyId || !c.priceYearlyId)) {
+                console.warn(
+                    '[signup-modal] paid CTA is missing one or both price IDs. ' +
+                    'tier=' + c.tier + ' track=' + (c.track || '(standard)') +
+                    ' monthly_id=' + (c.priceMonthlyId || 'MISSING') +
+                    ' yearly_id=' + (c.priceYearlyId || 'MISSING')
+                );
+            }
+            return c;
+        }
+
+        // â”€â”€ UUID v4 â”€â”€
+        function uuid() {
+            return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() :
+                   'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                       var r = Math.random() * 16 | 0;
+                       var v = c === 'x' ? r : (r & 0x3 | 0x8);
+                       return v.toString(16);
+                   });
+        }
+
+        // â”€â”€ Track helper (always carries tier, track, submissionId) â”€â”€
+        function track(event, extra) {
+            if (typeof window.tgsTrackOnce !== 'function') return;
+            var payload = Object.assign({
+                submissionId: submissionId,
+                form_name:    'venue_signup',
+                tier:         cfg ? cfg.tier  : '',
+                track:        cfg ? (cfg.track || 'standard') : ''
+            }, extra || {});
+            window.tgsTrackOnce(event, payload);
+        }
+
+        // â”€â”€ Open modal â”€â”€
+        // Single argument: the trigger element. All journey config is read
+        // from its data-signup-* attributes. See header comment for full list.
+        function openModal(trigger) {
+            if (!trigger || !trigger.dataset) {
+                console.warn('[signup-modal] openModal called without a valid trigger element');
+                return;
+            }
+
+            lastTrigger   = trigger;
+            cfg           = buildCfgFromTrigger(trigger);
+            stepIdx       = 0;
+            termsScrolled = false;
+            termsAccepted = false;
+            gdprAccepted  = false;
+            formData      = {};
+            submissionId  = uuid();
+
+            // Header
+            eyebrowEl.textContent = cfg.eyebrow;
+            titleEl.textContent   = cfg.title;
+
+            // Show modal
+            overlay.classList.add('active');
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            overlay.setAttribute('aria-hidden', 'false');
+            modal.removeAttribute('inert');
+            document.body.style.overflow = 'hidden';
+
+            // Render first step
+            render();
+
+            // Funnel: modal opened
+            track('signup_form_view');
+
+            // Focus the first interactive element after slide-in
+            setTimeout(function() {
+                var first = bodyEl.querySelector(
+                    'input:not([type=hidden]):not([name=website]), select, textarea, button'
+                );
+                if (first) first.focus();
+                else if (closeBtn) closeBtn.focus();
+            }, 150);
+        }
+
+        // â”€â”€ Close modal â”€â”€
+        function closeModal(force) {
+            // Mid-flow confirm: warn if user has progressed past first step
+            // and isn't on the terminal confirmation state.
+            if (!force && stepIdx > 0 && cfg && cfg.steps[stepIdx] !== 'confirm') {
+                if (!confirm('Close this signup? Your progress will be lost.')) return;
+            }
+
+            overlay.classList.remove('active');
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            overlay.setAttribute('aria-hidden', 'true');
+            modal.setAttribute('inert', '');
+            document.body.style.overflow = '';
+
+            if (lastTrigger && typeof lastTrigger.focus === 'function') {
+                lastTrigger.focus();
+            }
+        }
+
+        // â”€â”€ Render progress indicator â”€â”€
+        function renderProgress() {
+            if (!cfg) return;
+            var html = '';
+            cfg.labels.forEach(function(label, i) {
+                var done = i < stepIdx;
+                var active = i === stepIdx;
+                var dotClass = done ? 'done' : (active ? 'active' : '');
+                var labelClass = active ? 'active' : '';
+                var dotContent = done ? 'âœ“' : (i + 1);
+                html += '<div class="progress-step">' +
+                            '<div class="progress-dot ' + dotClass + '" aria-current="' + (active ? 'step' : 'false') + '">' + dotContent + '</div>' +
+                            '<span class="progress-label ' + labelClass + '">' + label + '</span>' +
+                        '</div>';
+                if (i < cfg.labels.length - 1) {
+                    html += '<div class="progress-line ' + (done ? 'done' : '') + '"></div>';
+                }
+            });
+            progEl.innerHTML = html;
+        }
+
+        // â”€â”€ Master render â”€â”€
+        function render() {
+            if (!cfg) return;
+            var stepName = cfg.steps[stepIdx];
+
+            renderProgress();
+            stepCount.textContent = (stepIdx + 1) + ' of ' + cfg.steps.length;
+
+            // Default footer state â€” each renderXxx may modify
+            btnBack.hidden = (stepIdx === 0);
+            btnNext.disabled = false;
+            btnNext.className = 'btn-next';
+            btnNext.textContent = 'Continue â†’';
+
+            if (stepName === 'details')      renderDetails();
+            else if (stepName === 'terms')   renderTerms();
+            else if (stepName === 'stripe')  renderStripe();
+            else if (stepName === 'confirm') renderConfirm();
+
+            // Funnel: per-step view
+            track('signup_step_view', { step: stepName, step_index: stepIdx + 1 });
+
+            bodyEl.scrollTop = 0;
+        }
+
+        // â”€â”€ HTML escape (for any user-typed value re-rendered) â”€â”€
+        function esc(s) {
+            if (!s) return '';
+            return String(s).replace(/[&<>"']/g, function(m) {
+                return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[m];
+            });
+        }
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        //  STEP 1 â€” DETAILS
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        function renderDetails() {
+            var banner = cfg.hasTrack
+                ? '<div class="partner-banner"><div class="partner-banner-dot"></div>' +
+                  '<p class="partner-banner-text">' + cfg.banner + ' &mdash; ' +
+                  '<strong>' + esc(cfg.tierName) + ' tier</strong></p></div>'
+                : '';
+
+            bodyEl.innerHTML = banner +
+                '<p class="step-intro">Tell us a little about you and your venue. We\'ll use these details to create your account and tailor your onboarding.</p>' +
+                '<div class="form-error" id="formError" role="alert" aria-live="polite" hidden>' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' +
+                        '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' +
+                    '</svg>' +
+                    '<span id="formErrorMessage">Please fill in all required fields.</span>' +
+                '</div>' +
+
+                // Honeypot (visually hidden)
+                '<label class="hp-trap" aria-hidden="true">Website (leave blank)' +
+                    '<input type="text" name="website" id="hp_website" tabindex="-1" autocomplete="off">' +
+                '</label>' +
+
+                '<div class="form-grid">' +
+                    '<div class="form-field">' +
+                        '<label class="form-label" for="ff">First Name <span class="required" aria-hidden="true">*</span></label>' +
+                        '<input class="form-input" type="text" id="ff" name="first_name" placeholder="Kate" required autocomplete="given-name" value="' + esc(formData.f) + '">' +
+                    '</div>' +
+                    '<div class="form-field">' +
+                        '<label class="form-label" for="fl">Last Name <span class="required" aria-hidden="true">*</span></label>' +
+                        '<input class="form-input" type="text" id="fl" name="last_name" placeholder="Smith" required autocomplete="family-name" value="' + esc(formData.l) + '">' +
+                    '</div>' +
+                    '<div class="form-field full">' +
+                        '<label class="form-label" for="fe">Email Address <span class="required" aria-hidden="true">*</span></label>' +
+                        '<input class="form-input" type="email" id="fe" name="email" placeholder="hello@yourvenue.com" required autocomplete="email" value="' + esc(formData.e) + '">' +
+                    '</div>' +
+                    '<div class="form-field full">' +
+                        '<label class="form-label" for="fph">Phone Number <span class="required" aria-hidden="true">*</span></label>' +
+                        '<input class="form-input" type="tel" id="fph" name="phone" placeholder="+61 4XX XXX XXX" required autocomplete="tel" value="' + esc(formData.ph) + '">' +
+                    '</div>' +
+                    '<div class="form-field full">' +
+                        '<label class="form-label" for="fv">Venue Name <span class="required" aria-hidden="true">*</span></label>' +
+                        '<input class="form-input" type="text" id="fv" name="venue_name" placeholder="Horizon Wellness Retreat" required value="' + esc(formData.v) + '">' +
+                    '</div>' +
+                    '<div class="form-field">' +
+                        '<label class="form-label" for="ft">Venue Type <span class="required" aria-hidden="true">*</span></label>' +
+                        '<select class="form-input" id="ft" name="venue_type" required>' +
+                            '<option value="">Select type</option>' +
+                            '<option value="retreat"' + (formData.t === 'retreat' ? ' selected' : '') + '>Retreat Venue</option>' +
+                            '<option value="wellness"' + (formData.t === 'wellness' ? ' selected' : '') + '>Wellness Venue</option>' +
+                            '<option value="both"' + (formData.t === 'both' ? ' selected' : '') + '>Both</option>' +
+                        '</select>' +
+                    '</div>' +
+                    '<div class="form-field">' +
+                        '<label class="form-label" for="fc">Country <span class="required" aria-hidden="true">*</span></label>' +
+                        '<select class="form-input" id="fc" name="country" required>' +
+                            '<option value="">Select country</option>' +
+                            ['AU','NZ','US','GB','ID','TH','JP','PT','GR','MA','CR','DE','FR','IT','ES','NL','CH','AT','SE','NO','DK','FI','BE','IE','IN','SG','ZA','MX','BR','other'].map(function(code) {
+                                var names = { AU:'Australia', NZ:'New Zealand', US:'United States', GB:'United Kingdom', ID:'Indonesia', TH:'Thailand', JP:'Japan', PT:'Portugal', GR:'Greece', MA:'Morocco', CR:'Costa Rica', DE:'Germany', FR:'France', IT:'Italy', ES:'Spain', NL:'Netherlands', CH:'Switzerland', AT:'Austria', SE:'Sweden', NO:'Norway', DK:'Denmark', FI:'Finland', BE:'Belgium', IE:'Ireland', IN:'India', SG:'Singapore', ZA:'South Africa', MX:'Mexico', BR:'Brazil', other:'Other' };
+                                return '<option value="' + code + '"' + (formData.co === code ? ' selected' : '') + '>' + names[code] + '</option>';
+                            }).join('') +
+                        '</select>' +
+                    '</div>' +
+                    '<div class="form-field full">' +
+                        '<label class="form-label" for="fw">Website <span class="optional">(optional)</span></label>' +
+                        '<input class="form-input" type="url" id="fw" name="website_url" placeholder="https://yourvenue.com" autocomplete="url" value="' + esc(formData.w) + '">' +
+                    '</div>' +
+                    '<div class="form-field full">' +
+                        '<label class="form-label" for="fd">Tell us about your space <span class="optional">(optional)</span></label>' +
+                        '<textarea class="form-input" id="fd" name="venue_description" rows="3" placeholder="A few sentences about your venue, its ethos, and what makes it unique...">' + esc(formData.d) + '</textarea>' +
+                    '</div>' +
+                '</div>';
+        }
+
+        // â”€â”€ Validate details and capture form data â”€â”€
+        function validateAndCaptureDetails() {
+            var hp = document.getElementById('hp_website');
+            if (hp && hp.value.trim() !== '') {
+                // Silent honeypot reject â€” fake-progress to confirmation without firing tracking
+                stepIdx = cfg.steps.length - 1;
+                if (cfg.steps[stepIdx] === 'confirm') renderConfirm();
+                else closeModal(true);
+                return false;
+            }
+
+            var fields = [
+                ['ff', 'f', 'First name'], ['fl', 'l', 'Last name'],
+                ['fe', 'e', 'Email'],      ['fph', 'ph', 'Phone'],
+                ['fv', 'v', 'Venue name'], ['ft', 't', 'Venue type'],
+                ['fc', 'co', 'Country']
+            ];
+            var missing = [];
+            var firstInvalid = null;
+            fields.forEach(function(f) {
+                var el = document.getElementById(f[0]);
+                if (!el) return;
+                var val = (el.value || '').trim();
+                if (!val) {
+                    missing.push(f[2]);
+                    el.classList.add('invalid');
+                    if (!firstInvalid) firstInvalid = el;
+                } else {
+                    el.classList.remove('invalid');
+                }
+                formData[f[1]] = val;
+            });
+            // Optional fields
+            formData.w = (document.getElementById('fw') || {}).value || '';
+            formData.d = (document.getElementById('fd') || {}).value || '';
+
+            // Email format (loose check â€” server will validate properly)
+            var emailEl = document.getElementById('fe');
+            if (emailEl && emailEl.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) {
+                emailEl.classList.add('invalid');
+                if (!firstInvalid) firstInvalid = emailEl;
+                if (missing.indexOf('Email') === -1) missing.push('Email (invalid format)');
+            }
+
+            if (missing.length) {
+                var errEl = document.getElementById('formError');
+                var errMsg = document.getElementById('formErrorMessage');
+                if (errMsg) {
+                    errMsg.textContent = 'Please complete: ' + missing.join(', ') + '.';
+                }
+                if (errEl) {
+                    errEl.hidden = false;
+                    errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                if (firstInvalid) firstInvalid.focus();
+                return false;
+            }
+            return true;
+        }
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        //  STEP 2 â€” TERMS / AGREEMENT
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        function renderTerms() {
+            termsScrolled = false;
+            termsAccepted = false;
+            gdprAccepted = false;
+            btnNext.disabled = true;
+            btnNext.textContent = 'I Agree & Continue â†’';
+
+            // The terms text is preserved verbatim from the existing approved
+            // mockup. Jeremy at NPR Law is the legal source of truth â€” when he
+            // delivers final wording, swap the inner text only; structure stays.
+            bodyEl.innerHTML =
+                '<p class="terms-intro">Please read the following agreements in full. Scroll to the bottom of the box to activate the agreement checkboxes.</p>' +
+                '<div class="terms-container" id="termsBox">' +
+
+                    '<h4 class="terms-section-title">Terms &amp; Conditions</h4>' +
+                    '<p class="terms-text">The Global Sanctum ("TGS", "we", "our", "us") welcomes you. By accessing or using our platform (www.theglobalsanctum.com and any sub-pages), you agree to these Terms and Conditions. If you do not agree, please do not use the site.</p>' +
+                    '<p class="terms-text"><strong>1. Purpose of the Site.</strong> This site is operated by The Global Sanctum to share information about our platform, services, and community initiatives. Content is for general information only and may change or be updated at any time.</p>' +
+                    '<p class="terms-text"><strong>2. About TGS.</strong> TGS is a venue discovery and booking platform for retreat venues, wellness resorts, hosts, and wellness guests. TGS does not own or operate the venues listed. We act as an intermediary connecting venue owners with hosts and guests. All bookings are subject to the policies of the venue and host, as well as these Terms.</p>' +
+                    '<p class="terms-text"><strong>3. User Roles.</strong> You may interact with TGS in one or more of the following roles: Venue Owner â€” lists property or resort for hire via subscription; Retreat Host â€” books venues for retreats or events; Wellness Guest â€” books wellness stays or sessions via the platform. Different rules may apply depending on your role.</p>' +
+                    '<p class="terms-text"><strong>4. Intellectual Property.</strong> All written content, brand concepts, layout design, and original materials on this site are the property of The Global Sanctum and are protected under Australian copyright and trademark law.</p>' +
+                    '<p class="terms-text"><strong>5. Subscriptions &amp; Fees.</strong> Venue owners subscribe to TGS on a monthly basis. Subscription tiers, pricing, and included features are detailed on our List Your Venue page. Commissions are applied on a per-booking basis at rates determined by subscription tier. All fees are subject to change with reasonable notice. Stripe processing fees (3%) are applied separately and transparently.</p>' +
+                    '<p class="terms-text"><strong>6. Bookings &amp; Payments.</strong> All bookings are facilitated through the TGS platform. Payments are processed securely via Stripe Connect. TGS acts as the intermediary for all financial transactions between parties. Booking confirmations are subject to venue availability and host acceptance. Payment terms and deposit requirements vary by venue and are clearly stated at the time of booking. TGS commission is deducted before funds are disbursed to venue owners.</p>' +
+                    '<p class="terms-text"><strong>7. Refunds &amp; Cancellations.</strong> Cancellation and refund policies are determined by each venue and communicated at the time of booking. TGS facilitates the refund process but the specific terms are set by the venue owner or host. Cancellations made within the venue\'s stated policy period will be refunded accordingly. TGS platform fees may be non-refundable depending on the circumstances. Force majeure events are handled on a case-by-case basis.</p>' +
+                    '<p class="terms-text"><strong>8. Community Standards.</strong> All users are expected to engage respectfully with the TGS community. We reserve the right to suspend or terminate accounts that violate our community standards, including but not limited to harassment, misrepresentation, or fraudulent activity.</p>' +
+                    '<p class="terms-text"><strong>9. Liabilities &amp; Disclaimers.</strong> TGS acts as an intermediary only. We are not responsible for venue conditions, host performance, or guest behaviour. Our role is to facilitate secure bookings and payments. TGS is not liable for the condition, safety or suitability of venues. TGS does not guarantee the performance of hosts or venue owners. Our responsibility is limited to operating the booking platform and processing payments. We aim to ensure all information on the site is accurate, but we make no representations or warranties of any kind regarding completeness, reliability, or suitability of the content.</p>' +
+                    '<p class="terms-text"><strong>10. Insurance.</strong> Venue owners are required to maintain appropriate insurance for their properties. Hosts are strongly encouraged to carry professional indemnity insurance. Wellness guests are strongly encouraged to obtain their own travel and health insurance. TGS maintains appropriate business insurance for platform operations. This does not extend to coverage of users, venues, or third-party services.</p>' +
+                    '<p class="terms-text"><strong>11. Non-Payment &amp; Account Suspension.</strong> All users are required to pay fees and charges in accordance with these Terms. If payments are not received within the agreed timeframe, a reminder will be issued within 3 days, a late fee will be applied after 7 days (2% per week), and the account may be suspended after 14 days of non-payment.</p>' +
+                    '<p class="terms-text"><strong>12. Disputes &amp; Resolution.</strong> In the event of a dispute, parties are encouraged to resolve matters directly. TGS may offer mediation support but is not obligated to resolve disputes between users. Formal disputes will be governed by the laws of Queensland, Australia.</p>' +
+                    '<p class="terms-text"><strong>13. Changes to These Terms.</strong> The Global Sanctum reserves the right to update or amend these terms with notice. Continued use of the platform after changes constitutes acceptance of the updated terms.</p>' +
+                    '<p class="terms-text"><strong>14. Governing Law.</strong> This agreement is governed by the laws of Queensland, Australia. Any legal proceedings shall be conducted in the courts of Queensland.</p>' +
+                    '<p class="terms-text">Contact: The Global Sanctum Â· hello@theglobalsanctum.com Â· www.theglobalsanctum.com Â· Phone: 0434 777 032</p>' +
+
+                    '<h4 class="terms-section-title">Venue Partner Agreement</h4>' +
+                    '<p class="terms-text">Effective date: 22 January 2026. Document type: Addendum to Terms &amp; Conditions. Jurisdiction: Queensland, Australia. This Venue Partner Agreement is entered into between The Global Sanctum and the undersigned venue owner who lists their property or venue on our platform. By creating an account, subscribing to a listing plan, or otherwise using our platform, you agree to the following terms and conditions.</p>' +
+                    '<p class="terms-text">The Global Sanctum provides a digital platform enabling Venue Owners to promote their venues to retreat hosts, wellness guests, and other users. We facilitate discovery, marketing, and bookings between Venue Owners and hosts or guests.</p>' +
+                    '<p class="terms-text"><strong>Section 1 â€” Venue Owner Obligations.</strong> By listing on The Global Sanctum, the Owner or Authorised Representative agrees to: provide accurate, complete, and up-to-date information about the venue (including photos, amenities, capacity, policies, and pricing); maintain appropriate licences, permits, and insurance coverage required for operating the venue; ensure the venue complies with all applicable health, safety, zoning, and legal regulations; honour all confirmed bookings made through The Global Sanctum platform; and communicate promptly with The Global Sanctum regarding availability, changes, or issues affecting bookings.</p>' +
+                    '<p class="terms-text"><strong>Section 2 â€” Platform Responsibilities.</strong> The Global Sanctum commits to: hosting and promoting the Owner or Authorised Representative\'s listing according to their chosen subscription tier; providing booking and payment processing via Stripe Connect; collecting service fees/commissions and disbursing net payouts to the Owner in line with agreed timelines; and providing the Owner with reporting tools (views, saves, bookings, payouts).</p>' +
+                    '<p class="terms-text"><strong>Section 3 â€” Fees, Commissions &amp; Payouts.</strong> Subscription tiers: Essentials $0/$0 â€” 20% commission; Standard $49/month or $490/year â€” 10% commission; Featured $99/month or $990/year â€” 7% commission; Premium $199/month or $1,990/year â€” 5% commission. Commission is calculated on the total booking value at time of confirmation. Commission is deducted from the first payment(s) received until the full commission amount has been collected. Once commission is fully collected, all subsequent payments are remitted to the Venue Owner (minus Stripe processing fees).</p>' +
+                    '<p class="terms-text"><strong>Booking Modifications.</strong> If a booking is modified and the total value increases, the additional commission owed will be calculated and deducted from the next scheduled payment or charged separately. If a booking is modified and the total value decreases, the commission will be recalculated based on the revised booking value. Any commission overpayment resulting from a reduced booking value will be credited to the Venue Owner\'s next payout or refunded upon request.</p>' +
+                    '<p class="terms-text"><strong>Payouts.</strong> Payouts are processed via Stripe Connect. Venue owners must maintain an active Stripe Connect account to receive payouts. Retreat bookings: payouts are issued within 7 days of the retreat end date. Wellness experience bookings: payouts are issued within 48 hours of the experience date. Payout timing is subject to Stripe\'s standard transfer policies.</p>' +
+                    '<p class="terms-text"><strong>Section 4 â€” Cancellations &amp; Refunds.</strong> Venue Owners must clearly communicate their cancellation policies in advance. Hosts and guests are subject to The Global Sanctum\'s Refund &amp; Cancellation Policy. In cases where refunds are issued, The Global Sanctum reserves the right to deduct service or commission fees before issuing refunds.</p>' +
+                    '<p class="terms-text"><strong>Section 5 â€” Taxes &amp; Compliance.</strong> Venue owners are solely responsible for complying with local, state, and federal tax obligations, including income tax, GST/VAT, or other levies arising from payments received. The Global Sanctum does not provide tax advice and will not be held liable for Venue Owners\' compliance obligations.</p>' +
+                    '<p class="terms-text"><strong>Section 6 â€” Liability &amp; Insurance.</strong> Venue Owners must maintain appropriate public liability and professional indemnity insurance as required in their jurisdiction. The Global Sanctum is not liable for accidents, damages, losses, or disputes arising from events or stays conducted at the Venue Owner\'s property.</p>' +
+                    '<p class="terms-text"><strong>Section 7 â€” Term &amp; Termination.</strong> This agreement remains in force for as long as you hold an active listing or account with The Global Sanctum. The Global Sanctum reserves the right to suspend or terminate Venue Owner accounts for breach of this Agreement, misuse of the platform, or non-payment of fees.</p>' +
+                    '<p class="terms-text"><strong>Section 8 â€” General Provisions.</strong> This agreement represents the entire understanding between the parties. Amendments may be issued by The Global Sanctum from time to time with reasonable notice. This Agreement is governed by the laws of Queensland, Australia.</p>' +
+                    '<p class="terms-text">Contact: The Global Sanctum Â· 58 Wellington Street, Virginia QLD Australia 4014 Â· Phone: 0434 777 032 Â· hello@theglobalsanctum.com Â· theglobalsanctum.com</p>' +
+
+                    '<h4 class="terms-section-title">Booking Terms &amp; Fees</h4>' +
+                    '<p class="terms-text">Effective date: 1 February 2026. ABN: 70 649 742 423. Jurisdiction: Queensland, Australia. These terms establish transparent pricing, clear commission structures, and fair policies governing all bookings made through The Global Sanctum platform.</p>' +
+                    '<p class="terms-text"><strong>Section 1 â€” Payment Processing.</strong> All transactions are securely processed through Stripe Connect, ensuring safe and reliable payment handling. Quotes are indicative until confirmed by the venue. Payment is charged only when booking is accepted and confirmed. A 3% payment processing fee applies to all transactions and is charged to the paying party in addition to the platform commission.</p>' +
+                    '<p class="terms-text"><strong>Section 2 â€” Founding &amp; Launch Partner Program.</strong> Founding Partners are the first 50 venues to join the platform and receive 60% off their subscription, grandfathered for life. Launch Partners are the next 150 venues to join and receive 40% off their subscription, grandfathered for life. Founding and Launch partner discounts apply to subscription fees only. Commission rates remain as per the scheduled tier.</p>' +
+                    '<p class="terms-text"><strong>Section 3 â€” Liability.</strong> TGS acts as an intermediary only. We facilitate connections between venues, hosts, and guests but are not party to the booking contract. To the fullest extent permitted by law, TGS excludes liability for any loss, damage, injury, or delay arising from bookings made through the platform.</p>' +
+                    '<p class="terms-text"><strong>Section 4 â€” Refunds &amp; Cancellations.</strong> Refunds for venue charges are subject to the individual venue\'s cancellation policy. Platform commission will be refunded in proportion to any refund provided by the venue. The 3% payment processing fee is non-refundable.</p>' +
+                    '<p class="terms-text"><strong>Section 5 â€” Governing Law.</strong> These terms are governed by and construed in accordance with the laws of Queensland, Australia.</p>' +
+                    '<p class="terms-text">Contact: The Global Sanctum Â· 58 Wellington Street, Virginia, QLD Australia 4014 Â· ABN: 70 649 742 423 Â· Phone: 0434 777 032 Â· hello@theglobalsanctum.com Â· theglobalsanctum.com</p>' +
+
+                    '<div class="terms-end"></div>' +
+                    '<div class="terms-scroll-hint" id="scrollHint">â†“ Scroll to the bottom to continue</div>' +
+                '</div>' +
+
+                '<div class="agree-row">' +
+                    '<div class="agree-checkbox locked" id="agreeBox" role="checkbox" aria-checked="false" tabindex="0" aria-label="Agree to Terms, Venue Partner Terms, and Booking Terms"></div>' +
+                    '<p class="agree-label">I have read and agree to the <a href="/global-santcum/legal#terms" target="_blank" rel="noopener">Terms &amp; Conditions</a>, <a href="/global-santcum/legal#venue-partner" target="_blank" rel="noopener">Venue Partner Terms</a>, and <a href="/global-santcum/legal#booking" target="_blank" rel="noopener">Booking Terms</a>.</p>' +
+                '</div>' +
+                '<div class="agree-row">' +
+                    '<div class="agree-checkbox locked" id="gdprBox" role="checkbox" aria-checked="false" tabindex="0" aria-label="Consent to data processing"></div>' +
+                    '<p class="agree-label">I consent to my personal data being collected and processed by The Global Sanctum in accordance with the <a href="/global-santcum/legal#privacy" target="_blank" rel="noopener">Privacy Policy</a>. I understand I may withdraw this consent at any time by contacting hello@theglobalsanctum.com.</p>' +
+                '</div>' +
+                '<p class="agree-must-scroll" id="mustScroll">Please scroll through the full agreement above to activate the checkboxes.</p>';
+
+            var box = document.getElementById('termsBox');
+            if (box) box.addEventListener('scroll', checkScrollProgress);
+
+            // Wire checkbox toggles
+            var ab = document.getElementById('agreeBox');
+            var gb = document.getElementById('gdprBox');
+            if (ab) {
+                ab.addEventListener('click', toggleAgree);
+                ab.addEventListener('keydown', function(e) { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleAgree(); } });
+            }
+            if (gb) {
+                gb.addEventListener('click', toggleGdpr);
+                gb.addEventListener('keydown', function(e) { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleGdpr(); } });
+            }
+        }
+
+        function checkScrollProgress() {
+            var box = document.getElementById('termsBox');
+            if (!box) return;
+            if (box.scrollTop + box.clientHeight >= box.scrollHeight - 24 && !termsScrolled) {
+                termsScrolled = true;
+                var hint = document.getElementById('scrollHint');
+                var must = document.getElementById('mustScroll');
+                var ab = document.getElementById('agreeBox');
+                var gb = document.getElementById('gdprBox');
+                if (hint) hint.hidden = true;
+                if (must) must.hidden = true;
+                if (ab) ab.classList.remove('locked');
+                if (gb) gb.classList.remove('locked');
+            }
+        }
+        function toggleAgree() {
+            if (!termsScrolled) return;
+            termsAccepted = !termsAccepted;
+            var ab = document.getElementById('agreeBox');
+            if (ab) {
+                ab.classList.toggle('checked', termsAccepted);
+                ab.setAttribute('aria-checked', termsAccepted);
+            }
+            btnNext.disabled = !(termsAccepted && gdprAccepted);
+        }
+        function toggleGdpr() {
+            if (!termsScrolled) return;
+            gdprAccepted = !gdprAccepted;
+            var gb = document.getElementById('gdprBox');
+            if (gb) {
+                gb.classList.toggle('checked', gdprAccepted);
+                gb.setAttribute('aria-checked', gdprAccepted);
+            }
+            btnNext.disabled = !(termsAccepted && gdprAccepted);
+        }
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        //  STEP 3a â€” STRIPE HANDOFF (paid tiers)
+        //  Read-only confirmation. The cycle was selected on the pricing
+        //  table; the modal just displays it. To change, the user closes
+        //  the modal and re-picks from the table.
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        function renderStripe() {
+            btnNext.textContent = 'Proceed to Secure Payment â†’';
+            btnNext.className = 'btn-next gold';
+
+            var trialNote = cfg.trial
+                ? '<div class="stripe-trial-note">' +
+                      '<div class="stripe-trial-dot"></div>' +
+                      '<p class="stripe-trial-text">Every paid plan begins with <strong>fourteen days, complimentary.</strong> Your card will not be charged until your trial ends. Cancel anytime before then at no cost.</p>' +
+                  '</div>'
+                : '';
+
+            // Stripe summary â€” what they're about to pay (read-only)
+            var cycleLabel = (cfg.billingCycle === 'yearly') ? 'Annual' : 'Monthly';
+            var priceDisplay = (cfg.billingCycle === 'yearly')
+                ? cfg.priceYearly + (cfg.annualSaving ? ' (' + cfg.annualSaving + ')' : '')
+                : cfg.priceMonthly;
+            var partnerRow = cfg.hasTrack
+                ? '<div class="stripe-row"><span class="stripe-label">Programme</span><span class="stripe-value hi">' + esc(cfg.trackName) + '</span></div>'
+                : '';
+            var summary =
+                '<div class="stripe-summary">' +
+                    '<div class="stripe-row"><span class="stripe-label">Plan</span><span class="stripe-value">' + esc(cfg.planDisplayName) + '</span></div>' +
+                    '<div class="stripe-row"><span class="stripe-label">Billing</span><span class="stripe-value">' + cycleLabel + '</span></div>' +
+                    '<div class="stripe-row"><span class="stripe-label">Price</span><span class="stripe-value hi">' + esc(priceDisplay) + '</span></div>' +
+                    '<div class="stripe-row"><span class="stripe-label">Commission</span><span class="stripe-value">' + esc(cfg.commission) + '</span></div>' +
+                    partnerRow +
+                    (cfg.trial ? '<div class="stripe-row"><span class="stripe-label">Trial</span><span class="stripe-value">14 days, no charge</span></div>' : '') +
+                '</div>';
+
+            bodyEl.innerHTML =
+                trialNote +
+                summary +
+                '<div class="stripe-handoff-note">' +
+                    '<p class="stripe-handoff-title">You\'re about to be handed to Stripe</p>' +
+                    '<p class="stripe-handoff-body">Stripe is our secure payment partner. They handle all card details, currency conversion, local tax, and receipts. The Global Sanctum never sees or stores your payment information at any point.</p>' +
+                    '<p class="stripe-handoff-body">Once payment is confirmed you\'ll be returned here with a welcome confirmation, and a receipt will be sent to your email.</p>' +
+                '</div>' +
+                '<div class="stripe-badges">' +
+                    '<span class="stripe-badge">Secured by Stripe</span>' +
+                    '<span class="stripe-badge">Visa</span>' +
+                    '<span class="stripe-badge">Mastercard</span>' +
+                    '<span class="stripe-badge">Amex</span>' +
+                    '<span class="stripe-badge">256-bit SSL</span>' +
+                '</div>' +
+                '<p class="stripe-change-note">Need to change your plan or billing cycle? Close this and re-select from the pricing table.</p>';
+        }
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        //  STEP 3b â€” IN-MODAL CONFIRMATION (Essentials free tier only)
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        function renderConfirm() {
+            btnBack.hidden = true;
+            btnNext.className = 'btn-next';
+            btnNext.textContent = 'Close';
+            stepCount.textContent = '';
+            // Mark final step done
+            stepIdx = cfg.steps.length - 1;
+            renderProgress();
+
+            var venue = formData.v || 'your venue';
+            var email = formData.e || 'your email address';
+            var refDisplay = submissionId
+                ? 'TGS-SIGN-' + submissionId.slice(0, 8).toUpperCase()
+                : '';
+            var refRow = refDisplay
+                ? '<div class="confirm-ref">Your reference: <strong>' + esc(refDisplay) + '</strong></div>'
+                : '';
+
+            // This step only renders for the free Essentials tier â€” paid
+            // tiers leave the modal at Stripe handoff and confirm via the
+            // /signup-confirmed?ref= landing page.
+            var mainMessage = '<strong>' + esc(venue) + '</strong> has been received into our collection. Someone from our team will be in touch within 48 hours to guide you through the next steps.';
+
+            bodyEl.innerHTML =
+                '<div class="confirm-wrap">' +
+                    '<div class="confirm-icon" aria-hidden="true">' +
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+                    '</div>' +
+                    '<h2 class="confirm-title" id="confirmTitle" tabindex="-1">Welcome to<br>The Global <em>Sanctum.</em></h2>' +
+                    '<p class="confirm-text">' + mainMessage + '</p>' +
+                    '<div class="confirm-detail">' +
+                        '<div class="confirm-row"><span class="confirm-row-label">Plan</span><span class="confirm-row-value">' + esc(cfg.planDisplayName) + '</span></div>' +
+                        '<div class="confirm-row"><span class="confirm-row-label">Commission</span><span class="confirm-row-value">' + esc(cfg.commission) + '</span></div>' +
+                        '<div class="confirm-row"><span class="confirm-row-label">Next steps</span><span class="confirm-row-value">Confirmation email on its way</span></div>' +
+                    '</div>' +
+                    refRow +
+                    '<p class="confirm-email-note">A confirmation will arrive at <em>' + esc(email) + '</em> shortly. Questions? <a href="mailto:hello@theglobalsanctum.com">hello@theglobalsanctum.com</a></p>' +
+                '</div>';
+
+            // Move focus to the confirmation heading for screen reader announcement
+            setTimeout(function() {
+                var h = document.getElementById('confirmTitle');
+                if (h) h.focus();
+            }, 50);
+
+            // Funnel: confirmation reached (free tier â€” paid tiers fire from
+            // the post-Stripe landing page server-side)
+            track('signup_confirmation_view', { step: 'confirm' });
+        }
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        //  STEP NAVIGATION
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        function nextStep() {
+            if (!cfg) return;
+            var stepName = cfg.steps[stepIdx];
+
+            if (stepName === 'details') {
+                if (!validateAndCaptureDetails()) return;
+                track('signup_details_submit', { step: 'details' });
+            }
+            else if (stepName === 'terms') {
+                if (!termsScrolled || !termsAccepted || !gdprAccepted) return;
+                track('signup_terms_accepted', { step: 'terms' });
+            }
+            else if (stepName === 'stripe') {
+                // Final step on paid tiers â€” hand off to Stripe Checkout.
+                // The cycle was locked at modal open time from the page state;
+                // we just resolve the matching price ID. The price ID alone
+                // tells Stripe everything â€” tier, cycle, amount, currency,
+                // interval. No coupon math at checkout because partner-
+                // discounted prices are pre-configured as their own Stripe
+                // products/prices.
+                var priceId = (cfg.billingCycle === 'yearly')
+                    ? cfg.priceYearlyId
+                    : cfg.priceMonthlyId;
+
+                if (!priceId) {
+                    var errEl = document.createElement('div');
+                    errEl.className = 'form-error';
+                    errEl.style.marginBottom = '0';
+                    errEl.innerHTML =
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' +
+                            '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' +
+                        '</svg>' +
+                        '<span>Configuration issue: this CTA is missing its Stripe price ID. Please contact <a href="mailto:hello@theglobalsanctum.com">hello@theglobalsanctum.com</a> and we\'ll complete your signup directly.</span>';
+                    bodyEl.insertBefore(errEl, bodyEl.firstChild);
+                    bodyEl.scrollTop = 0;
+                    return;
+                }
+
+                track('signup_payment_initiated', {
+                    step: 'stripe',
+                    billing_cycle: cfg.billingCycle,
+                    price_id: priceId
+                });
+
+                // PRODUCTION HANDOFF â€” Kane: replace the alert below with your
+                // Stripe Checkout integration. The price_id is the only thing
+                // Stripe needs to know about the plan. Everything else
+                // (formData, submissionId, tier, track) goes through your
+                // server so the Make.com / ActiveCampaign pipeline gets the
+                // signup metadata for the welcome email.
+                //
+                // Recommended pattern:
+                //
+                //     fetch('/api/create-stripe-checkout-session', {
+                //         method: 'POST',
+                //         headers: { 'Content-Type': 'application/json' },
+                //         body: JSON.stringify({
+                //             price_id: priceId,
+                //             billing_cycle: billingCycle,
+                //             tier: cfg.tier,
+                //             track: cfg.track,
+                //             formData: formData,
+                //             submissionId: submissionId,
+                //             trial_period_days: cfg.trial ? 14 : 0,
+                //             success_url: window.location.origin + '/signup-confirmed?ref=' + submissionId,
+                //             cancel_url: window.location.origin + '/list-your-venue'
+                //         })
+                //     })
+                //     .then(function(r) { return r.json(); })
+                //     .then(function(d) { window.location = d.url; });
+                if (typeof window.tgsStripeHandoff === 'function') {
+                    window.tgsStripeHandoff({
+                        price_id:      priceId,
+                        billing_cycle: cfg.billingCycle,
+                        tier:          cfg.tier,
+                        track:         cfg.track,
+                        formData:      formData,
+                        submissionId:  submissionId,
+                        trial:         cfg.trial
+                    });
+                } else {
+                    alert(
+                        '[PREVIEW] Stripe Checkout would open now.\n' +
+                        'price_id: ' + priceId + '\n' +
+                        'billing_cycle: ' + cfg.billingCycle + '\n' +
+                        'tier: ' + cfg.tier + '\n' +
+                        'track: ' + (cfg.track || '(standard)') + '\n' +
+                        'submissionId: ' + submissionId
+                    );
+                }
+                return;
+            }
+            else if (stepName === 'confirm') {
+                closeModal(true);
+                return;
+            }
+
+            stepIdx++;
+            render();
+        }
+
+        function prevStep() {
+            if (stepIdx === 0) return;
+            stepIdx--;
+            render();
+        }
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        //  WIRING
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+        // Trigger elements â€” pass the trigger directly; openModal reads
+        // every config attribute from its dataset.
+        document.querySelectorAll('[data-signup-trigger]').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.preventDefault();
+                openModal(this);
+            });
+        });
+
+        // Close paths
+        if (closeBtn) closeBtn.addEventListener('click', function() { closeModal(); });
+        if (overlay)  overlay.addEventListener('click', function() { closeModal(); });
+
+        // ESC closes (with mid-flow confirm)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Footer nav buttons
+        if (btnNext) btnNext.addEventListener('click', nextStep);
+        if (btnBack) btnBack.addEventListener('click', prevStep);
+
+        // Focus trap
+        modal.addEventListener('keydown', function(e) {
+            if (e.key !== 'Tab') return;
+            var focusables = modal.querySelectorAll(
+                'a[href], button:not([disabled]):not([hidden]), ' +
+                'input:not([type=hidden]):not([disabled]), ' +
+                'select:not([disabled]), textarea:not([disabled]), ' +
+                '[tabindex]:not([tabindex="-1"])'
+            );
+            if (!focusables.length) return;
+            var first = focusables[0];
+            var last  = focusables[focusables.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault(); last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault(); first.focus();
+            }
+        });
+
+        // Cloudflare Turnstile callback (kept for future use even though signup
+        // is one-time and less spam-prone than the enquiry forms â€” the honeypot
+        // and email-validation gates already cover most scripted abuse).
+        window.onTurnstileSuccess = function(token) {
+            __turnstileToken = token;
+        };
+
+        // Expose programmatic API
+        window.openVenueSignupModal = openModal;
+        window.closeVenueSignupModal = closeModal;
+
+        // â”€â”€ DEMO CYCLE TOGGLE (preview only â€” REMOVE IN PRODUCTION) â”€â”€
+        // In production, the existing yearly/monthly toggle on the
+        // List Your Venue page sets window.tgsPageBillingCycle each time
+        // it's flipped. The page's existing toggleBilling() function just
+        // needs one extra line:
+        //
+        //     function toggleBilling() {
+        //         isYearly = !isYearly;
+        //         window.tgsPageBillingCycle = isYearly ? 'yearly' : 'monthly';
+        //         // ...rest of existing code unchanged...
+        //     }
+        //
+        // Plus initialise on load (matches the page's initial state):
+        //
+        //     window.tgsPageBillingCycle = 'yearly';
+        //
+        // The block below mimics that for the preview page.
+        window.tgsPageBillingCycle = 'yearly';
+        document.querySelectorAll('[data-demo-cycle]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                window.tgsPageBillingCycle = this.dataset.demoCycle;
+                document.querySelectorAll('[data-demo-cycle]').forEach(function(b) {
+                    b.classList.toggle('active', b === btn);
+                });
+            });
+        });
+    })();
+    </script>
+
+<script>
+(function(){
+  var routeMap = {
+    '/': '/global-santcum/web',
+    '/book': '/global-santcum/book',
+    '/venues': '/global-santcum/venues',
+    '/retreat-venues': '/global-santcum/retreat-venues',
+    '/wellness-venues': '/global-santcum/wellness-venues',
+    '/wellness-experiences': '/global-santcum/wellness-experiences',
+    '/about': '/global-santcum/about',
+    '/our-story': '/global-santcum/our-story',
+    '/how-it-works': '/global-santcum/how-it-works',
+    '/the-wellness-edit': '/global-santcum/the-wellness-edit',
+    '/contact': '/global-santcum/contact',
+    '/list-your-venue': '/global-santcum/list-your-venue',
+    '/host-a-retreat': '/global-santcum/host-a-retreat',
+    '/sanctum-journal': '/global-santcum/sanctum-journal',
+    '/terms-and-conditions': '/global-santcum/terms-and-conditions',
+    '/privacy-policy': '/global-santcum/privacy-policy',
+    '/cookies-policy': '/global-santcum/cookies-policy',
+    '/legal': '/global-santcum/legal',
+    '/terms': '/global-santcum/terms-and-conditions'
+  };
+  function targetFor(anchor) {
+    var raw = anchor.getAttribute('href');
+    if (!raw || raw === '#' || raw.charAt(0) === '#') return null;
+    if (/^(mailto:|tel:|javascript:)/i.test(raw)) return null;
+    try {
+      var url = new URL(raw, window.location.origin);
+      if (url.origin !== window.location.origin) return null;
+      var path = url.pathname.replace(/\/$/, '') || '/';
+      var mapped = routeMap[path];
+      if (!mapped && path.indexOf('/global-santcum/') === 0) mapped = path;
+      if (!mapped && path.indexOf('/retreat-venues/') === 0) mapped = '/global-santcum/retreat-venues/sample-venue';
+      if (!mapped && path.indexOf('/wellness-venues/') === 0) mapped = '/global-santcum/wellness-venues/sample-venue';
+      return mapped ? mapped + url.search + url.hash : null;
+    } catch (e) { return null; }
+  }
+  document.addEventListener('click', function(event) {
+    var anchor = event.target && event.target.closest ? event.target.closest('a[href]') : null;
+    if (!anchor) return;
+    var target = targetFor(anchor);
+    if (!target) return;
+    event.preventDefault();
+    window.top.location.href = target;
+  }, true);
+})();
+</script>
+<script data-tgs-flow="TGS_MODAL_FLOW_SIGNUP_AUTO_OPEN">
+(function(){
+  window.addEventListener('DOMContentLoaded', function() {
+    var trigger = document.querySelector('[data-signup-trigger]');
+    if (trigger) setTimeout(function(){ trigger.click(); }, 0);
+  });
+})();
+</script>
+</body>
+</html>
+
+

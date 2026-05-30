@@ -1,0 +1,168 @@
+﻿
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+  .row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-radius: 4px; overflow: hidden; border: 0.5px solid var(--color-border-tertiary); margin-bottom: 8px; }
+  .cell { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 16px 24px; position: relative; min-height: 130px; }
+  .cell-label { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 14px; position: relative; z-index: 1; }
+  .bg-cream { background: #F7F5F1; }
+  .bg-cream .cell-label { color: #8B8B8B; }
+  .bg-dark { background: #313131; }
+  .bg-dark .cell-label { color: rgba(253,252,249,0.4); }
+  .bg-photo { background: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=900&q=80') center/cover; }
+  .bg-photo::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.38); }
+  .bg-photo .cell-label { color: rgba(255,255,255,0.5); }
+
+  .logo { display: flex; align-items: center; gap: 10px; position: relative; z-index: 1; }
+  .icon-wrap { position: relative; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .icon-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(253,252,249,0.28) 15%, rgba(253,252,249,0.12) 45%, transparent 70%);
+    pointer-events: none;
+  }
+  .wordmark { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; white-space: nowrap; }
+  .wm-dark { color: #313131; }
+  .wm-light { color: #FDFCF9; }
+</style>
+
+<div style="padding: 4px 0 8px;">
+  <div class="row">
+
+    <div class="cell bg-cream">
+      <div class="logo">
+        <div class="icon-wrap">
+          <svg width="30" height="30" viewBox="0 0 100 100" fill="none" style="position:relative;z-index:1;">
+            <circle cx="50" cy="50" r="6.5" fill="#C4A265"/>
+            <circle cx="50" cy="27" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="50" cy="73" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="27" cy="50" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="73" cy="50" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="34" cy="34" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="66" cy="34" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="34" cy="66" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="66" cy="66" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="50" cy="16" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="50" cy="84" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="16" cy="50" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="84" cy="50" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="24" cy="24" r="2.5" fill="#C4A265" opacity="0.28"/>
+            <circle cx="76" cy="24" r="2.5" fill="#C4A265" opacity="0.28"/>
+            <circle cx="24" cy="76" r="2.5" fill="#C4A265" opacity="0.28"/>
+            <circle cx="76" cy="76" r="2.5" fill="#C4A265" opacity="0.28"/>
+          </svg>
+        </div>
+        <span class="wordmark wm-dark">The Global Sanctum</span>
+      </div>
+      <span class="cell-label">Cream page</span>
+    </div>
+
+    <div class="cell bg-dark">
+      <div class="logo">
+        <div class="icon-wrap">
+          <svg width="30" height="30" viewBox="0 0 100 100" fill="none" style="position:relative;z-index:1;">
+            <circle cx="50" cy="50" r="6.5" fill="#C4A265"/>
+            <circle cx="50" cy="27" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="50" cy="73" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="27" cy="50" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="73" cy="50" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="34" cy="34" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="66" cy="34" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="34" cy="66" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="66" cy="66" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="50" cy="16" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="50" cy="84" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="16" cy="50" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="84" cy="50" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="24" cy="24" r="2.5" fill="#C4A265" opacity="0.28"/>
+            <circle cx="76" cy="24" r="2.5" fill="#C4A265" opacity="0.28"/>
+            <circle cx="24" cy="76" r="2.5" fill="#C4A265" opacity="0.28"/>
+            <circle cx="76" cy="76" r="2.5" fill="#C4A265" opacity="0.28"/>
+          </svg>
+        </div>
+        <span class="wordmark wm-light">The Global Sanctum</span>
+      </div>
+      <span class="cell-label">Dark nav</span>
+    </div>
+
+    <div class="cell bg-photo">
+      <div class="logo">
+        <div class="icon-wrap">
+          <svg width="30" height="30" viewBox="0 0 100 100" fill="none" style="position:relative;z-index:1;">
+            <circle cx="50" cy="50" r="6.5" fill="#C4A265"/>
+            <circle cx="50" cy="27" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="50" cy="73" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="27" cy="50" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="73" cy="50" r="5" fill="#C4A265" opacity="0.82"/>
+            <circle cx="34" cy="34" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="66" cy="34" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="34" cy="66" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="66" cy="66" r="4" fill="#C4A265" opacity="0.6"/>
+            <circle cx="50" cy="16" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="50" cy="84" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="16" cy="50" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="84" cy="50" r="3" fill="#C4A265" opacity="0.38"/>
+            <circle cx="24" cy="24" r="2.5" fill="#C4A265" opacity="0.28"/>
+            <circle cx="76" cy="24" r="2.5" fill="#C4A265" opacity="0.28"/>
+            <circle cx="24" cy="76" r="2.5" fill="#C4A265" opacity="0.28"/>
+            <circle cx="76" cy="76" r="2.5" fill="#C4A265" opacity="0.28"/>
+          </svg>
+        </div>
+        <span class="wordmark wm-light">The Global Sanctum</span>
+      </div>
+      <span class="cell-label">Over photography</span>
+    </div>
+
+  </div>
+  <p style="font-size: 10px; color: var(--color-text-secondary); font-weight: 300; line-height: 1.7; padding: 2px 2px 0;">Same single glow state across all three contexts. On cream it fades to invisible. Over dark and photography it lifts the icon just enough. Wordmark colour switches with the nav â€” that part is already handled in the existing code.</p>
+</div>
+
+<script>
+(function(){
+  var routeMap = {
+    '/': '/global-santcum/web',
+    '/book': '/global-santcum/book',
+    '/venues': '/global-santcum/venues',
+    '/retreat-venues': '/global-santcum/retreat-venues',
+    '/wellness-venues': '/global-santcum/wellness-venues',
+    '/wellness-experiences': '/global-santcum/wellness-experiences',
+    '/about': '/global-santcum/about',
+    '/our-story': '/global-santcum/our-story',
+    '/how-it-works': '/global-santcum/how-it-works',
+    '/the-wellness-edit': '/global-santcum/the-wellness-edit',
+    '/contact': '/global-santcum/contact',
+    '/list-your-venue': '/global-santcum/list-your-venue',
+    '/host-a-retreat': '/global-santcum/host-a-retreat',
+    '/sanctum-journal': '/global-santcum/sanctum-journal',
+    '/terms-and-conditions': '/global-santcum/terms-and-conditions',
+    '/privacy-policy': '/global-santcum/privacy-policy',
+    '/cookies-policy': '/global-santcum/cookies-policy',
+    '/legal': '/global-santcum/legal',
+    '/terms': '/global-santcum/terms-and-conditions'
+  };
+  function targetFor(anchor) {
+    var raw = anchor.getAttribute('href');
+    if (!raw || raw === '#' || raw.charAt(0) === '#') return null;
+    if (/^(mailto:|tel:|javascript:)/i.test(raw)) return null;
+    try {
+      var url = new URL(raw, window.location.origin);
+      if (url.origin !== window.location.origin) return null;
+      var path = url.pathname.replace(/\/$/, '') || '/';
+      var mapped = routeMap[path];
+      if (!mapped && path.indexOf('/global-santcum/') === 0) mapped = path;
+      if (!mapped && path.indexOf('/retreat-venues/') === 0) mapped = '/global-santcum/retreat-venues/sample-venue';
+      if (!mapped && path.indexOf('/wellness-venues/') === 0) mapped = '/global-santcum/wellness-venues/sample-venue';
+      return mapped ? mapped + url.search + url.hash : null;
+    } catch (e) { return null; }
+  }
+  document.addEventListener('click', function(event) {
+    var anchor = event.target && event.target.closest ? event.target.closest('a[href]') : null;
+    if (!anchor) return;
+    var target = targetFor(anchor);
+    if (!target) return;
+    event.preventDefault();
+    window.top.location.href = target;
+  }, true);
+})();
+</script>

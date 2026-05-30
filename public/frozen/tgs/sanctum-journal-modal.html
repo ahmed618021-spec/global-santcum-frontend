@@ -1,0 +1,704 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanctum Journal Modal â€” The Global Sanctum</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --charcoal: #313131;
+    --warm-white: #FDFCF9;
+    --warm-cream: #F7F5F1;
+    --gold: #C4A265;
+    --gold-dark: #7A644F;
+    --mist-grey: #8B8B8B;
+    --light-rule: #E0D8CC;
+    --divider: #CCCCCC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: #4a5a52;
+    background-image: url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  /* Trigger button â€” demo only */
+  .trigger-btn {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 12px 24px;
+    border-radius: 2px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    z-index: 10;
+    transition: all 0.2s;
+  }
+
+  .trigger-btn:hover {
+    color: rgba(255,255,255,0.9);
+    background: rgba(0,0,0,0.45);
+  }
+
+  /* â”€â”€â”€ OVERLAY â”€â”€â”€ */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 26, 22, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* â”€â”€â”€ MODAL â”€â”€â”€ */
+  .modal {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    background: var(--warm-white);
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.2);
+    transform: translateY(24px) scale(0.98);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+    opacity: 0;
+    position: relative;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  .overlay.active .modal {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  /* â”€â”€â”€ TOP â€” IMAGE BANNER â”€â”€â”€ */
+  .modal-image {
+    position: relative;
+    overflow: hidden;
+    height: 240px;
+    flex-shrink: 0;
+    background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=90');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .modal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    display: block;
+    transform: scale(1.04);
+    transition: transform 6s ease;
+  }
+
+  .overlay.active .modal-image img {
+    transform: scale(1);
+  }
+
+  /* Gradient fade at bottom of image into content */
+  .modal-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(49, 49, 49, 0.15) 0%,
+      rgba(30, 30, 30, 0.35) 60%,
+      rgba(20, 20, 20, 0.65) 100%
+    );
+  }
+
+  /* Issue label top-left on image */
+  .image-label {
+    position: absolute;
+    top: 24px;
+    left: 28px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .image-label-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 7.5px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .image-label-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.95);
+    line-height: 1.2;
+  }
+
+  /* Pull quote sits at bottom of image */
+  .image-quote {
+    position: absolute;
+    bottom: 20px;
+    left: 28px;
+    right: 52px;
+    z-index: 2;
+  }
+
+  .image-quote-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 0.6;
+    margin-bottom: 8px;
+    display: block;
+    opacity: 0.75;
+  }
+
+  .image-quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.55;
+  }
+
+  /* Remove the side rule â€” not needed in stacked layout */
+  .modal-image::before { display: none; }
+
+  /* â”€â”€â”€ BOTTOM â€” CONTENT PANEL â”€â”€â”€ */
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    padding: 36px 36px 32px;
+    background: var(--warm-white);
+    position: relative;
+  }
+
+  /* Close button â€” sits over image top-right */
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    color: rgba(255,255,255,0.85);
+    transition: all 0.2s;
+    z-index: 10;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover {
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+  }
+
+  .modal-close svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Eyebrow */
+  .modal-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* Heading */
+  .modal-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    font-weight: 300;
+    color: var(--charcoal);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .modal-heading em {
+    font-style: italic;
+    color: var(--gold-dark);
+  }
+
+  /* Thin rule */
+  .modal-rule {
+    width: 36px;
+    height: 1px;
+    background: var(--light-rule);
+    margin: 18px 0;
+  }
+
+  /* Description */
+  .modal-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--mist-grey);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  /* What you receive list */
+  .modal-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .modal-benefit {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .benefit-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .benefit-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--charcoal);
+    line-height: 1.6;
+  }
+
+  .benefit-text strong {
+    font-weight: 600;
+    color: var(--charcoal);
+  }
+
+  /* Form */
+  .modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .form-input-wrap {
+    position: relative;
+  }
+
+  .modal-input {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--charcoal);
+    background: var(--warm-cream);
+    border: 1px solid var(--light-rule);
+    border-radius: 2px;
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .modal-input::placeholder {
+    color: var(--mist-grey);
+    font-style: italic;
+  }
+
+  .modal-input:focus {
+    border-color: var(--gold);
+    background: #fff;
+  }
+
+  .modal-submit {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--warm-white);
+    background: var(--charcoal);
+    border: none;
+    border-radius: 2px;
+    padding: 16px 24px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .modal-submit:hover {
+    background: #1a1a1a;
+  }
+
+  .modal-submit svg {
+    width: 12px;
+    height: 12px;
+    opacity: 0.7;
+  }
+
+  /* Success state */
+  .modal-success {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 0;
+    gap: 12px;
+  }
+
+  .modal-success.visible {
+    display: flex;
+  }
+
+  .success-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    color: var(--gold);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1;
+  }
+
+  .success-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--charcoal);
+  }
+
+  .success-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--mist-grey);
+    line-height: 1.7;
+  }
+
+  /* Privacy note */
+  .modal-privacy {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 300;
+    color: var(--mist-grey);
+    line-height: 1.6;
+    text-align: center;
+    opacity: 0.7;
+  }
+
+  /* Frequency badge */
+  .frequency-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8.5px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    background: rgba(196, 162, 101, 0.08);
+    border: 1px solid rgba(196, 162, 101, 0.2);
+    padding: 5px 10px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    align-self: flex-start;
+  }
+
+  .frequency-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  /* â”€â”€â”€ RESPONSIVE â”€â”€â”€ */
+  @media (max-width: 600px) {
+    .modal { max-width: 100%; }
+    .modal-image { height: 200px; }
+    .modal-content { padding: 28px 24px 24px; }
+    .modal-heading { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Demo trigger -->
+<button class="trigger-btn" onclick="openModal()">Open Journal Modal</button>
+
+<!-- â”€â”€â”€ OVERLAY â”€â”€â”€ -->
+<div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+
+    <!-- LEFT: IMAGE -->
+    <div class="modal-image">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <img
+        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=90"
+        alt="Sanctum Journal"
+        style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;"
+      />
+      <div class="image-label">
+        <span class="image-label-eyebrow">The Global Sanctum</span>
+        <span class="image-label-title">Sanctum Journal</span>
+      </div>
+      <div class="image-quote">
+        <span class="image-quote-mark">"</span>
+        <p class="image-quote-text">Spaces where restoration isn't an afterthought â€” it's the foundation.</p>
+      </div>
+    </div>
+
+    <!-- BOTTOM: CONTENT -->
+    <div class="modal-content">
+
+      <span class="modal-eyebrow">Weekly Curation</span>
+
+      <h2 class="modal-heading">Where intention<br>meets <em>discovery.</em></h2>
+
+      <div class="modal-rule"></div>
+
+      <p class="modal-desc">
+        Join a community of retreat hosts, wellness seekers, and conscious explorers. Every month, directly to your inbox.
+      </p>
+
+      <div class="frequency-badge">
+        <div class="frequency-dot"></div>
+        Delivered every month
+      </div>
+
+      <div class="modal-benefits">
+        <div class="modal-benefit">
+          <div class="benefit-dot"></div>
+          <span class="benefit-text"><strong>Featured venues</strong> â€” handpicked sanctuaries from our global collection, before they reach the platform</span>
+        </div>
+        <div class="modal-benefit">
+          <div class="benefit-dot"></div>
+          <span class="benefit-text"><strong>Practitioner spotlights</strong> â€” the facilitators, healers and teachers shaping the wellness world</span>
+        </div>
+        <div class="modal-benefit">
+          <div class="benefit-dot"></div>
+          <span class="benefit-text"><strong>Wellness tourism trends</strong> â€” where the industry is moving, the destinations rising, and the modalities gaining global momentum</span>
+        </div>
+        <div class="modal-benefit">
+          <div class="benefit-dot"></div>
+          <span class="benefit-text"><strong>Upcoming wellness events</strong> â€” retreats, immersions, festivals, workshops and experiences from across the global wellness community</span>
+        </div>
+        <div class="modal-benefit">
+          <div class="benefit-dot"></div>
+          <span class="benefit-text"><strong>This month in wellness</strong> â€” the conversations, shifts and insights shaping the retreat and wellness industry right now</span>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div id="formWrap">
+        <div class="modal-form">
+          <div class="form-input-wrap">
+            <input
+              class="modal-input"
+              type="email"
+              id="emailInput"
+              placeholder="Your email address"
+              autocomplete="email"
+            />
+          </div>
+          <button class="modal-submit" onclick="handleSubmit()">
+            Join The Journal
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 10h12M10 4l6 6-6 6"/>
+            </svg>
+          </button>
+        </div>
+        <p class="modal-privacy">No noise. No selling your details. Unsubscribe anytime.</p>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div class="modal-success" id="successState">
+        <div class="success-mark">âœ¦</div>
+        <h3 class="success-heading">Welcome to the community.</h3>
+        <p class="success-text">Your first issue of the Sanctum Journal<br>arrives this month.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('overlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('overlay')) closeModal();
+  }
+
+  function handleSubmit() {
+    const email = document.getElementById('emailInput').value.trim();
+    if (!email || !email.includes('@')) {
+      document.getElementById('emailInput').style.borderColor = '#c97a7a';
+      document.getElementById('emailInput').focus();
+      setTimeout(() => {
+        document.getElementById('emailInput').style.borderColor = '';
+      }, 1800);
+      return;
+    }
+    // Hide form, show success
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('successState').classList.add('visible');
+    // Auto-close after 3s
+    setTimeout(closeModal, 3000);
+  }
+
+  // Keyboard close
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Open on load for demo
+  setTimeout(openModal, 400);
+</script>
+<script>
+(function(){
+  var routeMap = {
+    '/': '/global-santcum/web',
+    '/book': '/global-santcum/book',
+    '/venues': '/global-santcum/venues',
+    '/retreat-venues': '/global-santcum/retreat-venues',
+    '/wellness-venues': '/global-santcum/wellness-venues',
+    '/wellness-experiences': '/global-santcum/wellness-experiences',
+    '/about': '/global-santcum/about',
+    '/our-story': '/global-santcum/our-story',
+    '/how-it-works': '/global-santcum/how-it-works',
+    '/the-wellness-edit': '/global-santcum/the-wellness-edit',
+    '/contact': '/global-santcum/contact',
+    '/list-your-venue': '/global-santcum/list-your-venue',
+    '/host-a-retreat': '/global-santcum/host-a-retreat',
+    '/sanctum-journal': '/global-santcum/sanctum-journal',
+    '/terms-and-conditions': '/global-santcum/terms-and-conditions',
+    '/privacy-policy': '/global-santcum/privacy-policy',
+    '/cookies-policy': '/global-santcum/cookies-policy',
+    '/legal': '/global-santcum/legal',
+    '/terms': '/global-santcum/terms-and-conditions'
+  };
+  function targetFor(anchor) {
+    var raw = anchor.getAttribute('href');
+    if (!raw || raw === '#' || raw.charAt(0) === '#') return null;
+    if (/^(mailto:|tel:|javascript:)/i.test(raw)) return null;
+    try {
+      var url = new URL(raw, window.location.origin);
+      if (url.origin !== window.location.origin) return null;
+      var path = url.pathname.replace(/\/$/, '') || '/';
+      var mapped = routeMap[path];
+      if (!mapped && path.indexOf('/global-santcum/') === 0) mapped = path;
+      if (!mapped && path.indexOf('/retreat-venues/') === 0) mapped = '/global-santcum/retreat-venues/sample-venue';
+      if (!mapped && path.indexOf('/wellness-venues/') === 0) mapped = '/global-santcum/wellness-venues/sample-venue';
+      return mapped ? mapped + url.search + url.hash : null;
+    } catch (e) { return null; }
+  }
+  document.addEventListener('click', function(event) {
+    var anchor = event.target && event.target.closest ? event.target.closest('a[href]') : null;
+    if (!anchor) return;
+    var target = targetFor(anchor);
+    if (!target) return;
+    event.preventDefault();
+    window.top.location.href = target;
+  }, true);
+})();
+</script>
+<script data-tgs-flow="TGS_MODAL_FLOW_JOURNAL_SIGNUP_ROUTE">
+(function(){
+  window.addEventListener('DOMContentLoaded', function() {
+    if (typeof openModal === 'function') setTimeout(openModal, 0);
+  });
+  document.addEventListener('click', function(event) {
+    var trigger = event.target && event.target.closest ? event.target.closest('.modal-submit') : null;
+    if (!trigger) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    window.top.location.href = '/global-santcum/sanctum-journal/thank-you';
+  }, true);
+})();
+</script>
+</body>
+</html>
+
+

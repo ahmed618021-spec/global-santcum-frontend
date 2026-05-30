@@ -1,0 +1,387 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TGS â€” Social Icons</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --charcoal: #313131;
+    --warm-white: #FDFCF9;
+    --warm-cream: #F7F5F1;
+    --gold: #C4A265;
+    --gold-dark: #7A644F;
+    --mist: #8B8B8B;
+    --light-rule: #E0D8CC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--warm-white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* â€”â€”â€” LABEL â€”â€”â€” */
+  .label {
+    text-align: center;
+    padding: 24px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    border-bottom: 1px solid var(--light-rule);
+    background: var(--warm-cream);
+  }
+
+  /* â€”â€”â€” PREVIEWS â€”â€”â€” */
+  .previews {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .preview-row {
+    padding: 60px 80px;
+    border-bottom: 1px solid var(--light-rule);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .preview-row:nth-child(2) { background: var(--charcoal); }
+  .preview-row:nth-child(3) { background: var(--warm-cream); }
+
+  .preview-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .light-bg .preview-label { color: var(--mist); }
+  .dark-bg .preview-label { color: rgba(253,252,249,0.3); }
+  .cream-bg .preview-label { color: var(--mist); }
+
+  /* â€”â€”â€” SOCIAL ICONS â€”â€”â€” */
+  .social-icons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+
+  /* LIGHT background variant */
+  .light-bg .social-link {
+    border: 1px solid var(--light-rule);
+    background: transparent;
+  }
+  .light-bg .social-link svg { fill: var(--mist); }
+  .light-bg .social-link:hover {
+    border-color: var(--charcoal);
+    background: var(--charcoal);
+  }
+  .light-bg .social-link:hover svg { fill: var(--warm-white); }
+
+  /* DARK background variant */
+  .dark-bg .social-link {
+    border: 1px solid rgba(253,252,249,0.15);
+    background: transparent;
+  }
+  .dark-bg .social-link svg { fill: rgba(253,252,249,0.45); }
+  .dark-bg .social-link:hover {
+    border-color: var(--gold);
+    background: transparent;
+  }
+  .dark-bg .social-link:hover svg { fill: var(--gold); }
+
+  /* CREAM background variant */
+  .cream-bg .social-link {
+    border: 1px solid var(--light-rule);
+    background: var(--warm-white);
+  }
+  .cream-bg .social-link svg { fill: var(--mist); }
+  .cream-bg .social-link:hover {
+    border-color: var(--gold-dark);
+    background: var(--warm-white);
+  }
+  .cream-bg .social-link:hover svg { fill: var(--gold-dark); }
+
+  .social-link svg {
+    width: 14px;
+    height: 14px;
+    transition: fill 0.25s ease;
+    display: block;
+  }
+
+  /* â€”â€”â€” CODE BLOCK â€”â€”â€” */
+  .code-section {
+    padding: 48px 80px;
+    background: var(--warm-white);
+    border-top: 1px solid var(--light-rule);
+  }
+
+  .code-eyebrow {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 20px;
+  }
+
+  .code-block {
+    background: #1e1e1e;
+    border-radius: 2px;
+    padding: 32px;
+    overflow-x: auto;
+  }
+
+  .code-block code {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    color: #d4d4d4;
+    white-space: pre;
+  }
+
+  .code-block .tag { color: #569cd6; }
+  .code-block .attr { color: #9cdcfe; }
+  .code-block .val { color: #ce9178; }
+  .code-block .comment { color: #6a9955; }
+</style>
+</head>
+<body>
+
+<div class="label">TGS Social Icons â€” Three Context Variants</div>
+
+<div class="previews">
+
+  <!-- LIGHT BACKGROUND -->
+  <div class="preview-row light-bg">
+    <span class="preview-label">On warm white / warm cream</span>
+    <div class="social-icons">
+
+      <!-- Facebook -->
+      <a href="https://facebook.com/theglobalsanctum" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      </a>
+
+      <!-- Instagram -->
+      <a href="https://instagram.com/theglobalsanctum" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+        </svg>
+      </a>
+
+      <!-- LinkedIn -->
+      <a href="https://linkedin.com/company/theglobalsanctum" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- DARK BACKGROUND -->
+  <div class="preview-row dark-bg">
+    <span class="preview-label">On charcoal / dark sections</span>
+    <div class="social-icons">
+
+      <a href="https://facebook.com/theglobalsanctum" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      </a>
+
+      <a href="https://instagram.com/theglobalsanctum" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+        </svg>
+      </a>
+
+      <a href="https://linkedin.com/company/theglobalsanctum" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- CREAM BACKGROUND -->
+  <div class="preview-row cream-bg">
+    <span class="preview-label">On warm cream / footer</span>
+    <div class="social-icons">
+
+      <a href="https://facebook.com/theglobalsanctum" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      </a>
+
+      <a href="https://instagram.com/theglobalsanctum" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+        </svg>
+      </a>
+
+      <a href="https://linkedin.com/company/theglobalsanctum" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- CODE SECTION -->
+<div class="code-section">
+  <p class="code-eyebrow">Code for JR â€” drop into footer</p>
+  <div class="code-block">
+    <code><span class="comment">/* CSS â€” add to your stylesheet */</span>
+
+<span class="tag">.social-icons</span> {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+<span class="tag">.social-link</span> {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--charcoal-15);
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+<span class="tag">.social-link svg</span> {
+  width: 14px;
+  height: 14px;
+  fill: var(--charcoal-50);
+  transition: fill 0.25s ease;
+  display: block;
+}
+
+<span class="tag">.social-link:hover</span> {
+  background: var(--charcoal);
+  border-color: var(--charcoal);
+}
+
+<span class="tag">.social-link:hover svg</span> {
+  fill: var(--warm-white);
+}
+
+<span class="comment">/* HTML â€” replace existing Fb / Ig / Li text links */</span>
+
+&lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="val">"social-icons"</span>&gt;
+
+  &lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="val">"https://facebook.com/theglobalsanctum"</span>
+     <span class="attr">class</span>=<span class="val">"social-link"</span>
+     <span class="attr">aria-label</span>=<span class="val">"Facebook"</span>
+     <span class="attr">target</span>=<span class="val">"_blank"</span>
+     <span class="attr">rel</span>=<span class="val">"noopener"</span>&gt;
+    &lt;<span class="tag">svg</span> <span class="attr">viewBox</span>=<span class="val">"0 0 24 24"</span>&gt;
+      &lt;<span class="tag">path</span> <span class="attr">d</span>=<span class="val">"M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"</span>/&gt;
+    &lt;/<span class="tag">svg</span>&gt;
+  &lt;/<span class="tag">a</span>&gt;
+
+  &lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="val">"https://instagram.com/theglobalsanctum"</span>
+     <span class="attr">class</span>=<span class="val">"social-link"</span>
+     <span class="attr">aria-label</span>=<span class="val">"Instagram"</span>
+     <span class="attr">target</span>=<span class="val">"_blank"</span>
+     <span class="attr">rel</span>=<span class="val">"noopener"</span>&gt;
+    &lt;<span class="tag">svg</span> <span class="attr">viewBox</span>=<span class="val">"0 0 24 24"</span>&gt;
+      &lt;<span class="tag">path</span> <span class="attr">d</span>=<span class="val">"M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"</span>/&gt;
+    &lt;/<span class="tag">svg</span>&gt;
+  &lt;/<span class="tag">a</span>&gt;
+
+  &lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="val">"https://linkedin.com/company/theglobalsanctum"</span>
+     <span class="attr">class</span>=<span class="val">"social-link"</span>
+     <span class="attr">aria-label</span>=<span class="val">"LinkedIn"</span>
+     <span class="attr">target</span>=<span class="val">"_blank"</span>
+     <span class="attr">rel</span>=<span class="val">"noopener"</span>&gt;
+    &lt;<span class="tag">svg</span> <span class="attr">viewBox</span>=<span class="val">"0 0 24 24"</span>&gt;
+      &lt;<span class="tag">path</span> <span class="attr">d</span>=<span class="val">"M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"</span>/&gt;
+    &lt;/<span class="tag">svg</span>&gt;
+  &lt;/<span class="tag">a</span>&gt;
+
+&lt;/<span class="tag">div</span>&gt;</code>
+  </div>
+</div>
+
+<script>
+(function(){
+  var routeMap = {
+    '/': '/global-santcum/web',
+    '/book': '/global-santcum/book',
+    '/venues': '/global-santcum/venues',
+    '/retreat-venues': '/global-santcum/retreat-venues',
+    '/wellness-venues': '/global-santcum/wellness-venues',
+    '/wellness-experiences': '/global-santcum/wellness-experiences',
+    '/about': '/global-santcum/about',
+    '/our-story': '/global-santcum/our-story',
+    '/how-it-works': '/global-santcum/how-it-works',
+    '/the-wellness-edit': '/global-santcum/the-wellness-edit',
+    '/contact': '/global-santcum/contact',
+    '/list-your-venue': '/global-santcum/list-your-venue',
+    '/host-a-retreat': '/global-santcum/host-a-retreat',
+    '/sanctum-journal': '/global-santcum/sanctum-journal',
+    '/terms-and-conditions': '/global-santcum/terms-and-conditions',
+    '/privacy-policy': '/global-santcum/privacy-policy',
+    '/cookies-policy': '/global-santcum/cookies-policy',
+    '/legal': '/global-santcum/legal',
+    '/terms': '/global-santcum/terms-and-conditions'
+  };
+  function targetFor(anchor) {
+    var raw = anchor.getAttribute('href');
+    if (!raw || raw === '#' || raw.charAt(0) === '#') return null;
+    if (/^(mailto:|tel:|javascript:)/i.test(raw)) return null;
+    try {
+      var url = new URL(raw, window.location.origin);
+      if (url.origin !== window.location.origin) return null;
+      var path = url.pathname.replace(/\/$/, '') || '/';
+      var mapped = routeMap[path];
+      if (!mapped && path.indexOf('/global-santcum/') === 0) mapped = path;
+      if (!mapped && path.indexOf('/retreat-venues/') === 0) mapped = '/global-santcum/retreat-venues/sample-venue';
+      if (!mapped && path.indexOf('/wellness-venues/') === 0) mapped = '/global-santcum/wellness-venues/sample-venue';
+      return mapped ? mapped + url.search + url.hash : null;
+    } catch (e) { return null; }
+  }
+  document.addEventListener('click', function(event) {
+    var anchor = event.target && event.target.closest ? event.target.closest('a[href]') : null;
+    if (!anchor) return;
+    var target = targetFor(anchor);
+    if (!target) return;
+    event.preventDefault();
+    window.top.location.href = target;
+  }, true);
+})();
+</script>
+</body>
+</html>
+

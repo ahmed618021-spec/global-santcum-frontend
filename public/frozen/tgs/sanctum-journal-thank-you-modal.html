@@ -1,0 +1,548 @@
+﻿<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanctum Journal â€” Thanks Modal | The Global Sanctum</title>
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         SANCTUM JOURNAL â€” SUBSCRIPTION CONFIRMATION MODAL (v2 â€” clean integration)
+         â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+         Three blocks for Kane to integrate. No demo wrapper, no decorative
+         animations. Slide-in transition kept (essential to the drawer mechanic).
+             1. The CSS block        (search for: === SANCTUM JOURNAL THANKS MODAL ===)
+             2. The HTML block       (search for: SANCTUM JOURNAL THANKS MODAL  in the body)
+             3. The JS block         (search for: === SANCTUM JOURNAL THANKS MODAL JS ===)
+
+         FLOW
+         User submits the Sanctum Journal signup form â†’ form posts to
+         ActiveCampaign (which sends the welcome email) â†’ form's success
+         handler calls window.openSanctumJournalThanksModal(submissionId,
+         triggerEl) â†’ this modal opens for visual feedback.
+
+         Auto-open: if the page URL contains ?ref=<uuid>, the modal opens
+         on DOMContentLoaded with that reference (for shared/bookmarked
+         confirmation URLs).
+
+         REFERENCE â€” TGS-SJ-XXXXXXXX (distinct from TGS-RE / TGS-WE / TGS-SIGN)
+         FUNNEL EVENT â€” signup_confirmation_view, form_name='sanctum_journal_signup'
+
+         Page-level dependencies (NOT included in this file â€” already site-wide):
+           â€¢ Consent Mode v2
+           â€¢ GTM (GTM-NBQCMQXG)
+           â€¢ tgsTrackOnce wrapper
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+
+    <!-- Google Fonts â€” needed for Cormorant Garamond + Montserrat. Already
+         loaded site-wide on TGS pages; safe to remove this <link> set when
+         integrating into a page that already loads them. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* â•â•â• BRAND TOKENS â€” match the enquiry thank-you modals exactly â•â•â• */
+        :root {
+            --warm-cream: #F7F5F1;
+            --warm-white: #FDFCF9;
+            --charcoal: #313131;
+            --charcoal-70: rgba(49,49,49,0.7);
+            --charcoal-50: rgba(49,49,49,0.5);
+            --charcoal-30: rgba(49,49,49,0.3);
+            --charcoal-15: rgba(49,49,49,0.15);
+            --charcoal-08: rgba(49,49,49,0.08);
+            --gold-accent: #C4A265;
+            --gold-dark: #7A644F;
+            --white: #FFFFFF;
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-sans);
+            color: var(--charcoal);
+            background: var(--warm-white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           === SANCTUM JOURNAL THANKS MODAL ===
+           Right-slide drawer pattern, identical to enquiry thank-you modals.
+           â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        .sj-thanks-overlay {
+            position: fixed; inset: 0; z-index: 1100;
+            background: rgba(49,49,49,0.55);
+            backdrop-filter: blur(2px);
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .sj-thanks-overlay.active { opacity: 1; visibility: visible; }
+
+        .sj-thanks-modal {
+            position: fixed; top: 0; right: 0;
+            width: 560px; max-width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            background: var(--warm-white); z-index: 1101;
+            transform: translateX(100%);
+            transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: -16px 0 60px rgba(49,49,49,0.12);
+        }
+        .sj-thanks-modal.active { transform: translateX(0); }
+
+        /* Header */
+        .sj-thanks-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 36px;
+            border-bottom: 1px solid var(--charcoal-08);
+            flex-shrink: 0; background: var(--warm-white);
+        }
+        .sj-thanks-header-left { display: flex; align-items: center; gap: 12px; }
+        .sj-thanks-logo {
+            width: 28px; height: 28px;
+            border: 1px solid var(--gold-accent);
+            transform: rotate(45deg); position: relative;
+        }
+        .sj-thanks-logo::after {
+            content: ""; position: absolute; inset: 3px;
+            border: 1px solid var(--gold-accent);
+        }
+        .sj-thanks-label {
+            font-family: var(--font-sans); font-size: 10px;
+            font-weight: 600; letter-spacing: 0.22em;
+            text-transform: uppercase; color: var(--charcoal);
+        }
+        .sj-thanks-close {
+            width: 40px; height: 40px; border-radius: 50%;
+            border: 1px solid var(--charcoal-08); background: var(--warm-cream);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 22px; line-height: 1; color: var(--charcoal-50);
+            transition: all 0.25s; padding: 0;
+        }
+        .sj-thanks-close:hover { border-color: var(--charcoal-30); color: var(--charcoal); }
+        .sj-thanks-close:focus-visible { outline: 2px solid var(--gold-accent); outline-offset: 2px; }
+
+        /* Body */
+        .sj-thanks-body {
+            flex: 1; overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 48px 36px 40px;
+            text-align: center;
+        }
+
+        /* â•â•â• CONFIRMATION CONTENT â•â•â• */
+        .confirmation-icon {
+            width: 72px; height: 72px; margin: 0 auto 28px;
+            border-radius: 50%;
+            border: 2px solid var(--charcoal);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .confirmation-icon svg {
+            width: 32px; height: 32px; color: var(--charcoal);
+        }
+        .confirmation-eyebrow {
+            font-family: var(--font-sans); font-size: 9px; font-weight: 600;
+            letter-spacing: 0.28em; text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 12px;
+        }
+        .confirmation-title {
+            font-family: var(--font-serif); font-size: 38px; font-weight: 300;
+            color: var(--charcoal); line-height: 1.15; margin-bottom: 14px;
+            outline: none;
+        }
+        .confirmation-title em { font-style: italic; }
+        .confirmation-subtitle {
+            font-family: var(--font-sans); font-size: 13px; font-weight: 300;
+            color: var(--charcoal-70); line-height: 1.7; margin-bottom: 32px;
+            max-width: 440px; margin-left: auto; margin-right: auto;
+        }
+
+        .confirmation-steps {
+            text-align: left; background: var(--warm-cream);
+            border-radius: 12px; padding: 24px;
+            margin-bottom: 28px;
+        }
+        .confirmation-steps-title {
+            font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--charcoal-50); margin-bottom: 18px;
+        }
+        .confirmation-step {
+            display: flex; align-items: flex-start; gap: 12px;
+            margin-bottom: 16px;
+        }
+        .confirmation-step:last-child { margin-bottom: 0; }
+        .step-icon {
+            width: 32px; height: 32px; border-radius: 50%;
+            border: 1px solid var(--charcoal-15);
+            background: var(--warm-white);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .step-icon svg { width: 14px; height: 14px; color: var(--charcoal-50); }
+        .step-content { padding-top: 2px; }
+        .step-label {
+            font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+            color: var(--charcoal); margin-bottom: 3px;
+        }
+        .step-desc {
+            font-family: var(--font-sans); font-size: 11.5px; font-weight: 300;
+            color: var(--charcoal-50); line-height: 1.55;
+        }
+
+        .confirmation-ref {
+            font-family: var(--font-sans); font-size: 12px;
+            color: var(--charcoal-30); margin-bottom: 28px;
+        }
+        .confirmation-ref strong { color: var(--charcoal-50); font-weight: 500; }
+
+        .confirmation-actions {
+            display: flex; flex-direction: column; gap: 10px;
+            margin-bottom: 28px;
+        }
+        .confirmation-btn-primary,
+        .confirmation-btn-secondary {
+            font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            padding: 14px 32px; border-radius: 50px;
+            text-decoration: none;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
+            display: inline-block;
+        }
+        .confirmation-btn-primary {
+            background: var(--charcoal); color: var(--white);
+            border: 1px solid var(--charcoal);
+        }
+        .confirmation-btn-primary:hover { background: var(--charcoal-70); border-color: var(--charcoal-70); }
+        .confirmation-btn-secondary {
+            background: transparent; color: var(--charcoal);
+            border: 1px solid var(--charcoal-15);
+        }
+        .confirmation-btn-secondary:hover { border-color: var(--charcoal-30); }
+        .confirmation-btn-primary:focus-visible,
+        .confirmation-btn-secondary:focus-visible {
+            outline: 2px solid var(--gold-accent); outline-offset: 2px;
+        }
+
+        .confirmation-contact {
+            padding-top: 24px;
+            border-top: 1px solid var(--charcoal-08);
+        }
+        .confirmation-contact p {
+            font-family: var(--font-sans); font-size: 12px;
+            color: var(--charcoal-50); line-height: 1.6;
+        }
+        .confirmation-contact a {
+            color: var(--charcoal); text-decoration: none; font-weight: 500;
+        }
+
+        /* â•â•â• REDUCED MOTION â€” slide instantly when user prefers reduced motion â•â•â• */
+        @media (prefers-reduced-motion: reduce) {
+            .sj-thanks-overlay,
+            .sj-thanks-modal { transition: none !important; }
+        }
+
+        /* â•â•â• MOBILE â•â•â• */
+        @media (max-width: 768px) {
+            .sj-thanks-modal { width: 100vw; }
+            .sj-thanks-header { padding: 16px 20px; }
+            .sj-thanks-body { padding: 36px 20px 32px; }
+            /* Tap targets â€” WCAG 2.5.5 minimum 44x44 px */
+            .sj-thanks-close { width: 44px; height: 44px; }
+            .confirmation-btn-primary,
+            .confirmation-btn-secondary { padding: 16px 32px; }
+            /* Layout */
+            .confirmation-title { font-size: 30px; }
+            .confirmation-steps { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         SANCTUM JOURNAL THANKS MODAL
+         Drop this entire block into the page template that hosts the
+         Sanctum Journal signup form.
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <div class="sj-thanks-overlay" id="sjThanksOverlay" aria-hidden="true"></div>
+
+    <aside class="sj-thanks-modal" id="sjThanksModal" role="dialog" aria-modal="true" aria-label="Subscription Confirmed" aria-hidden="true" inert>
+
+        <!-- HEADER -->
+        <header class="sj-thanks-header">
+            <div class="sj-thanks-header-left">
+                <span class="sj-thanks-logo" aria-hidden="true"></span>
+                <span class="sj-thanks-label">Sanctum Journal</span>
+            </div>
+            <button class="sj-thanks-close" id="sjThanksClose" type="button" aria-label="Close">&times;</button>
+        </header>
+
+        <!-- BODY -->
+        <div class="sj-thanks-body">
+
+            <div class="confirmation-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+
+            <p class="confirmation-eyebrow">Subscription Confirmed</p>
+            <h2 class="confirmation-title" id="confirmationTitle" tabindex="-1">Welcome to <em>The Sanctum Journal</em></h2>
+            <p class="confirmation-subtitle">Each month, we share new sanctuaries, host stories, and the quiet practices we've gathered. Your first issue is on its way.</p>
+
+            <div class="confirmation-steps">
+                <h3 class="confirmation-steps-title">What Happens Next</h3>
+
+                <div class="confirmation-step">
+                    <div class="step-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-label">Confirmation email sent</div>
+                        <div class="step-desc">Check your inbox for a welcome from The Global Sanctum. If it doesn't arrive within a few minutes, please check your spam or promotions folder.</div>
+                    </div>
+                </div>
+
+                <div class="confirmation-step">
+                    <div class="step-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-label">Your first issue arrives soon</div>
+                        <div class="step-desc">The Sanctum Journal is delivered monthly. Your first issue will appear in your inbox shortly after publication.</div>
+                    </div>
+                </div>
+
+                <div class="confirmation-step">
+                    <div class="step-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-label">Reserved for the TGS community</div>
+                        <div class="step-desc">Each issue is curated exclusively for our subscribers â€” venue introductions, host conversations, and editorial features not published elsewhere.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reference (revealed when a valid submissionId is provided) -->
+            <div class="confirmation-ref" id="confirmationRef" hidden>
+                Your subscription reference: <strong id="subscriptionRefDisplay">â€”</strong>
+            </div>
+
+            <!-- Actions -->
+            <div class="confirmation-actions">
+                <a href="/global-santcum/the-wellness-edit" class="confirmation-btn-primary">Read The Wellness Edit</a>
+                <a href="/global-santcum/web" class="confirmation-btn-secondary">Return Home</a>
+            </div>
+
+            <div class="confirmation-contact">
+                <p>Questions or want to update your preferences? Contact <a href="mailto:hello@theglobalsanctum.com">hello@theglobalsanctum.com</a></p>
+            </div>
+
+        </div>
+    </aside>
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         END SANCTUM JOURNAL THANKS MODAL
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         === SANCTUM JOURNAL THANKS MODAL JS ===
+         Exposes window.openSanctumJournalThanksModal(submissionId, trigger).
+         Call from the signup form's submission_success handler with the
+         submissionId. Auto-opens if the page URL contains ?ref=<uuid>.
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <script>
+    (function() {
+        'use strict';
+
+        var overlay   = document.getElementById('sjThanksOverlay');
+        var modal     = document.getElementById('sjThanksModal');
+        var closeBtn  = document.getElementById('sjThanksClose');
+        var modalBody = modal && modal.querySelector('.sj-thanks-body');
+
+        if (!modal) return;
+
+        var lastTrigger = null;
+        var uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+        // â”€â”€ Format reference for display (TGS-SJ-XXXXXXXX) â”€â”€
+        // TGS-SJ- prefix distinguishes Sanctum Journal subscriptions from
+        // enquiries (TGS-RE / TGS-WE) and venue signups (TGS-SIGN) at a glance.
+        function formatRef(submissionId) {
+            return 'TGS-SJ-' + submissionId.slice(0, 8).toUpperCase();
+        }
+
+        // â”€â”€ Open thanks modal â”€â”€
+        function openModal(submissionId, trigger) {
+            lastTrigger = trigger || null;
+
+            // Resolve submissionId: explicit arg > URL query string > none
+            if (!submissionId) {
+                var params = new URLSearchParams(window.location.search);
+                var rawRef = params.get('ref');
+                if (rawRef && uuidPattern.test(rawRef)) {
+                    submissionId = rawRef.toLowerCase();
+                }
+            }
+
+            // Display reference if available
+            var refEl = document.getElementById('subscriptionRefDisplay');
+            var refContainer = document.getElementById('confirmationRef');
+            if (submissionId && refEl) {
+                refEl.textContent = formatRef(submissionId);
+                if (refContainer) refContainer.hidden = false;
+            } else if (refContainer) {
+                refContainer.hidden = true;
+            }
+
+            // Show modal
+            overlay.classList.add('active');
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            overlay.setAttribute('aria-hidden', 'false');
+            modal.removeAttribute('inert');
+            document.body.style.overflow = 'hidden';
+
+            if (modalBody) modalBody.scrollTop = 0;
+
+            // Focus the heading for screen reader announcement
+            setTimeout(function() {
+                var heading = document.getElementById('confirmationTitle');
+                if (heading) heading.focus();
+            }, 150);
+
+            // Funnel close event (requires window.tgsTrackOnce â€” set up at page level)
+            if (submissionId && window.tgsTrackOnce) {
+                window.tgsTrackOnce('signup_confirmation_view', {
+                    submissionId: submissionId,
+                    form_name: 'sanctum_journal_signup'
+                });
+            }
+        }
+
+        // â”€â”€ Close thanks modal â”€â”€
+        function closeModal() {
+            overlay.classList.remove('active');
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            overlay.setAttribute('aria-hidden', 'true');
+            modal.setAttribute('inert', '');
+            document.body.style.overflow = '';
+
+            if (lastTrigger && typeof lastTrigger.focus === 'function') {
+                lastTrigger.focus();
+            }
+        }
+
+        // Expose namespaced API (avoids collision with the enquiry thank-you modals)
+        window.openSanctumJournalThanksModal  = openModal;
+        window.closeSanctumJournalThanksModal = closeModal;
+
+        // â”€â”€ Wire close paths â”€â”€
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (overlay)  overlay.addEventListener('click', closeModal);
+
+        // ESC closes when modal is open
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Focus trap inside modal
+        modal.addEventListener('keydown', function(e) {
+            if (e.key !== 'Tab') return;
+            var focusables = modal.querySelectorAll(
+                'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            );
+            if (!focusables.length) return;
+            var first = focusables[0];
+            var last  = focusables[focusables.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault(); last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault(); first.focus();
+            }
+        });
+
+        // â”€â”€ Auto-open if URL contains ?ref=<uuid>, OR previewing locally â”€â”€
+        document.addEventListener('DOMContentLoaded', function() {
+            var params = new URLSearchParams(window.location.search);
+            var rawRef = params.get('ref');
+            if (rawRef && uuidPattern.test(rawRef)) {
+                openModal(rawRef.toLowerCase());
+                return;
+            }
+            // Preview convenience: auto-open when opened as a local file
+            // (file:// protocol â€” i.e. double-clicking the .html). In a
+            // deployed environment (https://) this no-ops automatically.
+            // Remove this `if` block entirely if you want the modal to only
+            // ever open from the form success handler or ?ref= URL.
+            if (window.location.protocol === 'file:') {
+                var previewId = (window.crypto && crypto.randomUUID)
+                    ? crypto.randomUUID()
+                    : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                        var r = Math.random() * 16 | 0;
+                        var v = c === 'x' ? r : (r & 0x3 | 0x8);
+                        return v.toString(16);
+                      });
+                openModal(previewId);
+            }
+        });
+    })();
+    </script>
+
+<script>
+(function(){
+  var routeMap = {
+    '/': '/global-santcum/web',
+    '/book': '/global-santcum/book',
+    '/venues': '/global-santcum/venues',
+    '/retreat-venues': '/global-santcum/retreat-venues',
+    '/wellness-venues': '/global-santcum/wellness-venues',
+    '/wellness-experiences': '/global-santcum/wellness-experiences',
+    '/about': '/global-santcum/about',
+    '/our-story': '/global-santcum/our-story',
+    '/how-it-works': '/global-santcum/how-it-works',
+    '/the-wellness-edit': '/global-santcum/the-wellness-edit',
+    '/contact': '/global-santcum/contact',
+    '/list-your-venue': '/global-santcum/list-your-venue',
+    '/host-a-retreat': '/global-santcum/host-a-retreat',
+    '/sanctum-journal': '/global-santcum/sanctum-journal',
+    '/terms-and-conditions': '/global-santcum/terms-and-conditions',
+    '/privacy-policy': '/global-santcum/privacy-policy',
+    '/cookies-policy': '/global-santcum/cookies-policy',
+    '/legal': '/global-santcum/legal',
+    '/terms': '/global-santcum/terms-and-conditions'
+  };
+  function targetFor(anchor) {
+    var raw = anchor.getAttribute('href');
+    if (!raw || raw === '#' || raw.charAt(0) === '#') return null;
+    if (/^(mailto:|tel:|javascript:)/i.test(raw)) return null;
+    try {
+      var url = new URL(raw, window.location.origin);
+      if (url.origin !== window.location.origin) return null;
+      var path = url.pathname.replace(/\/$/, '') || '/';
+      var mapped = routeMap[path];
+      if (!mapped && path.indexOf('/global-santcum/') === 0) mapped = path;
+      if (!mapped && path.indexOf('/retreat-venues/') === 0) mapped = '/global-santcum/retreat-venues/sample-venue';
+      if (!mapped && path.indexOf('/wellness-venues/') === 0) mapped = '/global-santcum/wellness-venues/sample-venue';
+      return mapped ? mapped + url.search + url.hash : null;
+    } catch (e) { return null; }
+  }
+  document.addEventListener('click', function(event) {
+    var anchor = event.target && event.target.closest ? event.target.closest('a[href]') : null;
+    if (!anchor) return;
+    var target = targetFor(anchor);
+    if (!target) return;
+    event.preventDefault();
+    window.top.location.href = target;
+  }, true);
+})();
+</script>
+</body>
+</html>
+
