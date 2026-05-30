@@ -101,7 +101,8 @@ export default function SiteNavigation({
         </div>
         <div className={styles.navDrawerLinks}>
           <p className={styles.navDrawerSectionLabel}>Discover</p>
-          <a href={tgsRoutes.venues}>Explore Venues</a>
+          <a href={tgsRoutes.retreatVenues}>Retreat Venues</a>
+          <a href={tgsRoutes.wellnessVenues}>Wellness Venues</a>
           <a href={tgsRoutes.wellnessExperiences}>Wellness Experiences</a>
 
           <p className={styles.navDrawerSectionLabel}>Learn</p>

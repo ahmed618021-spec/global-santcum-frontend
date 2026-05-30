@@ -16,6 +16,11 @@ react-app/migration-source/*.zip
 
 # testing
 /coverage
+/test-results/
+
+# local source/working folders (not needed at runtime; tgs-images holds the deployed copies)
+/imagess/
+/mockupss/
 
 # next.js
 /.next/
