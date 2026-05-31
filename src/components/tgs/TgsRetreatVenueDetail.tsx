@@ -1823,6 +1823,8 @@ const tabs = [
   { id: "booking", label: "Booking" },
 ];
 
+const VENUE_PDF_URL: string | null = null;
+
 export default function TgsRetreatVenueDetail() {
   const router = useRouter();
   const pathname = usePathname();
@@ -1918,7 +1920,7 @@ export default function TgsRetreatVenueDetail() {
           <div className="hero-content">
             <h1 className="hero-venue-name">Santosa Retreat</h1>
             <p className="hero-location">Coromandel Peninsula, New Zealand</p>
-            <a href="#" className="hero-view-photos">View All 48 Photos</a>
+            
           </div>
           <div className="hero-thumbnails">
             <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=200&q=80" alt="Thumbnail 1" className="hero-thumb" />
@@ -2217,7 +2219,7 @@ export default function TgsRetreatVenueDetail() {
                 <p className="cta-text">Tell us about your vision and we&apos;ll be in touch within 24 hours to discuss availability.</p>
                 <div className="cta-buttons">
                   <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
-                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                  {VENUE_PDF_URL ? <a href={VENUE_PDF_URL} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">Download Venue PDF</a> : null}
                 </div>
               </section>
 
@@ -2305,7 +2307,7 @@ export default function TgsRetreatVenueDetail() {
                 <p className="cta-text">We&apos;re happy to arrange a video tour or answer any questions about how our spaces might work for your retreat format.</p>
                 <div className="cta-buttons">
                   <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
-                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                  {VENUE_PDF_URL ? <a href={VENUE_PDF_URL} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">Download Venue PDF</a> : null}
                 </div>
               </section>
 
@@ -2572,7 +2574,7 @@ export default function TgsRetreatVenueDetail() {
                 <p className="cta-text">If there&apos;s equipment or arrangements you need that you don&apos;t see listed, just ask. We&apos;re here to support your retreat.</p>
                 <div className="cta-buttons">
                   <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
-                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                  {VENUE_PDF_URL ? <a href={VENUE_PDF_URL} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">Download Venue PDF</a> : null}
                 </div>
               </section>
 
@@ -2674,7 +2676,7 @@ export default function TgsRetreatVenueDetail() {
                 <p className="cta-text">Let us know what you&apos;re looking for and we&apos;ll include options in your proposal.</p>
                 <div className="cta-buttons">
                   <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
-                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                  {VENUE_PDF_URL ? <a href={VENUE_PDF_URL} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">Download Venue PDF</a> : null}
                 </div>
               </section>
 
@@ -2764,7 +2766,7 @@ export default function TgsRetreatVenueDetail() {
                 <p className="cta-text">We&apos;re happy to help coordinate logistics for you and your participants.</p>
                 <div className="cta-buttons">
                   <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
-                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                  {VENUE_PDF_URL ? <a href={VENUE_PDF_URL} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">Download Venue PDF</a> : null}
                 </div>
               </section>
 
@@ -2868,7 +2870,7 @@ export default function TgsRetreatVenueDetail() {
                 <p className="cta-text">Join the facilitators who have found their retreat home at Santosa.</p>
                 <div className="cta-buttons">
                   <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
-                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                  {VENUE_PDF_URL ? <a href={VENUE_PDF_URL} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">Download Venue PDF</a> : null}
                 </div>
               </section>
 
@@ -3058,7 +3060,7 @@ export default function TgsRetreatVenueDetail() {
                 <p className="cta-text">Submit an enquiry and we&apos;ll send you a detailed proposal within 24 hours.</p>
                 <div className="cta-buttons">
                   <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Enquire About This Venue</a>
-                  <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+                  {VENUE_PDF_URL ? <a href={VENUE_PDF_URL} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">Download Venue PDF</a> : null}
                 </div>
               </section>
 

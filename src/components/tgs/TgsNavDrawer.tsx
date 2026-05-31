@@ -243,11 +243,6 @@ export default function TgsNavDrawer({ open, onClose }: TgsNavDrawerProps) {
               List Your Venue
             </Link>
           </div>
-          <div className="tgsdrawer-group">
-            <Link href="/global-santcum/list-your-venue" className="tgsdrawer-cta" onClick={onClose}>
-              List Your Venue
-            </Link>
-          </div>
         </div>
         <div className="tgsdrawer-footer">
           <div className="tgsdrawer-footer-contact">

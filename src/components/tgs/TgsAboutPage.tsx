@@ -185,6 +185,8 @@ a {
     flex-shrink: 0;
 }
 
+.nav-logo { width: 40px; height: 40px; border: 1px solid var(--gold-accent); transform: rotate(45deg); position: relative; flex-shrink: 0; }
+.nav-logo::after { content: ""; position: absolute; inset: 4px; border: 1px solid var(--gold-accent); }
 .nav-logo-placeholder {
     width: 44px;
     height: 44px;
@@ -1262,9 +1264,7 @@ export default function TgsAboutPage() {
           </div>
 
           <Link href="/global-santcum/web" className="nav-logo-area">
-            <div className="nav-logo-placeholder">
-              <span>Logo Goes Here</span>
-            </div>
+            <span className="nav-logo" aria-hidden="true" />
             <div className="nav-brand-text">The Global Sanctum</div>
           </Link>
 
@@ -1307,7 +1307,7 @@ export default function TgsAboutPage() {
           </div>
           <div className="intro-image">
             <img
-              src="/tgs-images/Old%20Man%20With%20Sound%20Bowls%20Nordic%20Filter.png"
+              src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80"
               alt="Sound bowl meditation"
             />
             <div className="intro-image-accent"></div>
@@ -1329,7 +1329,7 @@ export default function TgsAboutPage() {
             <div className="problem-grid">
               <div className="problem-image">
                 <img
-                  src="/tgs-images/Group%20Of%20Hands%20Together%20Nordic%20Filter.png"
+                  src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80"
                   alt="Hands gathered together"
                 />
               </div>
@@ -1395,7 +1395,7 @@ export default function TgsAboutPage() {
             </div>
             <div className="solution-image">
               <img
-                src="/tgs-images/Woman%20Eyes%20Closed%20Meditate%20Nordic%20Filter.png"
+                src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800&q=80"
                 alt="Woman meditating"
               />
             </div>

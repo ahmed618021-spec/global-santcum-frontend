@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import TgsNavDrawer from "@/components/tgs/TgsNavDrawer";
 
 const styles = `
@@ -211,8 +212,22 @@ a{color:inherit;text-decoration:none}
 `;
 
 export default function TgsHowItWorksPage() {
+  const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const wantsRetreatHosts =
+      (pathname || "").includes("host-a-retreat") ||
+      window.location.hash === "#retreat-hosts";
+    if (!wantsRetreatHosts) return;
+    const timer = window.setTimeout(() => {
+      document
+        .getElementById("retreat-hosts")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 200);
+    return () => window.clearTimeout(timer);
+  }, [pathname]);
 
   useEffect(() => {
     const nav = document.getElementById("mainNav");

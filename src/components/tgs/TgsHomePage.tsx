@@ -1871,7 +1871,7 @@ export default function TgsHomePage() {
               <Link href="/global-santcum/about" className="intro-link">About The Global Sanctum<span>→</span></Link>
             </div>
             <div className="intro-image">
-              <img src="/tgs-images/Woman%20Meditating%20In%20Sacred%20Site%20Nordic%20Filter.png" alt="Sacred-site meditation" loading="eager" decoding="async" fetchPriority="high" width="800" height="600" />
+              <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80" alt="Sacred-site meditation" loading="eager" decoding="async" fetchPriority="high" width="800" height="600" />
               <div className="intro-image-accent" />
             </div>
           </div>
@@ -1886,7 +1886,7 @@ export default function TgsHomePage() {
             </div>
             <div className="explore-mosaic">
               <Link href="/global-santcum/venues?setting=coastal" className="mosaic-item mosaic-item-tall">
-                <img src="/tgs-images/Beach%20With%20Boat%20Rainforest%20Aerial%20Nordic%20Filter.png" alt="Coastal sanctuary" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
+                <img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=600&q=80" alt="Coastal sanctuary" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
                 <div className="mosaic-item-overlay" />
                 <div className="mosaic-item-content"><h3 className="mosaic-item-title">Coastal Sanctuaries</h3></div>
               </Link>
@@ -1896,17 +1896,17 @@ export default function TgsHomePage() {
                 <div className="mosaic-item-content"><h3 className="mosaic-item-title">Forest Hideaways</h3></div>
               </Link>
               <Link href="/global-santcum/venues?setting=desert" className="mosaic-item">
-                <img src="/tgs-images/Sunset%20Desert%20Nordic%20Filter.png" alt="Desert retreat" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
+                <img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&q=80" alt="Desert retreat" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
                 <div className="mosaic-item-overlay" />
                 <div className="mosaic-item-content"><h3 className="mosaic-item-title">Desert Retreats</h3></div>
               </Link>
               <Link href="/global-santcum/venues?setting=tropical" className="mosaic-item mosaic-item-tall">
-                <img src="/tgs-images/Misty%20Jungle%20Forest%20Nordic%20Filter.png" alt="Tropical sanctuary" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
+                <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80" alt="Tropical sanctuary" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
                 <div className="mosaic-item-overlay" />
                 <div className="mosaic-item-content"><h3 className="mosaic-item-title">Tropical Sanctuaries</h3></div>
               </Link>
               <Link href="/global-santcum/venues?setting=urban" className="mosaic-item">
-                <img src="/tgs-images/City%20Wet%20Pavement%20Nordic%20Filter.png" alt="Urban sanctuary" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
+                <img src="https://images.unsplash.com/photo-1583416750470-965b2707b355?w=600&q=80" alt="Urban sanctuary" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
                 <div className="mosaic-item-overlay" />
                 <div className="mosaic-item-content"><h3 className="mosaic-item-title">Urban Sanctuaries</h3></div>
               </Link>
@@ -1928,7 +1928,7 @@ export default function TgsHomePage() {
             </div>
             <div className="paths-grid">
               <div className="path-card">
-                <div className="path-card-bg"><img src="/tgs-images/Jungle%20Cabin%20Nordic%20Filter.png" alt="Retreat venues" loading="lazy" decoding="async" fetchPriority="low" width="800" height="600" /></div>
+                <div className="path-card-bg"><img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80" alt="Retreat venues" loading="lazy" decoding="async" fetchPriority="low" width="800" height="600" /></div>
                 <div className="path-card-overlay" />
                 <div className="path-card-content">
                   <h3 className="path-card-title">Retreat Venues</h3>
@@ -1937,7 +1937,7 @@ export default function TgsHomePage() {
                 </div>
               </div>
               <div className="path-card">
-                <div className="path-card-bg"><img src="/tgs-images/Onsen%203%20Nordic%20Filter.png" alt="Wellness venues" loading="lazy" decoding="async" fetchPriority="low" width="800" height="600" /></div>
+                <div className="path-card-bg"><img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800&q=80" alt="Wellness venues" loading="lazy" decoding="async" fetchPriority="low" width="800" height="600" /></div>
                 <div className="path-card-overlay" />
                 <div className="path-card-content">
                   <h3 className="path-card-title">Wellness Venues</h3>
@@ -1946,7 +1946,7 @@ export default function TgsHomePage() {
                 </div>
               </div>
               <div className="path-card">
-                <div className="path-card-bg"><img src="/tgs-images/Massage%20black%20and%20white.jpg" alt="Wellness experiences" loading="lazy" decoding="async" fetchPriority="low" width="800" height="600" /></div>
+                <div className="path-card-bg"><img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80" alt="Wellness experiences" loading="lazy" decoding="async" fetchPriority="low" width="800" height="600" /></div>
                 <div className="path-card-overlay" />
                 <div className="path-card-content">
                   <h3 className="path-card-title">Wellness Experiences</h3>
@@ -1978,7 +1978,7 @@ export default function TgsHomePage() {
             </div>
             <div className="experiences-grid">
               <article className="experience-card">
-                <div className="experience-card-image"><img src="/tgs-images/Woman%20In%20Spa%20Dark%20Tiles%20Nordic%20Filter.png" alt="Thermal bathing" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" /></div>
+                <div className="experience-card-image"><img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=600&q=80" alt="Thermal bathing" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" /></div>
                 <div className="experience-card-content">
                   <p className="experience-card-category">Hydrotherapy</p>
                   <h3 className="experience-card-name">Thermal Bathing Rituals</h3>
@@ -1987,7 +1987,7 @@ export default function TgsHomePage() {
                 </div>
               </article>
               <article className="experience-card">
-                <div className="experience-card-image"><img src="/tgs-images/Gold%20Sound%20Bowl%20Nordic%20Filter.jpg" alt="Sound healing" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" /></div>
+                <div className="experience-card-image"><img src="https://images.unsplash.com/photo-1591343395082-e120087004b4?w=600&q=80" alt="Sound healing" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" /></div>
                 <div className="experience-card-content">
                   <p className="experience-card-category">Sound Therapy</p>
                   <h3 className="experience-card-name">Vibrational Sound Journeys</h3>
@@ -1996,7 +1996,7 @@ export default function TgsHomePage() {
                 </div>
               </article>
               <article className="experience-card">
-                <div className="experience-card-image"><img src="/tgs-images/Man%20Walking%20Through%20Forest%20Nordic%20Filter.png" alt="Forest bathing" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" /></div>
+                <div className="experience-card-image"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80" alt="Forest bathing" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" /></div>
                 <div className="experience-card-content">
                   <p className="experience-card-category">Nature Immersion</p>
                   <h3 className="experience-card-name">Forest Bathing &amp; Shinrin-Yoku</h3>
@@ -2005,7 +2005,7 @@ export default function TgsHomePage() {
                 </div>
               </article>
               <article className="experience-card">
-                <div className="experience-card-image"><img src="/tgs-images/Man%20Black%20and%20White%20Hands%20on%20Chest.jpg" alt="Conscious breath" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" /></div>
+                <div className="experience-card-image"><img src="https://images.unsplash.com/photo-1599447421416-3414500d18a5?w=600&q=80" alt="Conscious breath" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" /></div>
                 <div className="experience-card-content">
                   <p className="experience-card-category">Recovery &amp; Performance</p>
                   <h3 className="experience-card-name">Modern Wellness &amp; Recovery</h3>
@@ -2168,7 +2168,7 @@ export default function TgsHomePage() {
             </div>
             <div className="trending-grid">
               <Link href="/global-santcum/venues?country=australia" className="trending-item trending-item-large">
-                <img src="/tgs-images/Australia%20Uluru%20Nordic%20Filter.png" alt="Australian landscape" loading="lazy" decoding="async" fetchPriority="low" width="1000" height="750" />
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1000&q=80" alt="Australian landscape" loading="lazy" decoding="async" fetchPriority="low" width="1000" height="750" />
                 <div className="trending-item-overlay" />
                 <div className="trending-item-content">
                   <h3 className="trending-item-name">Australia</h3>
@@ -2184,7 +2184,7 @@ export default function TgsHomePage() {
                 </div>
               </Link>
               <Link href="/global-santcum/venues?country=japan" className="trending-item">
-                <img src="/tgs-images/Japan%20Temple%20Red%20Nordic%20Filter.png" alt="Japan temple" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
+                <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Japan temple" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
                 <div className="trending-item-overlay" />
                 <div className="trending-item-content">
                   <h3 className="trending-item-name">Japan</h3>
@@ -2192,7 +2192,7 @@ export default function TgsHomePage() {
                 </div>
               </Link>
               <Link href="/global-santcum/venues?country=india" className="trending-item">
-                <img src="/tgs-images/India%20Building%20Nordic%20Filter.png" alt="India temple" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
+                <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&q=80" alt="India temple" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
                 <div className="trending-item-overlay" />
                 <div className="trending-item-content">
                   <h3 className="trending-item-name">India</h3>
@@ -2200,7 +2200,7 @@ export default function TgsHomePage() {
                 </div>
               </Link>
               <Link href="/global-santcum/venues?country=thailand" className="trending-item">
-                <img src="/tgs-images/Rice%20Terraces%20Nordic%20Filter.jpg" alt="Thailand rice terraces" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
+                <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?w=600&q=80" alt="Thailand rice terraces" loading="lazy" decoding="async" fetchPriority="low" width="600" height="450" />
                 <div className="trending-item-overlay" />
                 <div className="trending-item-content">
                   <h3 className="trending-item-name">Thailand</h3>
@@ -2337,7 +2337,7 @@ export default function TgsHomePage() {
         <section className="search-features">
           <div className="search-features-inner">
             <div className="search-features-image">
-              <img src="/tgs-images/Man%20With%20Ipad%20Nordic%20Filter.png" alt="Wellness search on tablet" loading="lazy" decoding="async" fetchPriority="low" width="800" height="600" />
+              <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80" alt="Wellness search on tablet" loading="lazy" decoding="async" fetchPriority="low" width="800" height="600" />
             </div>
             <div className="search-features-content">
               <p className="section-eyebrow" style={{ textAlign: "left" }}>Discover Intentionally</p>
@@ -2392,9 +2392,9 @@ export default function TgsHomePage() {
               </div>
             </div>
             <div className="philosophy-images">
-              <img src="/tgs-images/Moroccan%20Pool%20Scandi%20Filter.png" alt="Moroccan pool" loading="lazy" decoding="async" fetchPriority="low" width="800" height="600" />
-              <img src="/tgs-images/Andean%20Man%20With%20Shell%20Nordic%20Filter.jpg" alt="Andean man with shell" loading="lazy" decoding="async" fetchPriority="low" width="400" height="300" />
-              <img src="/tgs-images/Misty%20Forest%20Nordic%20Filter.png" alt="Misty forest" loading="lazy" decoding="async" fetchPriority="low" width="400" height="300" />
+              <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800&q=80" alt="Moroccan pool" loading="lazy" decoding="async" fetchPriority="low" width="800" height="600" />
+              <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&q=80" alt="Andean man with shell" loading="lazy" decoding="async" fetchPriority="low" width="400" height="300" />
+              <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=80" alt="Misty forest" loading="lazy" decoding="async" fetchPriority="low" width="400" height="300" />
             </div>
           </div>
         </section>

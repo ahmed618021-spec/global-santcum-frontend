@@ -516,7 +516,7 @@ export default function TgsSanctumJournalSignupModal() {
       setInvalid(true);
       return;
     }
-    window.location.href = "/global-santcum/sanctum-journal/thank-you";
+    router.push("/global-santcum/sanctum-journal/thank-you");
   };
 
   return (

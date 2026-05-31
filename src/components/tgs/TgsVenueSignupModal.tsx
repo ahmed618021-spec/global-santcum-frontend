@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -310,8 +311,9 @@ export default function TgsVenueSignupModal() {
   const [termsScrolled, setTermsScrolled] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [gdprAccepted, setGdprAccepted] = useState(false);
+  const [previewConfirmed, setPreviewConfirmed] = useState(false);
 
-  const stepName = cfg.steps[stepIdx];
+  const stepName = previewConfirmed ? "confirm" : cfg.steps[stepIdx];
   const canContinue = stepName !== "terms" || (termsScrolled && termsAccepted && gdprAccepted);
 
   useEffect(() => {
@@ -411,9 +413,12 @@ export default function TgsVenueSignupModal() {
           trial: cfg.trial,
         });
       } else {
-        alert(
-          `[PREVIEW] Stripe Checkout would open now.\nprice_id: ${priceId || "MISSING"}\nbilling_cycle: ${cfg.billingCycle}\ntier: ${cfg.tier}\ntrack: ${cfg.track || "(standard)"}\nsubmissionId: ${submissionId}`,
-        );
+        trackEvent("signup_confirmation_view", cfg, submissionId, {
+          step: "confirm",
+          billing_cycle: cfg.billingCycle,
+          price_id: priceId,
+        });
+        setPreviewConfirmed(true);
       }
       return;
     }
@@ -679,9 +684,9 @@ function TermsStep({
         disabled={!termsScrolled}
         label={
           <>
-            I have read and agree to the <a href="/global-santcum/legal#terms">Terms &amp; Conditions</a>,{" "}
-            <a href="/global-santcum/legal#venue-partner">Venue Partner Terms</a>, and{" "}
-            <a href="/global-santcum/legal#booking">Booking Terms</a>.
+            I have read and agree to the <Link href="/global-santcum/legal#terms">Terms &amp; Conditions</Link>,{" "}
+            <Link href="/global-santcum/legal#venue-partner">Venue Partner Terms</Link>, and{" "}
+            <Link href="/global-santcum/legal#booking">Booking Terms</Link>.
           </>
         }
         onToggle={() => termsScrolled && setTermsAccepted(!termsAccepted)}
@@ -692,7 +697,7 @@ function TermsStep({
         label={
           <>
             I consent to my personal data being collected and processed by The Global Sanctum in accordance with the{" "}
-            <a href="/global-santcum/legal#privacy">Privacy Policy</a>. I understand I may withdraw this consent at any time
+            <Link href="/global-santcum/legal#privacy">Privacy Policy</Link>. I understand I may withdraw this consent at any time
             by contacting hello@theglobalsanctum.com.
           </>
         }

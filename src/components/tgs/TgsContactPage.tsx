@@ -146,7 +146,9 @@ const styles = `
             flex-shrink: 0;
         }
 
-        .nav-logo-placeholder {
+        .nav-logo { width: 40px; height: 40px; border: 1px solid var(--gold-accent); transform: rotate(45deg); position: relative; flex-shrink: 0; }
+.nav-logo::after { content: ""; position: absolute; inset: 4px; border: 1px solid var(--gold-accent); }
+.nav-logo-placeholder {
             width: 44px;
             height: 44px;
             border: 2px dashed var(--gold-accent);
@@ -1180,9 +1182,7 @@ export default function TgsContactPage() {
           </div>
 
           <Link href="/global-santcum/web" className="nav-logo-area">
-            <div className="nav-logo-placeholder">
-              <span>Logo Goes Here</span>
-            </div>
+            <span className="nav-logo" aria-hidden="true" />
             <div className="nav-brand-text">The Global Sanctum</div>
           </Link>
 

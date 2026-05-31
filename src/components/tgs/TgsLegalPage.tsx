@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import TgsNavDrawer from "@/components/tgs/TgsNavDrawer";
 
 const styles = `
@@ -503,7 +504,8 @@ type TabId =
   | "refunds"
   | "booking"
   | "acceptable"
-  | "community";
+  | "community"
+  | "venue-partner";
 
 const TAB_IDS: TabId[] = [
   "terms",
@@ -514,7 +516,19 @@ const TAB_IDS: TabId[] = [
   "booking",
   "acceptable",
   "community",
+  "venue-partner",
 ];
+
+const PATH_TAB_MAP: Record<string, TabId> = {
+  "privacy-policy": "privacy",
+  "cookies-policy": "cookies",
+  "terms-and-conditions": "terms",
+};
+
+function pathToTab(pathname: string | null): TabId {
+  const seg = (pathname || "").split("/").filter(Boolean).pop() || "";
+  return PATH_TAB_MAP[seg] ?? "terms";
+}
 
 const tabLabels: Record<TabId, string> = {
   terms: "Terms & Conditions",
@@ -525,6 +539,7 @@ const tabLabels: Record<TabId, string> = {
   booking: "Booking Terms & Conditions",
   acceptable: "Acceptable Use Policy",
   community: "Community Standards & Code of Conduct",
+  "venue-partner": "Venue Partner Terms",
 };
 
 const tocData: Record<TabId, { id: string; label: string }[]> = {
@@ -645,6 +660,17 @@ const tocData: Record<TabId, { id: string; label: string }[]> = {
     { id: "cs-general", label: "10. General Provisions" },
     { id: "cs-updates", label: "11. Updates to These Standards" },
     { id: "cs-contact", label: "Contact Us" },
+  ],
+  "venue-partner": [
+    { id: "vp-overview", label: "1. Overview" },
+    { id: "vp-eligibility", label: "2. Eligibility & Onboarding" },
+    { id: "vp-subscription", label: "3. Subscription & Fees" },
+    { id: "vp-listing", label: "4. Listing Obligations" },
+    { id: "vp-commission", label: "5. Commission & Disbursement" },
+    { id: "vp-conduct", label: "6. Conduct Standards" },
+    { id: "vp-term", label: "7. Term, Suspension & Termination" },
+    { id: "vp-precedence", label: "8. Precedence" },
+    { id: "vp-contact", label: "Contact Us" },
   ],
 };
 
@@ -2113,6 +2139,67 @@ function CommunityContent() {
   );
 }
 
+function VenuePartnerContent() {
+  return (
+    <>
+      <p className="policy-intro">These Venue Partner Terms govern the relationship between The Global Sanctum (&quot;TGS&quot;, &quot;we&quot;, &quot;us&quot;, &quot;our&quot;) and venue owners who list retreat or wellness spaces on our platform. They supplement the general Terms &amp; Conditions and, together with the Venue Owner Agreement accepted during onboarding, set out the obligations that apply to your role as a venue partner.</p>
+
+      <div className="policy-section" id="vp-overview">
+        <h2 className="policy-section-title">1. Overview</h2>
+        <p className="policy-text">As a venue partner, you list your space for discovery and booking by retreat hosts and wellness guests. TGS provides the platform, curation, and booking infrastructure; you remain responsible for the operation, safety, and accuracy of your venue listing.</p>
+      </div>
+
+      <div className="policy-section" id="vp-eligibility">
+        <h2 className="policy-section-title">2. Eligibility &amp; Onboarding</h2>
+        <ul className="policy-list">
+          <li>You must own the venue or hold written authority to list it and accept bookings on its behalf.</li>
+          <li>You must complete the onboarding process, including identity and ownership verification where requested.</li>
+          <li>By completing onboarding you confirm you have read and accepted the Venue Owner Agreement in full.</li>
+        </ul>
+      </div>
+
+      <div className="policy-section" id="vp-subscription">
+        <h2 className="policy-section-title">3. Subscription &amp; Fees</h2>
+        <p className="policy-text">Listing on TGS requires an active subscription at the plan and billing cycle you select during signup. Subscription fees are billed in advance and are non-refundable except where required by law. We will give reasonable notice of any change to subscription pricing.</p>
+      </div>
+
+      <div className="policy-section" id="vp-listing">
+        <h2 className="policy-section-title">4. Listing Obligations</h2>
+        <ul className="policy-list">
+          <li>Keep your listing accurate and current, including availability, pricing, facilities, and imagery.</li>
+          <li>Honour all confirmed bookings and the published cancellation policy you have selected.</li>
+          <li>Hold and maintain appropriate insurance, licences, and permits for your venue and activities.</li>
+          <li>Comply with all applicable local laws, health and safety regulations, and cultural sensitivities at the venue location.</li>
+        </ul>
+      </div>
+
+      <div className="policy-section" id="vp-commission">
+        <h2 className="policy-section-title">5. Commission &amp; Disbursement</h2>
+        <p className="policy-text">TGS applies a commission to confirmed bookings as set out in your Venue Owner Agreement. Guest payments are collected through the platform&apos;s payment provider and disbursed to you according to the agreed disbursement schedule, net of commission and any applicable processing fees.</p>
+      </div>
+
+      <div className="policy-section" id="vp-conduct">
+        <h2 className="policy-section-title">6. Conduct Standards</h2>
+        <p className="policy-text">Venue partners are expected to communicate professionally and promptly, represent their venue honestly, and uphold the wellbeing and safety of every guest. Conduct that misleads guests, circumvents the platform, or breaches our Community Standards may result in suspension.</p>
+      </div>
+
+      <div className="policy-section" id="vp-term">
+        <h2 className="policy-section-title">7. Term, Suspension &amp; Termination</h2>
+        <p className="policy-text">These terms apply for as long as your listing remains active. We may suspend or remove a listing for breach of these terms, the Venue Owner Agreement, or applicable law. You may cancel your subscription at any time; cancellation takes effect at the end of the current billing cycle and does not affect bookings already confirmed.</p>
+      </div>
+
+      <div className="policy-section" id="vp-precedence">
+        <h2 className="policy-section-title">8. Precedence</h2>
+        <p className="policy-text">In the event of any conflict between these Venue Partner Terms and the Venue Owner Agreement accepted at onboarding, the Venue Owner Agreement will take precedence with respect to venue-specific matters. A copy of the agreement accepted at the time of your onboarding is available on request by contacting <EmailLink />.</p>
+      </div>
+
+      <div className="policy-contact" id="vp-contact">
+        <ContactBlock lead="For questions about these Venue Partner Terms, please contact:" />
+      </div>
+    </>
+  );
+}
+
 const tabContent: Record<TabId, () => React.ReactElement> = {
   terms: TermsContent,
   privacy: PrivacyContent,
@@ -2122,11 +2209,13 @@ const tabContent: Record<TabId, () => React.ReactElement> = {
   booking: BookingContent,
   acceptable: AcceptableContent,
   community: CommunityContent,
+  "venue-partner": VenuePartnerContent,
 };
 
 export default function TgsLegalPage() {
+  const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabId>("terms");
+  const [activeTab, setActiveTab] = useState<TabId>(() => pathToTab(pathname));
   const [activeTocId, setActiveTocId] = useState<string>("");
   const tabsInnerRef = useRef<HTMLDivElement | null>(null);
 

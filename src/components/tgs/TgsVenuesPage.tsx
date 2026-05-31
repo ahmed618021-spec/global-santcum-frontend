@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import TgsNavDrawer from "@/components/tgs/TgsNavDrawer";
+import TgsVenueEmptyState from "@/components/tgs/TgsVenueEmptyState";
 
 const styles = `
 :root {
@@ -246,7 +247,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* HERO */
 .hero { position: relative; height: 55vh; min-height: 420px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--charcoal); }
-.hero-image { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.45) 100%), url('/tgs-images/Oriental%20Building%20Nordic%20Filter.png'); background-size: cover; background-position: center; }
+.hero-image { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.45) 100%), url('https://images.unsplash.com/photo-1540555700478-4be289fbec6a?w=1600&q=80'); background-size: cover; background-position: center; }
 .hero-content { position: relative; z-index: 2; text-align: center; max-width: 800px; padding: 0 40px; }
 .hero-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 16px; }
 .hero-title { font-family: var(--font-serif); font-size: 58px; font-weight: 300; color: var(--white); line-height: 1.1; margin-bottom: 16px; }
@@ -663,6 +664,7 @@ export default function TgsVenuesPage({
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [resultsEmpty, setResultsEmpty] = useState(false);
 
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -760,6 +762,7 @@ export default function TgsVenuesPage({
       });
       const ce = $("resultCount");
       if (ce) ce.textContent = String(count);
+      setResultsEmpty(count === 0);
       const te = $("heroTitle");
       const se = $("heroSubtitle");
       if (te) te.textContent = heroTitles[type];
@@ -1700,12 +1703,21 @@ export default function TgsVenuesPage({
 
         </div>
 
+        {resultsEmpty ? (
+          <div
+            className="venue-empty-wrap"
+            style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 40px 60px" }}
+          >
+            <TgsVenueEmptyState />
+          </div>
+        ) : null}
+
         <section className="cta-section">
           <div className="cta-inner">
             <div className="cta-eyebrow">Venue Partners</div>
             <h2 className="cta-title">Your space deserves to be <em>discovered</em></h2>
             <p className="cta-text">Join a curated collection of the world&apos;s most exceptional retreat and wellness venues. Transparent pricing, editorial-quality presentation, and a community of retreat hosts seeking spaces like yours.</p>
-            <a href="#" className="cta-btn">List Your Venue</a>
+            <Link href="/global-santcum/list-your-venue" className="cta-btn">List Your Venue</Link>
           </div>
         </section>
 

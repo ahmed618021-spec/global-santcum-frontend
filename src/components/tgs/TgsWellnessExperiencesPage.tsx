@@ -235,7 +235,7 @@ body { font-family: 'Montserrat', sans-serif; background: var(--warm-white); col
 
 /* HERO */
 .hero { height:480px; position:relative; overflow:hidden; display:flex; align-items:flex-end; }
-.hero-img { position:absolute; inset:0; background:url(' center/cover; transform:scale(1.04); animation:heroZoom 8s ease-out forwards; }
+.hero-img { position:absolute; inset:0; background:url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1600&q=80') center/cover; transform:scale(1.04); animation:heroZoom 8s ease-out forwards; }
 @keyframes heroZoom { from{transform:scale(1.04)} to{transform:scale(1)} }
 .hero-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(49,49,49,0.72) 0%, rgba(49,49,49,0.1) 60%, transparent 100%); }
 .hero-content { position:relative; z-index:2; padding:0 80px 56px; width:100%; display:flex; align-items:flex-end; justify-content:space-between; }
@@ -751,7 +751,7 @@ const categories: Category[] = [
     name: "Thermal & Hydrotherapy",
     tagline: "Ancient waters, volcanic springs, heat and cold immersion",
     count: 7,
-    img: "/tgs-images/Woman%20In%20Bath%20Nordic%20Filter.png",
+    img: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=900&q=80",
     alt: "Thermal bathing",
     imageLabel: (<>Ancient waters.<br />Volcanic springs.</>),
     eyebrow: "Thermal & Hydrotherapy",
@@ -773,7 +773,7 @@ const categories: Category[] = [
     name: "Yoga & Movement",
     tagline: "Classical traditions, somatic practices, conscious movement",
     count: 8,
-    img: "/tgs-images/Woman%20Stretching%20Back%20Yoga%20Nordic%20Filter.png",
+    img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=900&q=80",
     alt: "Yoga practice",
     imageLabel: (<>Classical traditions.<br />Conscious movement.</>),
     eyebrow: "Yoga & Movement",
@@ -796,7 +796,7 @@ const categories: Category[] = [
     name: "Breathwork",
     tagline: "Pranayama, holotropic traditions, conscious respiration",
     count: 5,
-    img: "/tgs-images/Breathwork%20lying%20down%20Nordic%20Filter.png",
+    img: "https://images.unsplash.com/photo-1545389336-cf090694435e?w=900&q=80",
     alt: "Breathwork",
     imageLabel: (<>The breath as<br />doorway.</>),
     eyebrow: "Breathwork",
@@ -816,7 +816,7 @@ const categories: Category[] = [
     name: "Sound & Vibrational",
     tagline: "Frequencies, resonance, and the healing power of sound",
     count: 6,
-    img: "/tgs-images/Woman%20With%20Sound%20Bowl%20Nordic%20Filter.png",
+    img: "https://images.unsplash.com/photo-1591343395082-e120087004b4?w=900&q=80",
     alt: "Sound healing",
     imageLabel: (<>Frequencies that<br />recalibrate.</>),
     eyebrow: "Sound & Vibrational",
@@ -837,7 +837,7 @@ const categories: Category[] = [
     name: "Ayurveda",
     tagline: "5,000 years of Indian healing science and constitutional medicine",
     count: 6,
-    img: "/tgs-images/Ayurveda%20Shirodhara%20Nordic%20Filter.jpg",
+    img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=900&q=80",
     alt: "Ayurveda",
     imageLabel: (<>Ancient science.<br />Living medicine.</>),
     eyebrow: "Ayurveda",
@@ -858,7 +858,7 @@ const categories: Category[] = [
     name: "Indigenous & Earth Traditions",
     tagline: "First peoples' healing wisdom, ceremony, and land-based medicine",
     count: 7,
-    img: "/tgs-images/Shaman%20With%20Flute%20Nordic%20Filter.png",
+    img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=900&q=80",
     alt: "Earth traditions",
     imageLabel: (<>Land as healer.<br />Ceremony as medicine.</>),
     eyebrow: "Indigenous & Earth Traditions",
@@ -880,7 +880,7 @@ const categories: Category[] = [
     name: "Plant Medicine & Ceremony",
     tagline: "Sacred plant traditions, ceremonial healing, botanical medicine",
     count: 5,
-    img: "/tgs-images/Herbs%20On%20Timber%20Nordic%20Filter.png",
+    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=80",
     alt: "Plant medicine",
     imageLabel: (<>Sacred plants.<br />Ancient ceremony.</>),
     eyebrow: "Plant Medicine & Ceremony",
@@ -900,7 +900,7 @@ const categories: Category[] = [
     name: "Meditation & Mindfulness",
     tagline: "Stillness practices, contemplative traditions, presence work",
     count: 6,
-    img: "/tgs-images/Meditation%20Black%20%26%20White%20Mountain.jpg",
+    img: "https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=900&q=80",
     alt: "Meditation",
     imageLabel: (<>Stillness as<br />the practice.</>),
     eyebrow: "Meditation & Mindfulness",
@@ -921,7 +921,7 @@ const categories: Category[] = [
     name: "Body Therapies & Bodywork",
     tagline: "Hands-on healing, structural integration, and therapeutic touch",
     count: 7,
-    img: "/tgs-images/Black%20%26%20White%20Massage%20Nordic%20Filter.png",
+    img: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=900&q=80",
     alt: "Bodywork",
     imageLabel: (<>The body holds<br />its own wisdom.</>),
     eyebrow: "Body Therapies & Bodywork",
@@ -943,7 +943,7 @@ const categories: Category[] = [
     name: "Nutrition & Cleansing",
     tagline: "Fasting protocols, detoxification, and food as medicine",
     count: 5,
-    img: "/tgs-images/Raw%20Salad%20Bowl%20Nordic%20Filter.png",
+    img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=900&q=80",
     alt: "Nutrition",
     imageLabel: (<>Food as<br />medicine.</>),
     eyebrow: "Nutrition & Cleansing",
@@ -988,7 +988,7 @@ const categories: Category[] = [
     name: "Energy & Esoteric",
     tagline: "Subtle body work, energetic healing, and consciousness practices",
     count: 6,
-    img: "/tgs-images/Reiki%20Image%20Nordic%20Filter.png",
+    img: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=900&q=80",
     alt: "Energy healing",
     imageLabel: (<>Beyond the visible.<br />Into the subtle.</>),
     eyebrow: "Energy & Esoteric",
@@ -1009,7 +1009,7 @@ const categories: Category[] = [
     name: "Modern Wellness",
     tagline: "Contemporary therapies, clinical modalities, and cutting-edge recovery",
     count: 8,
-    img: "/tgs-images/Halotherapy%20Nordic%20Filter.png",
+    img: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=900&q=80",
     alt: "Modern wellness spa",
     imageLabel: (<>Science meets<br />sanctuary.</>),
     eyebrow: "Modern Wellness",
@@ -1066,7 +1066,7 @@ function VenueCard({ v }: { v: Venue }) {
           <span className="result-card-meta-item"><strong>{v.price}</strong></span>
           <span className="result-card-meta-item">{v.duration}</span>
         </div>
-        <a href={`/wellness-venues/${v.slug}?tab=services`} className="result-card-cta">View Services →</a>
+        <Link href={`/global-santcum/wellness-venues/${v.slug}?tab=services`} className="result-card-cta">View Services →</Link>
       </div>
     </div>
   );
@@ -1223,7 +1223,7 @@ export default function TgsWellnessExperiencesPage() {
                           </button>
                         ))}
                       </div>
-                      <a className="panel-explore-link" href={category.exploreHref}>{category.exploreLabel}</a>
+                      <Link className="panel-explore-link" href={category.exploreHref}>{category.exploreLabel}</Link>
                     </div>
                     <div
                       className={`venue-results${venues ? " open" : ""}`}

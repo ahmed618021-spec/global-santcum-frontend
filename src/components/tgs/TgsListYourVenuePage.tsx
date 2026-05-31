@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import TgsNavDrawer from "@/components/tgs/TgsNavDrawer";
 
 const styles = `
@@ -33,7 +34,9 @@ const styles = `
         .nav-hamburger-label{font-family:var(--font-sans);font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#FFFFFF;margin-left:14px;transition:color .3s ease}
         .nav.scrolled .nav-hamburger-label{color:var(--charcoal)}
         .nav-logo-area{display:flex;align-items:center;justify-content:center;gap:16px}
-        .nav-logo-placeholder{width:44px;height:44px;border:2px dashed var(--gold-accent);border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--charcoal);flex-shrink:0}
+        .nav-logo { width: 40px; height: 40px; border: 1px solid var(--gold-accent); transform: rotate(45deg); position: relative; flex-shrink: 0; }
+.nav-logo::after { content: ""; position: absolute; inset: 4px; border: 1px solid var(--gold-accent); }
+.nav-logo-placeholder{width:44px;height:44px;border:2px dashed var(--gold-accent);border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--charcoal);flex-shrink:0}
         .nav-logo-placeholder span{font-family:var(--font-sans);font-size:7px;font-weight:500;text-transform:uppercase;color:var(--gold-accent);text-align:center;line-height:1.2}
         .nav-brand-text{font-family:var(--font-serif);font-size:17px;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:#FFFFFF;white-space:nowrap;transition:color .3s ease}
         .nav.scrolled .nav-brand-text{color:var(--charcoal)}
@@ -61,7 +64,7 @@ const styles = `
         .section-eyebrow{font-family:var(--font-sans);font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--charcoal-50);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:16px}.section-eyebrow::before,.section-eyebrow::after{content:'';width:40px;height:1px;background:var(--charcoal-30)}.section-title{font-family:var(--font-serif);font-size:40px;font-weight:400;line-height:1.2;color:var(--charcoal);margin-bottom:28px}.section-title em{font-style:italic}
 
         /* HERO */
-        .hero{position:relative;height:75vh;min-height:550px;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden}.hero-bg{position:absolute;inset:0;background:url('/tgs-images/Bali%20Pool%20Nordic%20Filter.png') center/cover}.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(49,49,49,.35)0%,rgba(49,49,49,.25)50%,rgba(49,49,49,.45)100%)}.hero-content{position:relative;z-index:10;text-align:center;padding:0 40px;max-width:900px}.hero-eyebrow{font-family:var(--font-sans);font-size:10px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:24px}.hero-title{font-family:var(--font-serif);font-size:clamp(38px,5vw,56px);font-weight:300;font-style:italic;line-height:1.15;color:#fff;margin-bottom:24px}.hero-subtitle{font-family:var(--font-serif);font-size:20px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.9);max-width:650px;margin:0 auto 40px}.hero-cta{display:inline-block;font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;padding:18px 40px;background:#fff;color:var(--charcoal);transition:all .3s ease}.hero-cta:hover{background:var(--warm-cream);transform:translateY(-2px)}
+        .hero{position:relative;height:75vh;min-height:550px;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden}.hero-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1920&q=80') center/cover}.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(49,49,49,.35)0%,rgba(49,49,49,.25)50%,rgba(49,49,49,.45)100%)}.hero-content{position:relative;z-index:10;text-align:center;padding:0 40px;max-width:900px}.hero-eyebrow{font-family:var(--font-sans);font-size:10px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:24px}.hero-title{font-family:var(--font-serif);font-size:clamp(38px,5vw,56px);font-weight:300;font-style:italic;line-height:1.15;color:#fff;margin-bottom:24px}.hero-subtitle{font-family:var(--font-serif);font-size:20px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.9);max-width:650px;margin:0 auto 40px}.hero-cta{display:inline-block;font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;padding:18px 40px;background:#fff;color:var(--charcoal);transition:all .3s ease}.hero-cta:hover{background:var(--warm-cream);transform:translateY(-2px)}
 
         /* INTRO */
         .intro{padding:120px 80px;background:var(--warm-white)}.intro-inner{max-width:1000px;margin:0 auto;text-align:center}.intro-text{font-size:18px;font-weight:400;line-height:1.9;color:#3A3A3A;max-width:750px;margin:0 auto}
@@ -237,6 +240,7 @@ const faqItems = [
 ];
 
 export default function TgsListYourVenuePage() {
+  const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isYearly, setIsYearly] = useState(true);
@@ -270,9 +274,7 @@ export default function TgsListYourVenuePage() {
 
   const goToSignup = (event: React.MouseEvent) => {
     event.preventDefault();
-    if (typeof window !== "undefined") {
-      window.location.href = SIGNUP_URL;
-    }
+    router.push(SIGNUP_URL);
   };
 
   return (
@@ -301,9 +303,7 @@ export default function TgsListYourVenuePage() {
             <span className="nav-hamburger-label">Menu</span>
           </div>
           <Link href="/global-santcum/web" className="nav-logo-area">
-            <div className="nav-logo-placeholder">
-              <span>Logo Goes Here</span>
-            </div>
+            <span className="nav-logo" aria-hidden="true" />
             <div className="nav-brand-text">The Global Sanctum</div>
           </Link>
           <div className="nav-right">
@@ -358,7 +358,7 @@ export default function TgsListYourVenuePage() {
             <div className="who-for-grid">
               <div className="who-card">
                 <div className="who-card-image">
-                  <img src="/tgs-images/Meditation%20Room%20Nordic%20Filter.png" alt="Retreat venue" />
+                  <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800&q=80" alt="Retreat venue" />
                 </div>
                 <div className="who-card-content">
                   <p className="who-card-label">Exclusive-Use Spaces</p>
@@ -378,7 +378,7 @@ export default function TgsListYourVenuePage() {
               </div>
               <div className="who-card">
                 <div className="who-card-image">
-                  <img src="/tgs-images/Sauna%20Modern%20Nordic%20Filter.png" alt="Wellness venue" />
+                  <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80" alt="Wellness venue" />
                 </div>
                 <div className="who-card-content">
                   <p className="who-card-label">Day-Use &amp; Multi-Day Venues</p>
@@ -582,7 +582,7 @@ export default function TgsListYourVenuePage() {
             </aside>
             <div className="pricing-toggle-wrapper">
               <div className="pricing-toggle">
-                <span className={`pricing-toggle-label${isYearly ? " active" : ""}`} id="label-yearly">
+                <span className={`pricing-toggle-label${isYearly ? " active" : ""}`} id="label-yearly" onClick={() => setIsYearly(true)}>
                   Yearly
                 </span>
                 <div
@@ -590,7 +590,7 @@ export default function TgsListYourVenuePage() {
                   id="pricing-switch"
                   onClick={() => setIsYearly((prev) => !prev)}
                 />
-                <span className={`pricing-toggle-label${isYearly ? "" : " active"}`} id="label-monthly">
+                <span className={`pricing-toggle-label${isYearly ? "" : " active"}`} id="label-monthly" onClick={() => setIsYearly(false)}>
                   Monthly
                 </span>
               </div>

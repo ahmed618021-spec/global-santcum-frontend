@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import TgsNavDrawer from "@/components/tgs/TgsNavDrawer";
+import { featuredArticle, gridArticles, editorialPairs, type Article } from "@/components/tgs/wellnessEditData";
 
 const styles = `
 :root {
@@ -1184,115 +1185,6 @@ const categoryTabs: Array<[string, string]> = [
   ["inside-tgs", "Inside The Sanctum"],
 ];
 
-type Article = {
-  category: string;
-  categoryLabel: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  read: string;
-};
-
-const gridArticles: Article[] = [
-  {
-    category: "horizons",
-    categoryLabel: "Horizons",
-    title: "Psychedelic-Assisted Wellness: The Venues Quietly Leading a Revolution",
-    excerpt:
-      "From psilocybin retreats in Jamaica to ketamine-assisted therapy in Costa Rica, how a new wave of clinically-informed venues is navigating the space between ancient ceremony and modern science.",
-    date: "Jan 2026",
-    read: "14 min read",
-  },
-  {
-    category: "practice",
-    categoryLabel: "The Practice",
-    title: "The Breath as Architecture: Holotropic Breathing and the Spaces Designed for It",
-    excerpt:
-      "Why the rooms in which we breathe matter as much as the technique itself — and the venues reimagining breathwork environments from the floor up.",
-    date: "Jan 2026",
-    read: "9 min read",
-  },
-  {
-    category: "pathways",
-    categoryLabel: "Pathways",
-    title: "After the Retreat: A Gentle Guide to Integration",
-    excerpt:
-      "The most transformative part of any retreat often happens after you leave. Practical wisdom for carrying what you've learned back into the architecture of everyday life.",
-    date: "Dec 2025",
-    read: "8 min read",
-  },
-  {
-    category: "portraits",
-    categoryLabel: "Portraits",
-    title: "A Conversation with the Custodians of Fivelements Bali",
-    excerpt:
-      "How a bamboo compound on the Ayung River became one of the world's most respected healing sanctuaries — and what its founders believe the wellness industry still gets wrong.",
-    date: "Dec 2025",
-    read: "11 min read",
-  },
-  {
-    category: "craft",
-    categoryLabel: "The Craft",
-    title: "Pricing Transparency: What Retreat Hosts Actually Need to Know About Venue Costs",
-    excerpt:
-      "A candid breakdown of how venue pricing works, what's negotiable, and the questions every facilitator should ask before signing a booking agreement.",
-    date: "Nov 2025",
-    read: "10 min read",
-  },
-  {
-    category: "destinations",
-    categoryLabel: "Destinations",
-    title: "The Onsens of Tohoku: Japan's Quietly Extraordinary Thermal North",
-    excerpt:
-      "Forget Hakone. The hot spring country north of Tokyo — ancient, unhurried, largely unknown to Western travellers — offers something closer to the soul of Japanese bathing culture.",
-    date: "Nov 2025",
-    read: "13 min read",
-  },
-];
-
-const editorialPairs: Article[][] = [
-  [
-    {
-      category: "philosophy",
-      categoryLabel: "Philosophy",
-      title: "On Stillness as Resistance: A Case for Doing Nothing",
-      excerpt:
-        "In a wellness industry increasingly obsessed with optimisation, the most radical act may be the simplest one — the deliberate practice of rest without purpose.",
-      date: "Oct 2025",
-      read: "7 min read",
-    },
-    {
-      category: "field-notes",
-      categoryLabel: "Field Notes",
-      title: "Wellness Travel in 2026: Five Data Points That Will Shape the Year Ahead",
-      excerpt:
-        "From the US$1.2 trillion global wellness economy to the rise of solo female travel, the numbers behind the trends reshaping how we choose to heal.",
-      date: "Oct 2025",
-      read: "6 min read",
-    },
-  ],
-  [
-    {
-      category: "living-well",
-      categoryLabel: "Living Well",
-      title: "Between Retreats: Building a Morning Practice That Lasts",
-      excerpt:
-        "The gap between retreat and reality doesn't have to feel like a loss. How to design a daily rhythm that honours what you've learned without requiring a mountaintop.",
-      date: "Sep 2025",
-      read: "6 min read",
-    },
-    {
-      category: "inside-tgs",
-      categoryLabel: "Inside The Sanctum",
-      title: "Why We Built a Marketplace That Shows You the Price",
-      excerpt:
-        "An honest reflection on why pricing transparency became a founding principle — and what it means for venue owners, facilitators, and the people who trust us to guide their journey.",
-      date: "Sep 2025",
-      read: "8 min read",
-    },
-  ],
-];
-
 const footerColumns: Array<{ title: string; links: Array<[string, string]> }> = [
   {
     title: "Discover",
@@ -1515,9 +1407,9 @@ export default function TgsWellnessEditPage() {
                   <div className="featured-meta-divider" />
                   <span>12 min read</span>
                 </div>
-                <a href="#" className="featured-read-more">
+                <Link href={`/global-santcum/the-wellness-edit/${featuredArticle.slug}`} className="featured-read-more">
                   Read the Article
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -1759,8 +1651,9 @@ export default function TgsWellnessEditPage() {
           <div className="articles-inner">
             <div className="articles-grid">
               {gridArticles.map((article) => (
-                <article
+                <Link
                   key={article.title}
+                  href={`/global-santcum/the-wellness-edit/${article.slug}`}
                   className="article-card"
                   data-category={article.category}
                   style={
@@ -1780,7 +1673,7 @@ export default function TgsWellnessEditPage() {
                     <div className="article-meta-dot" />
                     <span>{article.read}</span>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
 
@@ -1795,8 +1688,9 @@ export default function TgsWellnessEditPage() {
                   style={pairVisible ? undefined : { display: "none" }}
                 >
                   {pair.map((article) => (
-                    <article
+                    <Link
                       key={article.title}
+                      href={`/global-santcum/the-wellness-edit/${article.slug}`}
                       className="editorial-card"
                       data-category={article.category}
                       style={
@@ -1820,7 +1714,7 @@ export default function TgsWellnessEditPage() {
                           <span>{article.read}</span>
                         </div>
                       </div>
-                    </article>
+                    </Link>
                   ))}
                 </div>
               );

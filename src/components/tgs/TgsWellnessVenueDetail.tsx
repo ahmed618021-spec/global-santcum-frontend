@@ -1432,6 +1432,8 @@ const TABS = [
   { id: "policies", label: "Policies", conditional: false },
 ];
 
+const VENUE_PDF_URL: string | null = null;
+
 export default function TgsWellnessVenueDetail() {
   const pathname = usePathname();
   const router = useRouter();
@@ -1537,7 +1539,7 @@ export default function TgsWellnessVenueDetail() {
             <p className="hero-venue-type">Day Spa</p>
             <h1 className="hero-venue-name">Serenity Day Spa</h1>
             <p className="hero-location">Brisbane, Queensland, Australia</p>
-            <a href="#" className="hero-view-photos">View All Photos</a>
+            
           </div>
           <div className="hero-thumbnails">
             <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=200&q=80" alt="Spa treatment" className="hero-thumb" />
@@ -2175,7 +2177,7 @@ export default function TgsWellnessVenueDetail() {
                     <h4>Address</h4>
                     <p>123 Wellness Lane<br />Brisbane QLD 4000<br />Australia</p>
                     <br />
-                    <a href="#" className="view-all-link">Get Directions &#8594;</a>
+                    <a href={"https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("123 Wellness Lane, Brisbane QLD 4000, Australia")} className="view-all-link" target="_blank" rel="noopener noreferrer">Get Directions &#8594;</a>
                   </div>
 
                   <div className="location-block">
@@ -2405,7 +2407,7 @@ export default function TgsWellnessVenueDetail() {
           <p className="cta-text">Experience relaxation at Serenity Day Spa</p>
           <div className="cta-buttons">
             <a href="#" className="btn btn--primary" onClick={(e) => { e.preventDefault(); goToEnquiry(); }}>Book Now</a>
-            <a href="#" className="btn btn--secondary">Download Venue PDF</a>
+            {VENUE_PDF_URL ? <a href={VENUE_PDF_URL} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">Download Venue PDF</a> : null}
           </div>
         </section>
 
